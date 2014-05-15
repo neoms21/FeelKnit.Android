@@ -14,11 +14,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.qubittech.feeltastic.services.TrackingService;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import services.TrackingService;
 import util.JsonHttpClient;
 
 /**

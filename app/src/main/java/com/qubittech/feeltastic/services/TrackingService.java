@@ -1,4 +1,4 @@
-package services;
+package com.qubittech.feeltastic.services;
 
 import android.app.Service;
 import android.content.Intent;

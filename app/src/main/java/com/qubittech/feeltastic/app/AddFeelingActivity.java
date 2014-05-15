@@ -1,6 +1,7 @@
 package com.qubittech.feeltastic.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -20,19 +23,23 @@ import util.JsonHttpClient;
 /**
  * Created by Manoj on 04/05/2014.
  */
-public class FeelingActivity extends Activity {
+public class AddFeelingActivity extends Activity {
 
 
-    private String[] feelings= {"Happy","Sad","Excited","Interested","King","loser"};
+    private String[] feelings = {"Happy", "Sad", "Excited", "Interested", "King", "Loser"};
     private Spinner spinnerFeelings;
-    private String selectedFeeling="";
+    private String selectedFeeling = "";
+
+    private Feeling _feeling = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        _feeling = new Feeling();
         setContentView(R.layout.activity_feeling);
         spinnerFeelings = (Spinner) findViewById(R.id.spinnerFeeling);
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, feelings);
+        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, feelings);
         adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFeelings.setAdapter(adapter_state);
         //spinnerFeelings.setOnItemSelectedListener(this);
@@ -55,7 +62,7 @@ public class FeelingActivity extends Activity {
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new SaveUserTask().execute(selectedFeeling,"reason","action");
+                new SaveUserTask().execute(selectedFeeling, "reason", "action");
             }
         });
 
@@ -64,17 +71,30 @@ public class FeelingActivity extends Activity {
 
     private class SaveUserTask extends AsyncTask<String, Integer, String> {
 
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if (s != "Failure") {
+                Intent intent = new Intent(AddFeelingActivity.this, RelatedFeelingActivity.class);
+                intent.putExtra("feeling", _feeling);
+                startActivity(intent);
+            }
+        }
 
         @Override
         protected String doInBackground(String... params) {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingText", params[0]));
-            args.add(new BasicNameValuePair("reason",params[1]));
+            _feeling.setFeelingText(params[0]);
+            args.add(new BasicNameValuePair("reason", params[1]));
+            _feeling.setReason(params[1]);
             args.add(new BasicNameValuePair("action", params[2]));
+            _feeling.setAction(params[2]);
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            jsonHttpClient.PostParams("http://10.0.3.2/FeelKnitService/feelings",args);
-            return "";
+            return jsonHttpClient.PostParams("http://10.0.3.2/FeelKnitService/feelings", args);
+
         }
     }
 }
