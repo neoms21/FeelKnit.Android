@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+
+    <TextView
+        android:id="@+id/usernameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="50dp"
+        android:paddingTop="7dp"
+        android:textColor="@android:color/black"
+        android:text="UserName:"/>
+
+    <TextView
+        android:id="@+id/passwordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/usernameLabel"
+        android:layout_below="@id/usernameLabel"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="25dp"
+        android:paddingTop="7dp"
+        android:text="Password:"/>
+
+    <TextView
+        android:id="@+id/emailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/usernameLabel"
+        android:layout_below="@id/passwordLabel"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="25dp"
+        android:paddingTop="7dp"
+        android:text="Email:"/>
+
+ <TextView
+        android:id="@+id/locationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/usernameLabel"
+        android:layout_below="@id/emailLabel"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="25dp"
+        android:paddingTop="7dp"
+        android:text="Location:"/>
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/edit_text"
+        android:textSize="17dp"
+        android:gravity="center_vertical"
+        android:layout_alignTop="@id/usernameLabel"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/usernameLabel"
+        android:hint="Type Name"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:background="@android:drawable/edit_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/username"
+        android:layout_below="@id/username"
+        android:layout_alignTop="@id/passwordLabel"
+        android:layout_marginRight="10dp"
+        android:inputType="textPassword"
+        android:hint="Type password"/>
+
+
+    <EditText
+    android:id="@+id/email"
+    android:background="@android:drawable/edit_text"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@id/username"
+    android:layout_below="@id/username"
+    android:layout_alignTop="@id/emailLabel"
+    android:layout_marginRight="10dp"
+    android:inputType="text"
+    android:hint="Type email"/>
+
+    <EditText
+    android:id="@+id/location"
+    android:background="@android:drawable/edit_text"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@id/username"
+    android:layout_below="@id/username"
+    android:layout_alignTop="@id/locationLabel"
+    android:layout_marginRight="10dp"
+    android:inputType="text"
+    android:hint="Type Location"/>
+
+   <ImageButton
+    android:id="@+id/locationButton"
+    android:background="@android:drawable/ic_menu_compass"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignRight="@id/email"
+    android:layout_below="@id/email"
+    android:layout_alignTop="@id/location"
+    android:layout_marginRight="30dp"
+       android:layout_marginTop="8dp"
+    android:inputType="text"/>
+
+
+
+        <Button
+            android:background="@android:color/darker_gray"
+            android:id="@+id/btnRegister"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_below="@id/locationButton"
+            android:fontFamily="@android:string/defaultMsisdnAlphaTag"
+            android:text="Register"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_marginLeft="150dp"
+            android:padding="10dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom" />
+
+</RelativeLayout>
