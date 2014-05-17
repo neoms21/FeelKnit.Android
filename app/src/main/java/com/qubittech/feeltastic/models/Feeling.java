@@ -8,27 +8,52 @@ import java.util.Date;
  */
 public class Feeling implements Serializable {
 
-    private String FeelingText;
-    private String FeelingTextLower;
-    private Date FeelingDate;
-    private String Reason;
-    private String Action;
+    private String feelingText;
+    private String feelingTextLower;
+    private Date feelingDate;
+    private String reason;
+    private String action;
 
 
-    public String getFeelingText() {return this.FeelingText;}
-    public void setFeelingText(String feelingtext) { this.FeelingText = feelingtext;}
+    public String getFeelingText() {
+        return this.feelingText;
+    }
 
-    public String getFeelingTextLower() {return this.FeelingTextLower;}
-    public void setFeelingTextLower(String feelingtextlower) { this.FeelingTextLower = feelingtextlower;}
+    public void setFeelingText(String feelingtext) {
+        this.feelingText = feelingtext;
+    }
 
-    public Date getFeelingDate() {return this.FeelingDate;}
-    public void setFeelingDate(Date feelingdate) { this.FeelingDate = feelingdate;}
+    public String getFeelingTextLower() {
+        return this.feelingTextLower;
+    }
 
-    public String getReason() {return this.Reason;}
-    public void setReason(String reason) { this.Reason = reason;}
+    public void setFeelingTextLower(String feelingtextlower) {
+        this.feelingTextLower = feelingtextlower;
+    }
 
-    public String getAction() {return this.Action;}
-    public void setAction(String action) { this.Action = action;}
+    public Date getFeelingDate() {
+        return this.feelingDate;
+    }
+
+    public void setFeelingDate(Date feelingdate) {
+        this.feelingDate = feelingdate;
+    }
+
+    public String getReason() {
+        return this.reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getAction() {
+        return this.action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 
 
 }

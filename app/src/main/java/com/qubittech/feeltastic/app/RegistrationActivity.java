@@ -57,7 +57,7 @@ public class RegistrationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
-
+        startActivity(new Intent(RegistrationActivity.this, AddFeelingActivity.class));
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("LocationReceived"));
 
@@ -68,19 +68,20 @@ public class RegistrationActivity extends Activity {
 
         Button register = (Button) findViewById(R.id.btnRegister);
 
-        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String networkOperator = tm.getNetworkOperatorName();
-        if ("".equals(networkOperator)) {
-            // Emulator
-        } else {
-            startService(new Intent(TrackingService.ACTION_START_MONITORING));
-            // Device
-        }
+//        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//        String networkOperator = tm.getNetworkOperatorName();
+//        if ("".equals(networkOperator)) {
+//            // Emulator
+//        } else {
+//            startService(new Intent(TrackingService.ACTION_START_MONITORING));
+//            // Device
+//        }
 
 
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new SaveUserTask().execute("");
+
+                new SaveUserTask().execute("try");
             }
         });
     }
@@ -108,6 +109,12 @@ public class RegistrationActivity extends Activity {
     };
 
     private class SaveUserTask extends AsyncTask<String, Integer, String> {
+        @Override
+        protected void onPostExecute(String s) {
+            if (s != "Failure")
+                startActivity(new Intent(RegistrationActivity.this, AddFeelingActivity.class
+                ));
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -117,8 +124,8 @@ public class RegistrationActivity extends Activity {
             args.add(new BasicNameValuePair("email", password.getText().toString()));
             args.add(new BasicNameValuePair("password", email.getText().toString()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            jsonHttpClient.PostParams("http://10.0.3.2/FeelingService/api/User", args);
-            return "";
+            String res = jsonHttpClient.PostParams("http://10.0.3.2/FeelingService/api/User", args);
+            return res;
         }
     }
 }

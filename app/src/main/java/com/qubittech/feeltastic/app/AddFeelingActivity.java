@@ -10,11 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,7 @@ public class AddFeelingActivity extends Activity {
     private String selectedFeeling = "";
 
     private Feeling _feeling = null;
+    private List<Feeling> _feelings = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +81,14 @@ public class AddFeelingActivity extends Activity {
             super.onPostExecute(s);
 
             if (s != "Failure") {
+                System.out.println("OUTPUT:" + s);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+                Type collectionType = new TypeToken<List<Feeling>>(){}.getType();
+                _feelings= (List<Feeling>) gson.fromJson(s, collectionType);
+
                 Intent intent = new Intent(AddFeelingActivity.this, RelatedFeelingActivity.class);
                 intent.putExtra("feeling", _feeling);
+                intent.putExtra("relatedFeelings", (java.io.Serializable) _feelings);
                 startActivity(intent);
             }
         }
@@ -94,7 +105,6 @@ public class AddFeelingActivity extends Activity {
             _feeling.setAction(params[2]);
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             return jsonHttpClient.PostParams("http://10.0.3.2/FeelKnitService/feelings", args);
-
         }
     }
 }
