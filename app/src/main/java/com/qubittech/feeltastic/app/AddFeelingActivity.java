@@ -43,7 +43,7 @@ public class AddFeelingActivity extends Activity {
         super.onCreate(savedInstanceState);
         _feeling = new Feeling();
         setContentView(R.layout.activity_feeling);
-        spinnerFeelings = (Spinner) findViewById(R.id.spinnerFeeling);
+        spinnerFeelings = (Spinner) findViewById(R.id.tvFeelingText);
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, feelings);
         adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFeelings.setAdapter(adapter_state);

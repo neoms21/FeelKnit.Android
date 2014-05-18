@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvFeeling"
+        android:id="@+id/tvFeelingLabel"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:gravity="left"
@@ -14,17 +14,17 @@
         android:typeface="normal" />
 
     <Spinner
-        android:layout_alignTop="@id/tvFeeling"
+        android:layout_alignTop="@id/tvFeelingLabel"
         android:layout_marginLeft="90dp"
-        android:id="@+id/spinnerFeeling"
+        android:id="@+id/tvFeelingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
          />
 
     <TextView
-        android:layout_below="@id/spinnerFeeling"
+        android:layout_below="@id/tvFeelingText"
         android:id="@+id/tvReason"
-        android:layout_alignLeft="@id/tvFeeling"
+        android:layout_alignLeft="@id/tvFeelingLabel"
         android:layout_marginTop="2dp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:typeface="normal" />
 
     <EditText
-        android:layout_below="@id/spinnerFeeling"
+        android:layout_below="@id/tvFeelingText"
         android:id="@+id/etReason"
         android:layout_marginLeft="150dp"
         android:width="200dp"
@@ -46,7 +46,7 @@
     <TextView
         android:layout_below="@id/tvReason"
         android:id="@+id/tvAction"
-        android:layout_alignLeft="@id/tvFeeling"
+        android:layout_alignLeft="@id/tvFeelingLabel"
         android:layout_marginTop="35dp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
         android:typeface="normal" />
 
     <EditText
-        android:layout_below="@id/spinnerFeeling"
+        android:layout_below="@id/tvFeelingText"
         android:id="@+id/etAction"
         android:hint="Action..."
         android:width="200dp"
