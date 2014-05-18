@@ -13,7 +13,7 @@ public class Feeling implements Serializable {
     private Date feelingDate;
     private String reason;
     private String action;
-
+    private String userName;
 
     public String getFeelingText() {
         return this.feelingText;
@@ -56,4 +56,11 @@ public class Feeling implements Serializable {
     }
 
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

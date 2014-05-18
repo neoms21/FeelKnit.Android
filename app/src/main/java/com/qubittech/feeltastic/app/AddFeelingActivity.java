@@ -14,9 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.qubittech.feeltastic.models.Feeling;
+import com.qubittech.feeltastic.models.User;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -97,12 +100,35 @@ public class AddFeelingActivity extends Activity {
         protected String doInBackground(String... params) {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+            JSONObject parentData = new JSONObject();
+            JSONObject childData = new JSONObject();
+
+            try {
+
+                parentData.put("feelingText", params[0]);
+                parentData.put("reason", params[1]);
+                parentData.put("action", params[2]);
+//
+//                childData.put("username", username.getText().toString());
+//                childData.put("password", password.getText().toString());
+//                parentData.put("params", childData);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
             args.add(new BasicNameValuePair("feelingText", params[0]));
             _feeling.setFeelingText(params[0]);
             args.add(new BasicNameValuePair("reason", params[1]));
             _feeling.setReason(params[1]);
             args.add(new BasicNameValuePair("action", params[2]));
             _feeling.setAction(params[2]);
+            args.add(new BasicNameValuePair("username", "neoms21"));
+            _feeling.setUserName("neoms21");
+//            args.add(new BasicNameValuePair("user", parentData.toString()));
+          //  args.add(new BasicNameValuePair("content", parentData.toString()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             return jsonHttpClient.PostParams("http://10.0.3.2/FeelKnitService/feelings", args);
         }
