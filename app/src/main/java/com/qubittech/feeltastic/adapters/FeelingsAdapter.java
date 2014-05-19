@@ -2,12 +2,14 @@ package com.qubittech.feeltastic.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.qubittech.feeltastic.app.CommentsActivity;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
 
@@ -53,15 +55,16 @@ public class FeelingsAdapter extends ArrayAdapter<Feeling> {
         } else
             holder = (ViewHolder) convertView.getTag();
 
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent details = new Intent("com.web.jobserve.Activity.JobDetailsActivity");
-//                details.putExtra("job", job);
-//                context.startActivity(details);
-//            }
-//        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent commentsActivityIntent = new Intent(getContext(), CommentsActivity.class);
+                commentsActivityIntent.putExtra("feeling", feeling);
+                context.startActivity(commentsActivityIntent);
+            }
+        });
 
         holder.usernameTextView.setText(feeling.getUserName());
         holder.reasonTextView.setText(feeling.getReason());
