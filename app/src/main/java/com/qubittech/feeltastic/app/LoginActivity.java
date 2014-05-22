@@ -23,21 +23,21 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
-
-        Button loginButton = (Button) findViewById(R.id.btnLogin);
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                List<NameValuePair> args = new ArrayList<NameValuePair>();
-                args.add(new BasicNameValuePair("username", "Manoj"));
-                args.add(new BasicNameValuePair("email", "WElcome1"));
-                args.add(new BasicNameValuePair("password", "m.sethi@ms.com"));
-                JsonHttpClient jsonHttpClient = new JsonHttpClient();
-                jsonHttpClient.PostParams("http://10.0.3.2/FeelingService/api/User", args);
-                // new SaveUserTask().execute("try");
-            }
-        });
+//
+//
+//        Button loginButton = (Button) findViewById(R.id.btnLogin);
+//
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                List<NameValuePair> args = new ArrayList<NameValuePair>();
+//                args.add(new BasicNameValuePair("username", "Manoj"));
+//                args.add(new BasicNameValuePair("email", "WElcome1"));
+//                args.add(new BasicNameValuePair("password", "m.sethi@ms.com"));
+//                JsonHttpClient jsonHttpClient = new JsonHttpClient();
+//                jsonHttpClient.PostParams("http://10.0.3.2/FeelingService/api/User", args);
+//                // new SaveUserTask().execute("try");
+//            }
+//        });
     }
 
 
