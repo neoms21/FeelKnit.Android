@@ -2,85 +2,90 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" android:background="@drawable/bg">
 
-    <TextView
-        android:id="@+id/tvFeelingLabel"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:gravity="left"
-        android:layout_marginLeft="10dp"
-        android:text="Feeling"
-        android:typeface="normal" />
+    <!--<TextView-->
+        <!--android:id="@+id/tvFeelingLabel"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:text="Feeling"-->
+        <!--android:typeface="normal" />-->
 
     <Spinner
+        android:layout_marginTop="20dp"
+
         android:layout_alignTop="@id/tvFeelingLabel"
-        android:layout_marginLeft="90dp"
         android:id="@+id/tvFeelingText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
          />
 
-    <TextView
-        android:layout_below="@id/tvFeelingText"
-        android:id="@+id/tvReason"
-        android:layout_alignLeft="@id/tvFeelingLabel"
-        android:layout_marginTop="2dp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:gravity="left"
-        android:text="Reason"
+    <!--<TextView-->
+        <!--android:layout_below="@id/tvFeelingText"-->
+        <!--android:id="@+id/tvReason"-->
+        <!--android:layout_alignLeft="@id/tvFeelingLabel"-->
+        <!--android:layout_marginTop="2dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:text="Reason"-->
 
-        android:typeface="normal" />
+        <!--android:typeface="normal" />-->
 
     <EditText
         android:layout_below="@id/tvFeelingText"
+        android:background="@drawable/edittext_design"
         android:id="@+id/etReason"
-        android:layout_marginLeft="150dp"
+        android:textColorHint="@color/loginLabel"
         android:width="200dp"
         android:maxLength="140"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:hint="Reason.."  android:layout_height="wrap_content"
         android:layout_marginTop="0dp" />
 
-    <TextView
-        android:layout_below="@id/tvReason"
-        android:id="@+id/tvAction"
-        android:layout_alignLeft="@id/tvFeelingLabel"
-        android:layout_marginTop="35dp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:gravity="left"
-        android:text="Action"
-        android:typeface="normal" />
+    <!--<TextView-->
+        <!--android:layout_below="@id/tvReason"-->
+        <!--android:id="@+id/tvAction"-->
+        <!--android:layout_alignLeft="@id/tvFeelingLabel"-->
+        <!--android:layout_marginTop="35dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:text="Action"-->
+        <!--android:typeface="normal" />-->
 
     <EditText
         android:layout_below="@id/tvFeelingText"
         android:id="@+id/etAction"
         android:hint="Action..."
+        android:background="@drawable/edittext_design"
+        android:textColorHint="@color/loginLabel"
         android:width="200dp"
         android:maxLength="140"
         android:layout_alignLeft="@id/etReason"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp" />
 
     <Button
         android:id="@+id/btnSave"
-        android:text="Submit"
-        android:layout_below="@id/tvAction"
+        android:text="Add"
+
+        android:layout_below="@id/etAction"
         android:background="@android:color/darker_gray"
         android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 
-    <ListView
-        android:visibility="invisible"
-        android:id="@+id/lv_restaurant_description_information"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+    <!--<ListView-->
+        <!--android:visibility="invisible"-->
+        <!--android:id="@+id/lv_restaurant_description_information"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" >-->
+    <!--</ListView>-->
 
 
 </RelativeLayout>
