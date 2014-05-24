@@ -4,17 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.qubittech.feeltastic.models.Feeling;
-import com.qubittech.feeltastic.models.User;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -40,17 +45,27 @@ public class AddFeelingActivity extends Activity {
     private Feeling _feeling = null;
     private List<Feeling> _feelings = null;
 
+    private String TAG = "SpinnerHint";
+
+    private LayoutInflater mInflator;
+    private boolean selected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         _feeling = new Feeling();
         setContentView(R.layout.activity_feeling);
-        spinnerFeelings = (Spinner) findViewById(R.id.tvFeelingText);
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, feelings);
-        adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFeelings.setAdapter(adapter_state);
+        spinnerFeelings = (Spinner) findViewById(R.id.feelingText);
+//        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, feelings);
+//        adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerFeelings.setAdapter(adapter_state);
         //spinnerFeelings.setOnItemSelectedListener(this);
+
+        spinnerFeelings.setAdapter(typeSpinnerAdapter);
+        spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);
+        spinnerFeelings.setOnTouchListener(typeSpinnerTouchListener);
+        mInflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         spinnerFeelings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -73,9 +88,79 @@ public class AddFeelingActivity extends Activity {
                 new SaveUserTask().execute(selectedFeeling, "reason", "action");
             }
         });
-
-
     }
+
+    private SpinnerAdapter typeSpinnerAdapter = new BaseAdapter() {
+
+        private TextView text;
+      //  private int count = 3;
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = mInflator.inflate(R.layout.row_spinner, null);
+            }
+            text = (TextView) convertView.findViewById(R.id.spinnerTarget);
+            if (!selected) {
+                text.setText("Please select a value");
+            } else {
+                text.setText(feelings[position]);
+            }
+            return convertView;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return feelings[position];
+        }
+
+        @Override
+        public int getCount() {
+            return feelings.length;
+        }
+
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+            if (convertView == null) {
+                convertView = mInflator.inflate(
+                        R.layout.customspinner, null);
+            }
+            text = (TextView) convertView.findViewById(R.id.text);
+            text.setText(feelings[position]);
+            return convertView;
+        };
+    };
+
+    private AdapterView.OnItemSelectedListener typeSelectedListener = new AdapterView.OnItemSelectedListener() {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int position, long id) {
+            Log.d(TAG, "user selected : "
+                    + spinnerFeelings.getSelectedItem().toString());
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    private View.OnTouchListener typeSpinnerTouchListener = new View.OnTouchListener() {
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            selected = true;
+            ((BaseAdapter) typeSpinnerAdapter).notifyDataSetChanged();
+            return false;
+        }
+    };
 
     private class SaveUserTask extends AsyncTask<String, Integer, String> {
 

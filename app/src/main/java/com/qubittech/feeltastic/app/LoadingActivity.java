@@ -28,7 +28,7 @@ public class LoadingActivity extends Activity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
 
-            startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
+            startActivity(new Intent(LoadingActivity.this, AddFeelingActivity.class));
             dialog.dismiss();
         }
 

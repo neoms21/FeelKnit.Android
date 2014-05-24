@@ -26,8 +26,9 @@ public class FeelingsAdapter extends ArrayAdapter<Feeling> {
     /*private view holder class*/
     private class ViewHolder {
         TextView usernameTextView;
-        TextView reasonTextView;
-        TextView actionTextView;
+        TextView feelingTextView;
+        TextView becauseTextView;
+        TextView soTextView;
         TextView locationTextView;
     }
 
@@ -47,9 +48,10 @@ public class FeelingsAdapter extends ArrayAdapter<Feeling> {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.listview, null);
             holder = new ViewHolder();
-            holder.usernameTextView = (TextView) convertView.findViewById(R.id.username);
-            holder.reasonTextView = (TextView) convertView.findViewById(R.id.reason);
-            holder.actionTextView = (TextView) convertView.findViewById(R.id.action);
+            holder.usernameTextView = (TextView) convertView.findViewById(R.id.name);
+            holder.feelingTextView = (TextView) convertView.findViewById(R.id.feelingText);
+            holder.becauseTextView = (TextView) convertView.findViewById(R.id.becauseText);
+            holder.soTextView = (TextView) convertView.findViewById(R.id.soText);
             holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
             convertView.setTag(holder);
         } else
@@ -67,9 +69,10 @@ public class FeelingsAdapter extends ArrayAdapter<Feeling> {
         });
 
         holder.usernameTextView.setText(feeling.getUserName());
-        holder.reasonTextView.setText(feeling.getReason());
-        holder.actionTextView.setText(feeling.getAction());
-        //holder.actionTextView.setText(feeling.ge());
+        holder.feelingTextView.setText(feeling.getFeelingText());
+        holder.becauseTextView.setText(feeling.getReason());
+        holder.soTextView.setText(feeling.getAction());
+        //holder.soTextView.setText(feeling.ge());
 
 //        if (applied) {
 //            convertView.setBackgroundColor(Color.rgb(201, 201, 201));

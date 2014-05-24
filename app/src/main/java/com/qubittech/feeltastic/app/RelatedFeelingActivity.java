@@ -1,11 +1,8 @@
 package com.qubittech.feeltastic.app;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,13 +24,13 @@ public class RelatedFeelingActivity extends Activity {
         Feeling feeling = (Feeling) getIntent().getSerializableExtra("feeling");
         List<Feeling> feelings = (List<Feeling>) getIntent().getSerializableExtra("relatedFeelings");
 
-        TextView feelTextView = (TextView) findViewById(R.id.tvFeelingText);
-        TextView reasonTextView = (TextView) findViewById(R.id.etReason);
-        TextView actionTextView = (TextView) findViewById(R.id.etAction);
+        TextView feelTextView = (TextView) findViewById(R.id.feelingText);
+        TextView reasonTextView = (TextView) findViewById(R.id.becauseText);
+        TextView actionTextView = (TextView) findViewById(R.id.soText);
         TextView count = (TextView) findViewById(R.id.countLabel);
 
         feelTextView.setText(feeling.getFeelingText());
-        count.setText(feelings.size() + " no of people feel same");
+        count.setText(String.format("%d People feeling %s recently", feelings.size(), feeling.getFeelingText()));
 
 
         ArrayAdapter arrayAdapter = new FeelingsAdapter(RelatedFeelingActivity.this, R.layout.listview, feelings);
