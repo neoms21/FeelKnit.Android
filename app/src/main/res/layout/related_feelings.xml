@@ -115,7 +115,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="3dp"
         android:background="@color/loginLabel"
-        android:padding="25dp"        >
+        android:padding="10dp"        >
 
         <TextView
             android:textColor="@color/textColor"
@@ -128,7 +128,7 @@
 
     </LinearLayout>
 
-    <ListView
+       <ListView
         android:layout_below="@id/countLayout"
         android:id="@+id/relatedFeelingsList"
         android:layout_width="wrap_content"
