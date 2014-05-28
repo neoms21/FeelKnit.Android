@@ -26,9 +26,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:background="@color/textColor"
-        android:drawableLeft="@drawable/username"
+        android:drawableLeft="@drawable/usericon"
         android:padding="15dp"
-        android:hint=" Enter your username"
+        android:hint=" Enter your user"
         />
 
     <EditText
@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content" android:layout_below="@id/btnRegister"
-        android:layout_marginTop="20dp" android:text="Forgot username or password"
+        android:layout_marginTop="20dp" android:text="Forgot user or password"
         android:clickable="true"
         android:gravity="center"
         android:textColor="@color/loginLabel"

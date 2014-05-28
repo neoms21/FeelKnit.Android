@@ -3,6 +3,54 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    >
+    <RelativeLayout
+        android:id="@+id/feelingDetails"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_margin="5dp"
+            android:id="@+id/userIconImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/usericon" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/userNameStyle"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="3dp"
+            android:layout_alignTop="@id/userIconImage"
+            android:text="TEMPORARY"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:layout_below="@id/name"
+            android:layout_alignTop="@id/tvFeelingLabel"
+            android:layout_alignLeft="@id/userIconImage"
+            android:id="@+id/comment"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="comment" />
+
+<TextView
+            android:layout_below="@id/name"
+            android:inputType="datetime"
+            android:layout_alignTop="@id/tvFeelingLabel"
+            android:id="@+id/postedAt"
+    android:layout_alignParentRight="true"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="23rd may 2014" />
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

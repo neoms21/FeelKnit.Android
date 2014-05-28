@@ -2,6 +2,7 @@ package com.qubittech.feeltastic.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Manoj on 13/05/2014.
@@ -14,6 +15,8 @@ public class Feeling implements Serializable {
     private String reason;
     private String action;
     private String userName;
+
+    private List<Comment> comments;
 
     public String getFeelingText() {
         return this.feelingText;
@@ -62,5 +65,13 @@ public class Feeling implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

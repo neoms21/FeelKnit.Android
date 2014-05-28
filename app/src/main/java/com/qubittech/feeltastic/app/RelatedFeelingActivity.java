@@ -40,8 +40,8 @@ public class RelatedFeelingActivity extends Activity {
 
 
         listview.setAdapter(arrayAdapter);
-        listview.setDivider(new ColorDrawable(0x99000000));
-        listview.setDividerHeight(2);
+        listview.setDivider(new ColorDrawable());
+        listview.setDividerHeight(10);
 
         arrayAdapter.notifyDataSetChanged();
 
