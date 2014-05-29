@@ -5,13 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/commentsFeelingText" />
-
-
     <ImageView
         android:layout_marginTop="5dp"
         android:id="@+id/headerImage"
@@ -20,11 +13,11 @@
         android:src="@drawable/header" />
 
     <RelativeLayout
-        android:background="#fff"
+        android:background="@color/whiteBg"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
         android:layout_below="@id/headerImage"
-        android:id="@+id/feelingLayout"
+        android:id="@+id/commentDetailsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -112,8 +105,31 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
+
+    <LinearLayout
+        android:id="@+id/countComments"
+        android:layout_below="@id/commentDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/loginLabel"
+        android:padding="10dp"        >
+
+        <TextView
+            android:textColor="@color/textColor"
+            style="@style/userNameStyle"
+            android:id="@+id/countCommentsLabel"
+            android:layout_width="wrap_content"
+            android:textAlignment="center"
+            android:text="People Feeling Same"
+            android:layout_height="wrap_content"></TextView>
+
+    </LinearLayout>
+
+
     <ListView
-        android:layout_below="@id/feelingLayout"
+        android:layout_below="@id/countComments"
         android:layout_marginTop="3dp"
         android:id="@+id/commentsList"
         android:layout_width="wrap_content"

@@ -29,6 +29,9 @@ public class CommentsActivity extends Activity {
         setContentView(R.layout.comments);
         Feeling feeling = (Feeling) getIntent().getSerializableExtra("feeling");
 
+        TextView username = (TextView) findViewById(R.id.name);
+        username.setText(feeling.getUserName());
+
         TextView feel = (TextView) findViewById(R.id.feelingText);
         feel.setText(feeling.getFeelingText());
 
@@ -38,14 +41,17 @@ public class CommentsActivity extends Activity {
         TextView so = (TextView) findViewById(R.id.soText);
         so.setText(feeling.getAction());
 
+        TextView count = (TextView) findViewById(R.id.countCommentsLabel);
+        count.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
+
         ArrayAdapter arrayAdapter = new CommentsAdapater(CommentsActivity.this, R.layout.commentslistview, feeling.getComments());
 
         ListView listview = (ListView) findViewById(R.id.commentsList);
         // endTime = (System.nanoTime() - startTime) / 1000000000;
 
         listview.setAdapter(arrayAdapter);
-        listview.setDivider(new ColorDrawable(0x99000000));
-        listview.setDividerHeight(2);
+        listview.setDivider(new ColorDrawable());
+        listview.setDividerHeight(10);
 
         arrayAdapter.notifyDataSetChanged();
 
