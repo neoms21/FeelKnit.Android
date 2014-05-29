@@ -68,14 +68,14 @@ public class RegistrationActivity extends Activity {
 
         Button register = (Button) findViewById(R.id.btnRegister);
 
-//        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-//        String networkOperator = tm.getNetworkOperatorName();
-//        if ("".equals(networkOperator)) {
-//            // Emulator
-//        } else {
-//            startService(new Intent(TrackingService.ACTION_START_MONITORING));
-//            // Device
-//        }
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String networkOperator = tm.getNetworkOperatorName();
+        if ("".equals(networkOperator)) {
+            // Emulator
+        } else {
+            startService(new Intent(TrackingService.ACTION_START_MONITORING));
+            // Device
+        }
 
 
         register.setOnClickListener(new View.OnClickListener() {

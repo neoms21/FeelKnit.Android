@@ -85,7 +85,7 @@ public class AddFeelingActivity extends Activity {
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new SaveUserTask().execute(selectedFeeling, "reason", "action");
+                new SaveFeelingTask().execute(selectedFeeling, "reason", "action");
             }
         });
     }
@@ -162,7 +162,7 @@ public class AddFeelingActivity extends Activity {
         }
     };
 
-    private class SaveUserTask extends AsyncTask<String, Integer, String> {
+    private class SaveFeelingTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected void onPostExecute(String s) {
