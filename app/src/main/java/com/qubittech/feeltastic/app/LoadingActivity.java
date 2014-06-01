@@ -36,7 +36,7 @@ public class LoadingActivity extends Activity {
         protected Object doInBackground(Object[] objects) {
 
             try {
-                Thread.sleep(2000);
+                Thread.sleep(200);
 
             } catch (InterruptedException e) {
 

@@ -1,7 +1,9 @@
 package com.qubittech.feeltastic.app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -31,17 +34,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.JsonHttpClient;
+import util.UrlHelper;
 
 /**
  * Created by Manoj on 04/05/2014.
  */
 public class AddFeelingActivity extends Activity {
 
-
+    private static String username = "";
     private String[] feelings = {"Happy", "Sad", "Excited", "Interested", "King", "Loser"};
     private Spinner spinnerFeelings;
     private String selectedFeeling = "";
-
+    ProgressDialog dialog;
     private Feeling _feeling = null;
     private List<Feeling> _feelings = null;
 
@@ -57,10 +61,10 @@ public class AddFeelingActivity extends Activity {
         _feeling = new Feeling();
         setContentView(R.layout.activity_feeling);
         spinnerFeelings = (Spinner) findViewById(R.id.feelingText);
-//        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, feelings);
-//        adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerFeelings.setAdapter(adapter_state);
-        //spinnerFeelings.setOnItemSelectedListener(this);
+        username = getUserName();
+
+        final EditText because = (EditText) findViewById(R.id.becauseText);
+        final EditText so = (EditText) findViewById(R.id.soText);
 
         spinnerFeelings.setAdapter(typeSpinnerAdapter);
         spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);
@@ -85,15 +89,25 @@ public class AddFeelingActivity extends Activity {
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new SaveFeelingTask().execute(selectedFeeling, "reason", "action");
+                new SaveFeelingTask().execute(selectedFeeling, because.getText().toString(), so.getText().toString());
             }
         });
+    }
+
+    private String getUserName() {
+        String name = "";
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        if (settings != null) {
+
+            name = settings.getString("Username", "").toString();
+        }
+        return name;
     }
 
     private SpinnerAdapter typeSpinnerAdapter = new BaseAdapter() {
 
         private TextView text;
-      //  private int count = 3;
+        //  private int count = 3;
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -133,7 +147,9 @@ public class AddFeelingActivity extends Activity {
             text = (TextView) convertView.findViewById(R.id.text);
             text.setText(feelings[position]);
             return convertView;
-        };
+        }
+
+        ;
     };
 
     private AdapterView.OnItemSelectedListener typeSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -169,10 +185,12 @@ public class AddFeelingActivity extends Activity {
             super.onPostExecute(s);
 
             if (s != "Failure") {
+                dialog.dismiss();
                 System.out.println("OUTPUT:" + s);
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
-                Type collectionType = new TypeToken<List<Feeling>>(){}.getType();
-                _feelings= (List<Feeling>) gson.fromJson(s, collectionType);
+                Type collectionType = new TypeToken<List<Feeling>>() {
+                }.getType();
+                _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
 
                 Intent intent = new Intent(AddFeelingActivity.this, RelatedFeelingActivity.class);
                 intent.putExtra("feeling", _feeling);
@@ -183,39 +201,20 @@ public class AddFeelingActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-
+            dialog = ProgressDialog.show(AddFeelingActivity.this, "Loading", "Please wait...", true);
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-
-            JSONObject parentData = new JSONObject();
-            JSONObject childData = new JSONObject();
-
-            try {
-
-                parentData.put("feelingText", params[0]);
-                parentData.put("reason", params[1]);
-                parentData.put("action", params[2]);
-//
-//                childData.put("username", username.getText().toString());
-//                childData.put("password", password.getText().toString());
-//                parentData.put("params", childData);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
             args.add(new BasicNameValuePair("feelingText", params[0]));
             _feeling.setFeelingText(params[0]);
             args.add(new BasicNameValuePair("reason", params[1]));
             _feeling.setReason(params[1]);
             args.add(new BasicNameValuePair("action", params[2]));
             _feeling.setAction(params[2]);
-            args.add(new BasicNameValuePair("username", "neoms21"));
-            _feeling.setUserName("neoms21");
+            args.add(new BasicNameValuePair("username", username));
+            _feeling.setUserName(username);
 //            args.add(new BasicNameValuePair("user", parentData.toString()));
-          //  args.add(new BasicNameValuePair("content", parentData.toString()));
+            //  args.add(new BasicNameValuePair("content", parentData.toString()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            return jsonHttpClient.PostParams("http://10.0.3.2/FeelKnitService/feelings", args);
+            return jsonHttpClient.PostParams(UrlHelper.FEELINGS, args);
         }
     }
 }

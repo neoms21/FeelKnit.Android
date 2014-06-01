@@ -172,6 +172,40 @@ public class JsonHttpClient {
         }
         return null;
     }
+ public String Get(String url, List<NameValuePair> params) {
+        DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+        String paramString = URLEncodedUtils.format(params, "utf-8");
+        url += "?" + paramString;
+        HttpGet httpGet = new HttpGet(url);
+        try {
+
+            httpGet.setHeader("Accept", "application/json");
+            httpGet.setHeader("Accept-Encoding", "gzip");
+
+            HttpResponse httpResponse = defaultHttpClient.execute(httpGet);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            if (httpEntity != null) {
+                InputStream inputStream = httpEntity.getContent();
+                Header contentEncoding = httpResponse.getFirstHeader("Content-Encoding");
+                if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+                    inputStream = new GZIPInputStream(inputStream);
+                }
+
+                String resultString = convertStreamToString(inputStream);
+                inputStream.close();
+                return resultString ; //new GsonBuilder().create().fromJson(resultString, objectClass);
+
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+    }
 
     public boolean Delete(String url, final List<NameValuePair> params) {
         DefaultHttpClient defaultHttpClient = new DefaultHttpClient();

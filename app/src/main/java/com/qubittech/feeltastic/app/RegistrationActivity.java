@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 
 import util.JsonHttpClient;
+import util.UrlHelper;
 
 /**
  * Created by Manoj on 19/04/2014.
@@ -124,7 +125,7 @@ public class RegistrationActivity extends Activity {
             args.add(new BasicNameValuePair("email", password.getText().toString()));
             args.add(new BasicNameValuePair("password", email.getText().toString()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            String res = jsonHttpClient.PostParams("http://10.0.3.2/FeelingService/api/User", args);
+            String res = jsonHttpClient.PostParams(UrlHelper.USER, args);
             return res;
         }
     }

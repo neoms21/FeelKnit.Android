@@ -15,6 +15,10 @@ public class Feeling implements Serializable {
     private String reason;
     private String action;
     private String userName;
+    private double latitude;
+    private double longitude;
+
+
 
     private List<Comment> comments;
 
@@ -73,5 +77,21 @@ public class Feeling implements Serializable {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

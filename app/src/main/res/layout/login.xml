@@ -33,8 +33,8 @@
 
     <EditText
         android:id="@+id/txtPassword"
-        android:layout_width="match_parent"
         android:inputType="textPassword"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtUserName"
         android:fontFamily="sans-serif"
@@ -44,8 +44,6 @@
         android:hint=" Enter your password"
         android:padding="15dp"
         />
-
-
 
     <Button
         android:layout_height="wrap_content"

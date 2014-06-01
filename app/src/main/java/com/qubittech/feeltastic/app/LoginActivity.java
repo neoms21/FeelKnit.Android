@@ -1,6 +1,8 @@
 package com.qubittech.feeltastic.app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -20,12 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.JsonHttpClient;
+import util.UrlHelper;
 
 
 public class LoginActivity extends Activity {
 
     private String userName;
     private String password;
+
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,22 +40,26 @@ public class LoginActivity extends Activity {
         final EditText etUsername = (EditText) findViewById(R.id.txtUserName);
         final EditText etPassword = (EditText) findViewById(R.id.txtPassword);
 
-        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        if (settings != null) {
-            etUsername.setText(settings.getString("Username", "").toString());
-            etPassword.setText(settings.getString("Password", "").toString());
+        SharedPreferences settings = getSharedPreferences("dfssdf", 0);
+        if (false) {
+            startActivity(new Intent(LoginActivity.this, UserFeelingsActivity.class));
+//            etUsername.setText(settings.getString("Username", "").toString());
+//            etPassword.setText(settings.getString("Password", "").toString());
+        } else {
+
+
+            Button loginButton = (Button) findViewById(R.id.btnLogin);
+
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    userName = etUsername.getText().toString();
+                    password = etPassword.getText().toString();
+                    new LoginUserTask().execute(userName, password);
+                    dialog.show(LoginActivity.this, "Loading", "Please wait");
+                }
+            });
+
         }
-
-
-        Button loginButton = (Button) findViewById(R.id.btnLogin);
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                userName = etUsername.getText().toString();
-                password = etPassword.getText().toString();
-                new LoginUserTask().execute(userName, password);
-            }
-        });
     }
 
 
@@ -59,6 +68,7 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(Boolean s) {
             super.onPostExecute(s);
             if (s) {
+                dialog.dismiss();
                 System.out.println("User RESULT:" + s);
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 SharedPreferences.Editor editor = settings.edit();
@@ -74,7 +84,7 @@ public class LoginActivity extends Activity {
             args.add(new BasicNameValuePair("username", params[0]));
             args.add(new BasicNameValuePair("password", params[1]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            String response = jsonHttpClient.PostParams("http://10.0.3.2/FeelKnitService/Users/Verify", args);
+            String response = jsonHttpClient.PostParams(UrlHelper.USER_VERIFY, args);
             return Boolean.parseBoolean(response);
         }
     }
