@@ -97,7 +97,7 @@ boolean isRunningOnEmulator = false;
         holder.soTextView.setText(feeling.getAction());
         holder.countTextView.setText(feeling.getComments().size() + "  comments");
 
-       if(!isRunningOnEmulator) holder.locationTextView.setText(getLocation(feeling));
+     //  if(!isRunningOnEmulator) holder.locationTextView.setText(getLocation(feeling));
 
         if (isUserFeelings) {
             holder.userIcon.setVisibility(View.GONE);

@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.qubittech.feeltastic.adapters.FeelingsAdapter;
+import com.qubittech.feeltastic.helpers.NavigationDrawerHelper;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
@@ -34,12 +36,12 @@ import util.UrlHelper;
 /**
  * Created by Manoj on 31/05/2014.
  */
-public class UserFeelingsActivity extends Activity {
+public class UserFeelingsActivity extends Activity implements ListView.OnItemClickListener{
 
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
 
-
+    NavigationDrawerHelper mNavigationDrawerHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,8 @@ public class UserFeelingsActivity extends Activity {
         dialog = ProgressDialog.show(UserFeelingsActivity.this, "Loading", "Please wait...", true);
         Button newFeeling = (Button) findViewById(R.id.newFeelingButton);
 
+//        mNavigationDrawerHelper = new NavigationDrawerHelper();
+//        mNavigationDrawerHelper.init(this, this);
         newFeeling.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(UserFeelingsActivity.this, AddFeelingActivity.class));
@@ -64,6 +68,11 @@ public class UserFeelingsActivity extends Activity {
             username = settings.getString("Username", "").toString();
         }
         return username;
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int optionLib, long l) {
+//        mCoursePagerAdapter.setCourseLib(optionLib);
+        mNavigationDrawerHelper.handleSelect(optionLib);
     }
 
 
@@ -89,6 +98,9 @@ public class UserFeelingsActivity extends Activity {
             listview.setDividerHeight(15);
             arrayAdapter.notifyDataSetChanged();
             dialog.dismiss();
+
+            mNavigationDrawerHelper = new NavigationDrawerHelper();
+
         }
 
         @Override

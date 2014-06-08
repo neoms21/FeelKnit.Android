@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qubittech.feeltastic.app" android:versionCode="1"
     android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="8" />
-
+    <uses-sdk android:minSdkVersion="14" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/feelknit"

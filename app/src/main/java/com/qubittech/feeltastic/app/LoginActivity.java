@@ -55,7 +55,7 @@ public class LoginActivity extends Activity {
                     userName = etUsername.getText().toString();
                     password = etPassword.getText().toString();
                     new LoginUserTask().execute(userName, password);
-                    dialog.show(LoginActivity.this, "Loading", "Please wait");
+                    dialog = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait");
                 }
             });
 
@@ -75,6 +75,7 @@ public class LoginActivity extends Activity {
                 editor.putString("Username", userName);
                 editor.putString("Password", password);
                 editor.commit();
+                startActivity(new Intent(LoginActivity.this, UserFeelingsActivity.class));
             }
         }
 
@@ -84,7 +85,8 @@ public class LoginActivity extends Activity {
             args.add(new BasicNameValuePair("username", params[0]));
             args.add(new BasicNameValuePair("password", params[1]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            String response = jsonHttpClient.PostParams(UrlHelper.USER_VERIFY, args);
+            String verifyUrl = UrlHelper.USER_VERIFY;
+            String response = jsonHttpClient.PostParams(verifyUrl, args);
             return Boolean.parseBoolean(response);
         }
     }

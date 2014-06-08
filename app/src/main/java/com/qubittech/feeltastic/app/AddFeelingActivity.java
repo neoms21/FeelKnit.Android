@@ -39,7 +39,7 @@ import util.UrlHelper;
 /**
  * Created by Manoj on 04/05/2014.
  */
-public class AddFeelingActivity extends Activity {
+public class AddFeelingActivity extends BaseActivity {
 
     private static String username = "";
     private String[] feelings = {"Happy", "Sad", "Excited", "Interested", "King", "Loser"};
@@ -89,6 +89,7 @@ public class AddFeelingActivity extends Activity {
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                dialog = ProgressDialog.show(AddFeelingActivity.this, "Loading", "Please wait...", true);
                 new SaveFeelingTask().execute(selectedFeeling, because.getText().toString(), so.getText().toString());
             }
         });
@@ -201,7 +202,7 @@ public class AddFeelingActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            dialog = ProgressDialog.show(AddFeelingActivity.this, "Loading", "Please wait...", true);
+
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingText", params[0]));
             _feeling.setFeelingText(params[0]);
