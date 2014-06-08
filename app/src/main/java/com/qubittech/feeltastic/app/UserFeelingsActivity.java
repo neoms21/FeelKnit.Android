@@ -7,7 +7,10 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,44 +39,54 @@ import util.UrlHelper;
 /**
  * Created by Manoj on 31/05/2014.
  */
-public class UserFeelingsActivity extends Activity implements ListView.OnItemClickListener{
+public class UserFeelingsActivity extends Fragment {
 
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
 
     NavigationDrawerHelper mNavigationDrawerHelper;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_feelings);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View mainView = inflater.inflate(R.layout.user_feelings, container, false);
 
         String username = "";
-        dialog = ProgressDialog.show(UserFeelingsActivity.this, "Loading", "Please wait...", true);
-        Button newFeeling = (Button) findViewById(R.id.newFeelingButton);
-
-//        mNavigationDrawerHelper = new NavigationDrawerHelper();
-//        mNavigationDrawerHelper.init(this, this);
-        newFeeling.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(UserFeelingsActivity.this, AddFeelingActivity.class));
-            }
-        });
-        username = getUserName(username);
-        new FetchUserFeelingsTask().execute(username);
+        //dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
+//        Button newFeeling = (Button) getView().findViewById(R.id.newFeelingButton);
+//
+////        mNavigationDrawerHelper = new NavigationDrawerHelper();
+////        mNavigationDrawerHelper.init(this, this);
+//        newFeeling.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), AddFeelingActivity.class));
+//            }
+//        });
+//        username = getUserName(username);
+//        new FetchUserFeelingsTask().execute(username);
+        return mainView;
     }
 
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.user_feelings);
+//
+//
+//    }
+//
     private String getUserName(String username) {
-        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
         if (settings != null) {
             username = settings.getString("Username", "").toString();
         }
         return username;
     }
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int optionLib, long l) {
-//        mCoursePagerAdapter.setCourseLib(optionLib);
-        mNavigationDrawerHelper.handleSelect(optionLib);
-    }
+//    @Override
+//    public void onItemClick(AdapterView<?> adapterView, View view, int optionLib, long l) {
+////        mCoursePagerAdapter.setCourseLib(optionLib);
+//        mNavigationDrawerHelper.handleSelect(optionLib);
+//    }
 
 
     private class FetchUserFeelingsTask extends AsyncTask<String, Integer, String> {
@@ -89,9 +102,9 @@ public class UserFeelingsActivity extends Activity implements ListView.OnItemCli
             _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
 
 
-            ArrayAdapter arrayAdapter = new FeelingsAdapter(UserFeelingsActivity.this, R.layout.listview, _feelings);
+            ArrayAdapter arrayAdapter = new FeelingsAdapter(getActivity(), R.layout.listview, _feelings);
 
-            ListView listview = (ListView) findViewById(R.id.userFeelingsList);
+            ListView listview = (ListView) getView().findViewById(R.id.userFeelingsList);
 
             listview.setAdapter(arrayAdapter);
             listview.setDivider(new ColorDrawable());

@@ -75,7 +75,7 @@ public class LoginActivity extends Activity {
                 editor.putString("Username", userName);
                 editor.putString("Password", password);
                 editor.commit();
-                startActivity(new Intent(LoginActivity.this, UserFeelingsActivity.class));
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         }
 

@@ -9,7 +9,7 @@ public class NavMenuSection implements NavDrawerItem {
     private int id;
     private String label;
 
-    private NavMenuSection() {
+    public NavMenuSection() {
     }
 
     public static NavMenuSection create( int id, String label ) {

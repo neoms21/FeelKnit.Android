@@ -45,7 +45,7 @@ import com.qubittech.feeltastic.app.R;
 
         mDrawerLayout = (DrawerLayout) findViewById(navConf.getDrawerLayoutId());
         mDrawerList = (ListView) findViewById(navConf.getLeftDrawerId());
-        mDrawerList.setAdapter(navConf.getBaseAdapter());
+        mDrawerList.setAdapter(navConf.getAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         this.initDrawerShadow();
