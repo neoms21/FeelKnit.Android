@@ -52,18 +52,18 @@ public class UserFeelingsActivity extends Fragment {
         View mainView = inflater.inflate(R.layout.user_feelings, container, false);
 
         String username = "";
-        //dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
-//        Button newFeeling = (Button) getView().findViewById(R.id.newFeelingButton);
-//
-////        mNavigationDrawerHelper = new NavigationDrawerHelper();
-////        mNavigationDrawerHelper.init(this, this);
-//        newFeeling.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                startActivity(new Intent(getActivity(), AddFeelingActivity.class));
-//            }
-//        });
-//        username = getUserName(username);
-//        new FetchUserFeelingsTask().execute(username);
+        dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
+        Button newFeeling = (Button) mainView.findViewById(R.id.newFeelingButton);
+
+//        mNavigationDrawerHelper = new NavigationDrawerHelper();
+//        mNavigationDrawerHelper.init(this, this);
+        newFeeling.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AddFeelingActivity.class));
+            }
+        });
+        username = getUserName(username);
+        new FetchUserFeelingsTask().execute(username);
         return mainView;
     }
 

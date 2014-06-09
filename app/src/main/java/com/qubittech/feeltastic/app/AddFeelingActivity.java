@@ -39,7 +39,7 @@ import util.UrlHelper;
 /**
  * Created by Manoj on 04/05/2014.
  */
-public class AddFeelingActivity extends BaseActivity {
+public class AddFeelingActivity extends Activity {
 
     private static String username = "";
     private String[] feelings = {"Happy", "Sad", "Excited", "Interested", "King", "Loser"};

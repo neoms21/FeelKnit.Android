@@ -126,28 +126,38 @@
         android:layout_marginTop="7dp">
 
         <Button
-            android:drawableStart="@drawable/supportimg"
-
-            android:id="@+id/btnSupport"
+            android:id="@+id/btnComment"
+            android:drawableStart="@drawable/commentImg"
+            style="@style/buttonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
+
+            android:layout_below="@id/soText"
+            android:layout_weight="1"
+            android:text="Comment" />
+
+        <Button
+            android:drawableStart="@drawable/supportimg"
+            android:id="@+id/btnSupport"
+
+            android:layout_marginLeft="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
             android:layout_below="@id/soText"
             style="@style/buttonStyle"
             android:layout_weight="1"
-            android:background="@color/buttonColor"
             android:text="Support" />
 
         <Button
-            android:id="@+id/btnReport"
             android:drawableStart="@drawable/reportimg"
+            android:id="@+id/btnReport"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
             android:layout_weight="1"
             android:layout_below="@id/soText"
             android:layout_alignTop="@id/btnSupport"
             style="@style/buttonStyle"
-            android:background="@color/buttonColor"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="3dp"
             android:text="Report" />
     </LinearLayout>
 

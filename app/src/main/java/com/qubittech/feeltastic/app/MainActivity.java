@@ -15,12 +15,18 @@ import com.qubittech.feeltastic.navigation.NavMenuBuilder;
 public class MainActivity extends AbstractNavDrawerActivity {
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
-        NavMenuBuilder navBuilder = new NavMenuBuilder()
-                .addSection(100, 123)
-                .addSectionItem(104, "sas", "icon",true, getApplicationContext())
-                .addSectionItem(105, "wrw", "icon",true, getApplicationContext())
-                .addSectionItem(106, "wfs", "icon",true, getApplicationContext())
-                .addSectionItem(107, "12", "icon",true, getApplicationContext());
+        NavMenuBuilder navBuilder = new NavMenuBuilder();
+        String[] drawerItems = getResources().getStringArray(R.array.navigation_drawer_options);
+        int id = 101;
+        for (String item : drawerItems) {
+            navBuilder.addSectionItem(id, item, item.toLowerCase(), true, getApplicationContext());
+            id++;
+        }
+
+
+//                .addSectionItem(105, "wrw", "icon", true, getApplicationContext())
+//                .addSectionItem(106, "wfs", "icon", true, getApplicationContext())
+//                .addSectionItem(107, "12", "icon", true, getApplicationContext());
 //                .addSectionItem(101, R.string.navdrawer_listdetail, R.drawable.navdrawer_friends, true, true)
 //                .addSectionItem(102, R.string.navdrawer_airport, R.drawable.navdrawer_airport, true, true)
 //                .addSectionItem(103, R.string.navdrawer_simplemap, R.drawable.navdrawer_map, true, true)
@@ -41,7 +47,6 @@ public class MainActivity extends AbstractNavDrawerActivity {
         NavDrawerItem[] menu = navBuilder.build();
 
         NavDrawerAdapter adapter = new NavDrawerAdapter(this, R.layout.navdrawer_item, menu);
-        //adapter.setData(menu);
 
         NavDrawerActivityConfiguration navDrawerActivityConfiguration = new NavDrawerActivityConfiguration.Builder()
                 .mainLayout(R.layout.activity_main)

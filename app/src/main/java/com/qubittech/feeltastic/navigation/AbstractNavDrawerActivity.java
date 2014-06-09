@@ -40,14 +40,14 @@ import com.qubittech.feeltastic.app.R;
         navConf = getNavDrawerConfiguration();
 
         setContentView(navConf.getMainLayout());
-
+        View footer = getLayoutInflater().inflate(R.layout.drawer_list_footer, null);
         mTitle = mDrawerTitle = getTitle();
 
         mDrawerLayout = (DrawerLayout) findViewById(navConf.getDrawerLayoutId());
         mDrawerList = (ListView) findViewById(navConf.getLeftDrawerId());
         mDrawerList.setAdapter(navConf.getAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
+        mDrawerList.addFooterView(footer);
         this.initDrawerShadow();
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
