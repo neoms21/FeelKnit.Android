@@ -1,5 +1,6 @@
 package com.qubittech.feeltastic.navigation;
 
+import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -17,7 +18,8 @@ import com.qubittech.feeltastic.app.R;
 
 /**
  * Created by Manoj on 08/06/2014.
- */public abstract class AbstractNavDrawerActivity extends FragmentActivity {
+ */
+public abstract class AbstractNavDrawerActivity extends FragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -27,11 +29,11 @@ import com.qubittech.feeltastic.app.R;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
-    private NavDrawerActivityConfiguration navConf ;
+    private NavDrawerActivityConfiguration navConf;
 
     protected abstract NavDrawerActivityConfiguration getNavDrawerConfiguration();
 
-    protected abstract void onNavItemSelected( int id );
+    protected abstract void onNavItemSelected(int id);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,6 @@ import com.qubittech.feeltastic.app.R;
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerList.addFooterView(footer);
         this.initDrawerShadow();
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -71,6 +70,13 @@ import com.qubittech.feeltastic.app.R;
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        ActionBar mActionBar = getActionBar();
+        View v = getLayoutInflater().inflate(R.layout.header, null);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setCustomView(v);
+        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
+        mActionBar.setIcon(R.drawable.ic_drawer);
     }
 
     protected void initDrawerShadow() {
@@ -95,9 +101,9 @@ import com.qubittech.feeltastic.app.R;
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if ( navConf.getActionMenuItemsToHideWhenDrawerOpen() != null ) {
+        if (navConf.getActionMenuItemsToHideWhenDrawerOpen() != null) {
             boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-            for( int iItem : navConf.getActionMenuItemsToHideWhenDrawerOpen()) {
+            for (int iItem : navConf.getActionMenuItemsToHideWhenDrawerOpen()) {
                 menu.findItem(iItem).setVisible(!drawerOpen);
             }
         }
@@ -108,19 +114,17 @@ import com.qubittech.feeltastic.app.R;
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ( keyCode == KeyEvent.KEYCODE_MENU ) {
-            if ( this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
                 this.mDrawerLayout.closeDrawer(this.mDrawerList);
-            }
-            else {
+            } else {
                 this.mDrawerLayout.openDrawer(this.mDrawerList);
             }
             return true;
@@ -149,11 +153,11 @@ import com.qubittech.feeltastic.app.R;
         this.onNavItemSelected(selectedItem.getId());
         mDrawerList.setItemChecked(position, true);
 
-        if ( selectedItem.updateActionBarTitle()) {
+        if (selectedItem.updateActionBarTitle()) {
             setTitle(selectedItem.getLabel());
         }
 
-        if ( this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
+        if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }

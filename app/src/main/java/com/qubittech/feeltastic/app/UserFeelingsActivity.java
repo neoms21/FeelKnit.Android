@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.qubittech.feeltastic.adapters.FeelingsAdapter;
-import com.qubittech.feeltastic.helpers.NavigationDrawerHelper;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
@@ -43,8 +42,6 @@ public class UserFeelingsActivity extends Fragment {
 
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
-
-    NavigationDrawerHelper mNavigationDrawerHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,9 +108,6 @@ public class UserFeelingsActivity extends Fragment {
             listview.setDividerHeight(15);
             arrayAdapter.notifyDataSetChanged();
             dialog.dismiss();
-
-            mNavigationDrawerHelper = new NavigationDrawerHelper();
-
         }
 
         @Override

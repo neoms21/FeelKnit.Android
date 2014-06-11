@@ -5,7 +5,7 @@
     <uses-sdk android:minSdkVersion="14" />
     <application
         android:allowBackup="true"
-        android:icon="@drawable/feelknit"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
