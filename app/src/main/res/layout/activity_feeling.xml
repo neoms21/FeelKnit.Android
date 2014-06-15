@@ -4,14 +4,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent" android:background="@drawable/bg">
 
-    <ImageView
-        android:layout_marginTop="5dp"
-        android:id="@+id/headerImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/header"/>
-
-
     <Spinner
         android:layout_below="@id/headerImage"
         android:layout_marginTop="20dp"

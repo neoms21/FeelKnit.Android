@@ -24,24 +24,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.qubittech.feeltastic.app.AddFeelingActivity"
-            android:label="@string/addFeeling" >
-            <intent-filter>
-                <action android:name="com.qubittech.feeltastic.app.AddFeelingActivity" />
+        <!--<activity-->
+            <!--android:name=".AddFeelingFragment"-->
+            <!--android:label="@string/addFeeling" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.qubittech.feeltastic.app.AddFeelingActivity" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.qubittech.feeltastic.app.RelatedFeelingActivity"
-            android:label="@string/relatedFeelings" >
-            <intent-filter>
-                <action android:name="com.qubittech.feeltastic.app.RelatedFeelingActivity" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".RelatedFeelingFragment"-->
+            <!--android:label="@string/relatedFeelings" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.qubittech.feeltastic.app.RelatedFeelingActivity" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity
             android:name="com.qubittech.feeltastic.app.CommentsActivity"
             android:label="@string/comments" >

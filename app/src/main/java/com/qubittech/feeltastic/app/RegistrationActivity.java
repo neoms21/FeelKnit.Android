@@ -58,7 +58,7 @@ public class RegistrationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
-        startActivity(new Intent(RegistrationActivity.this, AddFeelingActivity.class));
+        startActivity(new Intent(RegistrationActivity.this, AddFeelingFragment.class));
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("LocationReceived"));
 
@@ -113,7 +113,7 @@ public class RegistrationActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             if (s != "Failure")
-                startActivity(new Intent(RegistrationActivity.this, AddFeelingActivity.class
+                startActivity(new Intent(RegistrationActivity.this, AddFeelingFragment.class
                 ));
         }
 

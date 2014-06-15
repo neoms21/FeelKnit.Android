@@ -2,10 +2,12 @@ package com.qubittech.feeltastic.app;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,8 +28,6 @@ import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import util.UrlHelper;
 /**
  * Created by Manoj on 04/05/2014.
  */
-public class AddFeelingActivity extends Activity {
+public class AddFeelingFragment extends Fragment {
 
     private static String username = "";
     private String[] feelings = {"Happy", "Sad", "Excited", "Interested", "King", "Loser"};
@@ -53,23 +53,29 @@ public class AddFeelingActivity extends Activity {
 
     private LayoutInflater mInflator;
     private boolean selected;
+    private OnCreateFeelingClick mCallback;
+
+    // Container Activity must implement this interface
+    public interface OnCreateFeelingClick {
+        public void onFeelingCreate(Feeling feeling, List<Feeling> relatedFeelings);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+        View addFeelingView = inflater.inflate(R.layout.activity_feeling, container, false);
         _feeling = new Feeling();
-        setContentView(R.layout.activity_feeling);
-        spinnerFeelings = (Spinner) findViewById(R.id.feelingText);
+//        setContentView(R.layout.activity_feeling);
+        spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingText);
         username = getUserName();
 
-        final EditText because = (EditText) findViewById(R.id.becauseText);
-        final EditText so = (EditText) findViewById(R.id.soText);
+        final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
+        final EditText so = (EditText) addFeelingView.findViewById(R.id.soText);
 
         spinnerFeelings.setAdapter(typeSpinnerAdapter);
         spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);
         spinnerFeelings.setOnTouchListener(typeSpinnerTouchListener);
-        mInflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        mInflator = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         spinnerFeelings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -85,19 +91,35 @@ public class AddFeelingActivity extends Activity {
             }
         });
 
-        Button save = (Button) findViewById(R.id.btnSave);
+        Button save = (Button) addFeelingView.findViewById(R.id.btnSave);
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dialog = ProgressDialog.show(AddFeelingActivity.this, "Loading", "Please wait...", true);
+                dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
                 new SaveFeelingTask().execute(selectedFeeling, because.getText().toString(), so.getText().toString());
             }
         });
+
+        return addFeelingView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnCreateFeelingClick) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     private String getUserName() {
         String name = "";
-        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
         if (settings != null) {
 
             name = settings.getString("Username", "").toString();
@@ -142,8 +164,7 @@ public class AddFeelingActivity extends Activity {
         public View getDropDownView(int position, View convertView,
                                     ViewGroup parent) {
             if (convertView == null) {
-                convertView = mInflator.inflate(
-                        R.layout.customspinner, null);
+                convertView = mInflator.inflate(R.layout.customspinner, null);
             }
             text = (TextView) convertView.findViewById(R.id.text);
             text.setText(feelings[position]);
@@ -192,11 +213,12 @@ public class AddFeelingActivity extends Activity {
                 Type collectionType = new TypeToken<List<Feeling>>() {
                 }.getType();
                 _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
+                mCallback.onFeelingCreate(_feeling, _feelings);
 
-                Intent intent = new Intent(AddFeelingActivity.this, RelatedFeelingActivity.class);
-                intent.putExtra("feeling", _feeling);
-                intent.putExtra("relatedFeelings", (java.io.Serializable) _feelings);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), RelatedFeelingFragment.class);
+//                intent.putExtra("feeling", _feeling);
+//                intent.putExtra("relatedFeelings", (java.io.Serializable) _feelings);
+//                startActivity(intent);
             }
         }
 

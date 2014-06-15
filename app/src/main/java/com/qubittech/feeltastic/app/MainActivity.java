@@ -2,16 +2,20 @@ package com.qubittech.feeltastic.app;
 
 import android.os.Bundle;
 
+import com.qubittech.feeltastic.models.Feeling;
 import com.qubittech.feeltastic.navigation.AbstractNavDrawerActivity;
 import com.qubittech.feeltastic.navigation.NavDrawerActivityConfiguration;
 import com.qubittech.feeltastic.navigation.NavDrawerAdapter;
 import com.qubittech.feeltastic.navigation.NavDrawerItem;
 import com.qubittech.feeltastic.navigation.NavMenuBuilder;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Created by Manoj on 08/06/2014.
  */
-public class MainActivity extends AbstractNavDrawerActivity {
+public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
         NavMenuBuilder navBuilder = new NavMenuBuilder();
@@ -21,27 +25,6 @@ public class MainActivity extends AbstractNavDrawerActivity {
             navBuilder.addSectionItem(id, item, item.toLowerCase(), true, getApplicationContext());
             id++;
         }
-
-
-//                .addSectionItem(105, "wrw", "icon", true, getApplicationContext())
-//                .addSectionItem(106, "wfs", "icon", true, getApplicationContext())
-//                .addSectionItem(107, "12", "icon", true, getApplicationContext());
-//                .addSectionItem(101, R.string.navdrawer_listdetail, R.drawable.navdrawer_friends, true, true)
-//                .addSectionItem(102, R.string.navdrawer_airport, R.drawable.navdrawer_airport, true, true)
-//                .addSectionItem(103, R.string.navdrawer_simplemap, R.drawable.navdrawer_map, true, true)
-//                .addSectionItem(105, R.string.navdrawer_aroundme, R.drawable.navdrawer_aroundme, true, true)
-//                .addSection(250, R.string.navdrawer_profile)
-//                .addDrawerItem(NavDrawerUserLoginItem.createMenuItem(260, R.drawable.navdrawer_user, mUserHelper))
-//                .addSection(200, R.string.navdrawer_general)
-//                .addSectionItem(201, R.string.navdrawer_settings, R.drawable.navdrawer_settings, true, true)
-//                .addSectionItem(202, R.string.navdrawer_rating, R.drawable.navdrawer_rating, false, false)
-//                .addSectionItem(203, R.string.navdrawer_donations, R.drawable.navdrawer_donations, true, true)
-//                .addSectionItem(204, R.string.navdrawer_changelog, R.drawable.navdrawer_changelog, false, false)
-//                .addSectionItem(205, R.string.navdrawer_eula, R.drawable.navdrawer_eula, false, false);
-
-//        if ( this.mUserHelper.getCurrentUser() != null ) {
-//            navBuilder.addDrawerItemAtIndex(logoutDrawerItem, 8);
-//        }
 
         NavDrawerItem[] menu = navBuilder.build();
 
@@ -72,9 +55,25 @@ public class MainActivity extends AbstractNavDrawerActivity {
 
         //set Fragmentclass Arguments
         userFeelingsFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, userFeelingsFragment, "User Feelings").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, userFeelingsFragment, "User Feelings").commit();
 
 
+    }
+
+    @Override
+    public void onFeelingCreate(Feeling feeling, List<Feeling> relatedFeelings) {
+        RelatedFeelingFragment relatedFeelingsFragment = new RelatedFeelingFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("feeling", feeling);
+        bundle.putSerializable("relatedFeelings", (Serializable) relatedFeelings);
+
+        //set Fragmentclass Arguments
+        relatedFeelingsFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, relatedFeelingsFragment, "Related Feelings").commit();
+    }
+
+    public void AddCreateFeelingFragment()
+    {
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Share Feeling").commit();
     }
 }

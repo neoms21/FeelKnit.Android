@@ -17,7 +17,6 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.qubittech.feeltastic.adapters.RelatedFeelingsAdapter;
 import com.qubittech.feeltastic.adapters.UserFeelingsAdapter;
 import com.qubittech.feeltastic.models.Feeling;
 
@@ -51,7 +50,9 @@ public class UserFeelingsFragment extends Fragment {
 //        mNavigationDrawerHelper.init(this, this);
         newFeeling.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddFeelingActivity.class));
+                MainActivity activity = (MainActivity) getActivity();
+                activity.AddCreateFeelingFragment();
+//                startActivity(new Intent(getActivity(), AddFeelingFragment.class));
             }
         });
         username = getUserName(username);

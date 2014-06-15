@@ -12,100 +12,109 @@
         android:padding="10dp"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_margin="5dp"
-            android:id="@+id/userIconImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/usericon" />
 
-        <TextView
-            android:id="@+id/name"
-            style="@style/userNameStyle"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="3dp"
-            android:layout_alignTop="@id/userIconImage"
-            android:text="TEMPORARY"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/feelingTextLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
-  <TextView
-            android:id="@+id/location"
-            style="@style/userNameStyle"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="3dp"
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_margin="5dp"
+                android:id="@+id/userIconImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/usericon" />
 
+            <TextView
+                android:id="@+id/name"
+                style="@style/userNameStyle"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="TEMPORARY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/feelingText"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="feeling" />
+        </LinearLayout>
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/location"-->
+        <!--style="@style/userNameStyle"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_marginTop="3dp"-->
+        <!--android:text="Location"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+
+
+        <!--<TextView-->
+        <!--android:layout_below="@id/userIconImage"-->
+        <!--style="@style/relatedFeelingsLabels"-->
+        <!--android:id="@+id/tvFeelingLabel"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:text="Feeling:"-->
+        <!--android:typeface="normal" />-->
+
+        <!--<TextView-->
+        <!--android:layout_below="@id/feelingText"-->
+        <!--android:id="@+id/becauseLabel"-->
+        <!--style="@style/relatedFeelingsLabels"-->
+        <!--android:layout_alignRight="@id/tvFeelingLabel"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:text="Because:"-->
+        <!--android:typeface="normal" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/soLabel"-->
+        <!--android:layout_alignRight="@id/tvFeelingLabel"-->
+        <!--android:layout_below="@id/becauseLabel"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--style="@style/relatedFeelingsLabels"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:text="So:"-->
+        <!--android:typeface="normal" />-->
+
+
+        <!--<TextView-->
+        <!--android:layout_below="@id/feelingText"-->
+        <!--android:id="@+id/becauseText"-->
+        <!--android:layout_alignLeft="@id/feelingText"-->
+        <!--android:layout_alignTop="@id/becauseLabel"-->
+        <!--android:width="200dp"-->
+        <!--android:maxLength="140"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:hint="Reason.."-->
+        <!--android:layout_height="wrap_content" />-->
+
+        <!--<TextView-->
+        <!--android:layout_below="@id/feelingText"-->
+        <!--android:id="@+id/soText"-->
+        <!--android:hint="Action..."-->
+        <!--android:layout_alignTop="@id/soLabel"-->
+        <!--android:width="200dp"-->
+        <!--android:maxLength="140"-->
+        <!--android:layout_alignLeft="@id/becauseText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
         <TextView
-            android:layout_below="@id/userIconImage"
-            style="@style/relatedFeelingsLabels"
-            android:id="@+id/tvFeelingLabel"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="left"
-            android:layout_marginLeft="10dp"
-            android:text="Feeling:"
-            android:typeface="normal" />
-
-        <TextView
-            android:layout_below="@id/feelingText"
-            android:id="@+id/becauseLabel"
-            style="@style/relatedFeelingsLabels"
-            android:layout_alignRight="@id/tvFeelingLabel"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="left"
-            android:text="Because:"
-            android:typeface="normal" />
-
-        <TextView
-            android:id="@+id/soLabel"
-            android:layout_alignRight="@id/tvFeelingLabel"
-            android:layout_below="@id/becauseLabel"
-            android:layout_marginTop="5dp"
-            style="@style/relatedFeelingsLabels"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="left"
-            android:text="So:"
-            android:typeface="normal" />
-
-        <TextView
-            android:layout_alignTop="@id/tvFeelingLabel"
-            android:layout_marginLeft="90dp"
-            android:id="@+id/feelingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="feeling" />
-
-        <TextView
-            android:layout_below="@id/feelingText"
-            android:id="@+id/becauseText"
-            android:layout_alignLeft="@id/feelingText"
-            android:layout_alignTop="@id/becauseLabel"
-            android:width="200dp"
-            android:maxLength="140"
-            android:layout_width="wrap_content"
-            android:hint="Reason.."
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_below="@id/feelingText"
-            android:id="@+id/soText"
-            android:hint="Action..."
-            android:layout_alignTop="@id/soLabel"
-            android:width="200dp"
-            android:maxLength="140"
-            android:layout_alignLeft="@id/becauseText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_below="@id/soText"
+            android:layout_below="@id/feelingTextLayout"
             android:id="@+id/commentsCount"
             android:layout_alignParentLeft="true"
             android:hint="comments"

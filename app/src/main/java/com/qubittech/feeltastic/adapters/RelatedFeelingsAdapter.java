@@ -38,11 +38,10 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     private class ViewHolder {
         TextView usernameTextView;
         TextView feelingTextView;
-        TextView becauseTextView;
-        TextView soTextView;
         TextView locationTextView;
         TextView countTextView;
         ImageView userIcon;
+        Button commentButton;
         Button supportButton;
         Button reportButton;
     }
@@ -51,10 +50,6 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     public RelatedFeelingsAdapter(Context context, int resource, List<Feeling> feelings) {
 
         super(context, resource, feelings);
-        String activity = context.getClass().getSimpleName();
-        if (activity.compareToIgnoreCase(UserFeelingsFragment.class.getSimpleName().toString()) == 0)
-            isUserFeelings = true;
-
         isRunningOnEmulator = UrlHelper.isRunningOnEmulator();
         this.context = context;
     }
@@ -70,12 +65,11 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder = new ViewHolder();
             holder.usernameTextView = (TextView) convertView.findViewById(R.id.name);
             holder.feelingTextView = (TextView) convertView.findViewById(R.id.feelingText);
-            holder.becauseTextView = (TextView) convertView.findViewById(R.id.becauseText);
-            holder.soTextView = (TextView) convertView.findViewById(R.id.soText);
             holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
             holder.userIcon = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.supportButton = (Button) convertView.findViewById(R.id.btnSupport);
             holder.reportButton = (Button) convertView.findViewById(R.id.btnReport);
+            holder.commentButton = (Button) convertView.findViewById(R.id.btnComment);
             holder.countTextView = (TextView) convertView.findViewById(R.id.commentsCount);
             convertView.setTag(holder);
         } else
@@ -85,7 +79,6 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
             @Override
             public void onClick(View v) {
-
                 Intent commentsActivityIntent = new Intent(getContext(), CommentsActivity.class);
                 commentsActivityIntent.putExtra("feeling", feeling);
                 context.startActivity(commentsActivityIntent);
@@ -93,27 +86,11 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         });
 
         holder.usernameTextView.setText(feeling.getUserName());
-        holder.feelingTextView.setText(feeling.getFeelingText());
-        holder.becauseTextView.setText(feeling.getReason());
-        holder.soTextView.setText(feeling.getAction());
+        holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
         holder.countTextView.setText(feeling.getComments().size() + "  comments");
 
         //  if(!isRunningOnEmulator) holder.locationTextView.setText(getLocation(feeling));
 
-        if (isUserFeelings) {
-            holder.userIcon.setVisibility(View.GONE);
-            holder.usernameTextView.setVisibility(View.GONE);
-            holder.supportButton.setVisibility(View.GONE);
-            holder.reportButton.setVisibility(View.GONE);
-        } else {
-            holder.countTextView.setVisibility(View.GONE);
-        }
-        //holder.soTextView.setText(feeling.ge());
-
-//        if (applied) {
-//            convertView.setBackgroundColor(Color.rgb(201, 201, 201));
-//            convertView.setDrawingCacheBackgroundColor(Color.rgb(201, 201, 201));
-//        } else convertView.setBackgroundColor(Color.rgb(213, 199, 242));
         return convertView;
     }
 
