@@ -1,9 +1,6 @@
 package com.qubittech.feeltastic.app;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 
 import com.qubittech.feeltastic.navigation.AbstractNavDrawerActivity;
 import com.qubittech.feeltastic.navigation.NavDrawerActivityConfiguration;
@@ -69,9 +66,14 @@ public class MainActivity extends AbstractNavDrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, new UserFeelingsActivity(), "User Feelings").commit();
+        UserFeelingsFragment userFeelingsFragment = new UserFeelingsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("name", "From Activity");
 
+        //set Fragmentclass Arguments
+        userFeelingsFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, userFeelingsFragment, "User Feelings").commit();
 
 
     }

@@ -15,9 +15,8 @@ public class DateFormatter {
 
     public static String Format(String strDate)
     {
-        strDate= strDate.replace('T',' ');
         strDate= strDate.replace('Z',' ');
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yy HH:mm");
         Date date = new Date();
         try {

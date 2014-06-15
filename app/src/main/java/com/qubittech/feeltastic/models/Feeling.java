@@ -11,13 +11,13 @@ public class Feeling implements Serializable {
 
     private String feelingText;
     private String feelingTextLower;
-    private Date feelingDate;
+    private String feelingDate;
     private String reason;
     private String action;
     private String userName;
     private double latitude;
     private double longitude;
-
+    private boolean isFirstFeeling;
 
 
     private List<Comment> comments;
@@ -38,12 +38,12 @@ public class Feeling implements Serializable {
         this.feelingTextLower = feelingtextlower;
     }
 
-    public Date getFeelingDate() {
+    public String getFeelingDate() {
         return this.feelingDate;
     }
 
-    public void setFeelingDate(Date feelingdate) {
-        this.feelingDate = feelingdate;
+    public void setFeelingDate(String feelingDate) {
+        this.feelingDate = feelingDate;
     }
 
     public String getReason() {
@@ -93,5 +93,19 @@ public class Feeling implements Serializable {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean isFirstFeeling() {
+        return isFirstFeeling;
+    }
+
+    public void setFirstFeeling(boolean isFirstFeeling) {
+        this.isFirstFeeling = isFirstFeeling;
+    }
+
+    public String getFeelingFormattedText(String pronoun) {
+        String p = pronoun.equals("I") ? "am" : "is";
+
+        return String.format("%s feeling %s because %s", isFirstFeeling ? p : "was", feelingText, reason);
     }
 }

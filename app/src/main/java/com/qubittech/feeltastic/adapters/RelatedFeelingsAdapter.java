@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.qubittech.feeltastic.app.CommentsActivity;
 import com.qubittech.feeltastic.app.R;
-import com.qubittech.feeltastic.app.UserFeelingsActivity;
+import com.qubittech.feeltastic.app.UserFeelingsFragment;
 import com.qubittech.feeltastic.models.Feeling;
 
 import java.io.IOException;
@@ -27,12 +27,13 @@ import util.UrlHelper;
 /**
  * Created by Manoj on 18/05/2014.
  */
-public class FeelingsAdapter extends ArrayAdapter<Feeling> {
+public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     int resource;
     Context context;
     boolean isUserFeelings = false;
-boolean isRunningOnEmulator = false;
+    boolean isRunningOnEmulator = false;
+
     /*private view holder class*/
     private class ViewHolder {
         TextView usernameTextView;
@@ -47,14 +48,14 @@ boolean isRunningOnEmulator = false;
     }
 
 
-    public FeelingsAdapter(Context context, int resource, List<Feeling> feelings) {
+    public RelatedFeelingsAdapter(Context context, int resource, List<Feeling> feelings) {
 
         super(context, resource, feelings);
         String activity = context.getClass().getSimpleName();
-        if (activity.compareToIgnoreCase(UserFeelingsActivity.class.getSimpleName().toString()) == 0)
+        if (activity.compareToIgnoreCase(UserFeelingsFragment.class.getSimpleName().toString()) == 0)
             isUserFeelings = true;
 
-        isRunningOnEmulator  = UrlHelper.isRunningOnEmulator();
+        isRunningOnEmulator = UrlHelper.isRunningOnEmulator();
         this.context = context;
     }
 
@@ -97,7 +98,7 @@ boolean isRunningOnEmulator = false;
         holder.soTextView.setText(feeling.getAction());
         holder.countTextView.setText(feeling.getComments().size() + "  comments");
 
-     //  if(!isRunningOnEmulator) holder.locationTextView.setText(getLocation(feeling));
+        //  if(!isRunningOnEmulator) holder.locationTextView.setText(getLocation(feeling));
 
         if (isUserFeelings) {
             holder.userIcon.setVisibility(View.GONE);

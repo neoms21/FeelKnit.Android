@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.qubittech.feeltastic.adapters.FeelingsAdapter;
+import com.qubittech.feeltastic.adapters.RelatedFeelingsAdapter;
 import com.qubittech.feeltastic.models.Feeling;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class RelatedFeelingActivity extends Activity {
         count.setText(String.format("%d People feeling %s recently", feelings.size(), feeling.getFeelingText()));
 
 
-        ArrayAdapter arrayAdapter = new FeelingsAdapter(RelatedFeelingActivity.this, R.layout.listview, feelings);
+        ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(RelatedFeelingActivity.this, R.layout.listview, feelings);
 
         ListView listview = (ListView) findViewById(R.id.relatedFeelingsList);
         // endTime = (System.nanoTime() - startTime) / 1000000000;

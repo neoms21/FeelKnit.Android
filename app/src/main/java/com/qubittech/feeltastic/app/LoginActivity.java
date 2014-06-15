@@ -40,9 +40,9 @@ public class LoginActivity extends Activity {
         final EditText etUsername = (EditText) findViewById(R.id.txtUserName);
         final EditText etPassword = (EditText) findViewById(R.id.txtPassword);
 
-        SharedPreferences settings = getSharedPreferences("dfssdf", 0);
-        if (false) {
-            startActivity(new Intent(LoginActivity.this, UserFeelingsActivity.class));
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        if (settings.getString("Username", null) != null) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //            etUsername.setText(settings.getString("Username", "").toString());
 //            etPassword.setText(settings.getString("Password", "").toString());
         } else {

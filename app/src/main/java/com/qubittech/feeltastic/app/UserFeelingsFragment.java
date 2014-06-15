@@ -1,6 +1,5 @@
 package com.qubittech.feeltastic.app;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,22 +10,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.qubittech.feeltastic.adapters.FeelingsAdapter;
+import com.qubittech.feeltastic.adapters.RelatedFeelingsAdapter;
+import com.qubittech.feeltastic.adapters.UserFeelingsAdapter;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -38,7 +33,7 @@ import util.UrlHelper;
 /**
  * Created by Manoj on 31/05/2014.
  */
-public class UserFeelingsActivity extends Fragment {
+public class UserFeelingsFragment extends Fragment {
 
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
@@ -64,14 +59,6 @@ public class UserFeelingsActivity extends Fragment {
         return mainView;
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.user_feelings);
-//
-//
-//    }
-//
     private String getUserName(String username) {
         SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
         if (settings != null) {
@@ -97,9 +84,9 @@ public class UserFeelingsActivity extends Fragment {
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();
             _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
+            _feelings.get(0).setFirstFeeling(true);
 
-
-            ArrayAdapter arrayAdapter = new FeelingsAdapter(getActivity(), R.layout.listview, _feelings);
+            ArrayAdapter arrayAdapter = new UserFeelingsAdapter(getActivity(), R.layout.listview, _feelings);
 
             ListView listview = (ListView) getView().findViewById(R.id.userFeelingsList);
 
