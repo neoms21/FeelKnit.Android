@@ -55,13 +55,13 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         //set Fragmentclass Arguments
         userFeelingsFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, userFeelingsFragment, "User Feelings").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, userFeelingsFragment, "User Feelings").addToBackStack("UserFeelings").commit();
 
 
     }
 
     @Override
-    public void onFeelingCreate(Feeling feeling, List<Feeling> relatedFeelings) {
+    public void onFeelingCreated(Feeling feeling, List<Feeling> relatedFeelings) {
         RelatedFeelingFragment relatedFeelingsFragment = new RelatedFeelingFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("feeling", feeling);
@@ -69,11 +69,23 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         //set Fragmentclass Arguments
         relatedFeelingsFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, relatedFeelingsFragment, "Related Feelings").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                relatedFeelingsFragment, "Related Feelings").addToBackStack("RelatedFeelings").commit();
     }
 
     public void AddCreateFeelingFragment()
     {
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Share Feeling").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Share Feeling").addToBackStack("AddFeeling").commit();
+    }
+
+    public void ShowCommentsFragment(Feeling feeling)
+    {
+        CommentsFragment commentsFragment = new CommentsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("feeling", feeling);
+        bundle.putSerializable("user", "neoms21");
+        commentsFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, commentsFragment, "Comments").addToBackStack("Comments").commit();
     }
 }

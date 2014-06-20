@@ -3,7 +3,6 @@ package com.qubittech.feeltastic.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -57,7 +56,7 @@ public class AddFeelingFragment extends Fragment {
 
     // Container Activity must implement this interface
     public interface OnCreateFeelingClick {
-        public void onFeelingCreate(Feeling feeling, List<Feeling> relatedFeelings);
+        public void onFeelingCreated(Feeling feeling, List<Feeling> relatedFeelings);
     }
 
     @Override
@@ -213,7 +212,7 @@ public class AddFeelingFragment extends Fragment {
                 Type collectionType = new TypeToken<List<Feeling>>() {
                 }.getType();
                 _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
-                mCallback.onFeelingCreate(_feeling, _feelings);
+                mCallback.onFeelingCreated(_feeling, _feelings);
 
 //                Intent intent = new Intent(getActivity(), RelatedFeelingFragment.class);
 //                intent.putExtra("feeling", _feeling);

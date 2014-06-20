@@ -13,9 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.qubittech.feeltastic.app.CommentsActivity;
+import com.qubittech.feeltastic.app.CommentsFragment;
 import com.qubittech.feeltastic.app.R;
-import com.qubittech.feeltastic.app.UserFeelingsFragment;
 import com.qubittech.feeltastic.models.Feeling;
 
 import java.io.IOException;
@@ -79,7 +78,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
             @Override
             public void onClick(View v) {
-                Intent commentsActivityIntent = new Intent(getContext(), CommentsActivity.class);
+                Intent commentsActivityIntent = new Intent(getContext(), CommentsFragment.class);
                 commentsActivityIntent.putExtra("feeling", feeling);
                 context.startActivity(commentsActivityIntent);
             }

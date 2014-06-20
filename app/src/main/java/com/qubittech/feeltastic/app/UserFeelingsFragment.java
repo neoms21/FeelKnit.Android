@@ -46,8 +46,6 @@ public class UserFeelingsFragment extends Fragment {
         dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
         Button newFeeling = (Button) mainView.findViewById(R.id.newFeelingButton);
 
-//        mNavigationDrawerHelper = new NavigationDrawerHelper();
-//        mNavigationDrawerHelper.init(this, this);
         newFeeling.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 MainActivity activity = (MainActivity) getActivity();
@@ -67,12 +65,6 @@ public class UserFeelingsFragment extends Fragment {
         }
         return username;
     }
-//    @Override
-//    public void onItemClick(AdapterView<?> adapterView, View view, int optionLib, long l) {
-////        mCoursePagerAdapter.setCourseLib(optionLib);
-//        mNavigationDrawerHelper.handleSelect(optionLib);
-//    }
-
 
     private class FetchUserFeelingsTask extends AsyncTask<String, Integer, String> {
         @Override

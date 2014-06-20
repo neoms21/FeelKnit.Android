@@ -1,7 +1,6 @@
 package com.qubittech.feeltastic.models;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,6 +8,7 @@ import java.util.List;
  */
 public class Feeling implements Serializable {
 
+    private String id;
     private String feelingText;
     private String feelingTextLower;
     private String feelingDate;
@@ -107,5 +107,13 @@ public class Feeling implements Serializable {
         String p = pronoun.equals("I") ? "am" : "is";
 
         return String.format("%s feeling %s because %s", isFirstFeeling ? p : "was", feelingText, reason);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

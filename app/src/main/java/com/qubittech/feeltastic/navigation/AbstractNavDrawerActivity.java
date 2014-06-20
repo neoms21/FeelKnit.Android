@@ -74,9 +74,10 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
         View v = getLayoutInflater().inflate(R.layout.header, null);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayShowTitleEnabled(false);
         mActionBar.setCustomView(v);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
-        mActionBar.setIcon(R.drawable.ic_drawer);
+        mActionBar.setIcon(R.drawable.drawerheader);
     }
 
     protected void initDrawerShadow() {

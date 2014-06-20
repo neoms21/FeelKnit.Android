@@ -42,15 +42,15 @@
                 <!--<category android:name="android.intent.category.DEFAULT" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
-        <activity
-            android:name="com.qubittech.feeltastic.app.CommentsActivity"
-            android:label="@string/comments" >
-            <intent-filter>
-                <action android:name="com.qubittech.feeltastic.app.CommentsActivity" />
+        <!--<activity-->
+            <!--android:name=".CommentsFragment"-->
+            <!--android:label="@string/comments" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.qubittech.feeltastic.app.CommentsActivity" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
         <activity
         android:name="com.qubittech.feeltastic.app.MainActivity"

@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg">
-
-    <ImageView
-        android:layout_marginTop="5dp"
-        android:id="@+id/headerImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/header" />
 
     <RelativeLayout
         android:background="@color/whiteBg"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
-        android:layout_below="@id/headerImage"
         android:id="@+id/commentDetailsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -114,7 +108,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:background="@color/loginLabel"
-        android:padding="10dp"        >
+        android:padding="10dp">
 
         <TextView
             android:textColor="@color/textColor"
@@ -131,13 +125,43 @@
     <ListView
         android:layout_below="@id/countComments"
         android:layout_marginTop="3dp"
+        android:layout_weight="1"
         android:id="@+id/commentsList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></ListView>
 
-    <!--<Button-->
-        <!--android:text="comment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" />-->
+    <LinearLayout
+        android:layout_weight="0"
+        android:background="@color/loginLabel"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <EditText
+            android:layout_weight="0.8"
+            android:id="@+id/newComment"
+            android:text=""
+            android:textColorHint="@color/whiteBg"
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            android:background="@drawable/edittext_design"
+            android:hint="Type Message"
+            android:textColor="@color/whiteBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+
+            android:id="@+id/newCommentButton"
+            android:layout_marginLeft="4dp"
+            android:clickable="true"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:src="@drawable/submit"
+            android:layout_toRightOf="@id/newComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>
