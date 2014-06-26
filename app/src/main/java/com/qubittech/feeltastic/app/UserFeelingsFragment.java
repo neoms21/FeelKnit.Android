@@ -71,7 +71,6 @@ public class UserFeelingsFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-
             System.out.println("User Feelings:" + s);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
             Type collectionType = new TypeToken<List<Feeling>>() {

@@ -1,6 +1,9 @@
 package com.qubittech.feeltastic.navigation;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -12,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
+import com.qubittech.feeltastic.app.LoginActivity;
 import com.qubittech.feeltastic.app.R;
 
 /**
@@ -42,14 +47,15 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
         navConf = getNavDrawerConfiguration();
 
         setContentView(navConf.getMainLayout());
-        View footer = getLayoutInflater().inflate(R.layout.drawer_list_footer, null);
+        //View footer = getLayoutInflater().inflate(R.layout.drawer_list_footer, null);
         mTitle = mDrawerTitle = getTitle();
+
 
         mDrawerLayout = (DrawerLayout) findViewById(navConf.getDrawerLayoutId());
         mDrawerList = (ListView) findViewById(navConf.getLeftDrawerId());
         mDrawerList.setAdapter(navConf.getAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerList.addFooterView(footer);
+//        mDrawerList.addFooterView(footer);
         this.initDrawerShadow();
 
         mDrawerToggle = new ActionBarDrawerToggle(

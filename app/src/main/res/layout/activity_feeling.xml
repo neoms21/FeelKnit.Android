@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="@drawable/bg">
+    android:layout_height="match_parent" android:background="@color/mainBg">
 
     <Spinner
         android:layout_marginTop="20dp"
@@ -12,15 +12,18 @@
          />
 
     <EditText
+        android:layout_weight="0.8"
         android:layout_below="@id/feelingText"
-        android:background="@drawable/edittext_design"
+        android:text=""
+        android:background="@drawable/edittext_createfeeling"
         android:id="@+id/becauseText"
         android:textColorHint="@color/loginLabel"
-        android:width="200dp"
+        android:textColor="@color/loginLabel"
         android:maxLength="140"
+        android:padding="5dp"
         android:inputType="textMultiLine"
         android:layout_width="match_parent"
-        android:hint="Reason.."
+        android:hint="Because.."
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:layout_marginLeft="10dp"
@@ -29,18 +32,23 @@
 
 
     <EditText
+        android:layout_weight="0.8"
         android:layout_below="@id/feelingText"
         android:id="@+id/soText"
-        android:hint="Action..."
-        android:background="@drawable/edittext_design"
+        android:textColor="@color/loginLabel"
+        android:hint="What am I doing..."
+        android:padding="5dp"
+        android:background="@drawable/edittext_createfeeling"
         android:textColorHint="@color/loginLabel"
-        android:width="200dp"
         android:maxLength="140"
         android:layout_alignLeft="@id/becauseText"
         android:layout_alignRight="@id/becauseText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         />
 
     <Button
@@ -56,4 +64,4 @@
         android:layout_height="wrap_content" />
 
 
-</RelativeLayout>
+</LinearLayout>

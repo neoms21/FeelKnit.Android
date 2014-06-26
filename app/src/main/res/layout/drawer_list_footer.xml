@@ -5,6 +5,8 @@
     android:layout_height="match_parent">
 
     <Button
+        android:clickable="true"
+        android:enabled="true"
         style="@style/buttonStyle"
         android:background="@color/buttonColor"
         android:id="@+id/btnSignout"

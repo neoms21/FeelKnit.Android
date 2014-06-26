@@ -14,33 +14,33 @@ public class NavDrawerActivityConfiguration {
     private int drawerLayoutId;
     private int leftDrawerId;
     private int[] actionMenuItemsToHideWhenDrawerOpen;
-    	private NavDrawerItem[] navItems;
+    private NavDrawerItem[] navItems;
     private int drawerOpenDesc;
     private int drawerCloseDesc;
-    private int drawerIcon ;
+    private int drawerIcon;
     private NavDrawerAdapter mAdapter;
 
-    public boolean hasMenuItemWithId( long id ) {
+    public boolean hasMenuItemWithId(long id) {
         NavDrawerAdapter adapter = (NavDrawerAdapter) getAdapter();
-        for( int i = 0 ; i < adapter.getCount(); i++) {
-            if ( id == adapter.getItem(i).getId()) {
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (id == adapter.getItem(i).getId()) {
                 return true;
             }
         }
         return false;
     }
 
-    public void removeMenuItemWithId( long id ) {
+    public void removeMenuItemWithId(long id) {
         NavDrawerAdapter adapter = (NavDrawerAdapter) getAdapter();
-        for( int i = 0 ; i < adapter.getCount(); i++) {
-            if ( id == adapter.getItem(i).getId()) {
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (id == adapter.getItem(i).getId()) {
                 adapter.remove(adapter.getItem(i));
                 break;
             }
         }
     }
 
-    public void addMenuItemAtIndex( NavDrawerItem item, int index ) {
+    public void addMenuItemAtIndex(NavDrawerItem item, int index) {
         NavDrawerAdapter adapter = (NavDrawerAdapter) getAdapter();
         adapter.insert(item, index);
     }
@@ -86,13 +86,13 @@ public class NavDrawerActivityConfiguration {
         this.actionMenuItemsToHideWhenDrawerOpen = actionMenuItemsToHideWhenDrawerOpen;
     }
 
-	public NavDrawerItem[] getNavItems() {
-		return navItems;
-	}
+    public NavDrawerItem[] getNavItems() {
+        return navItems;
+    }
 
-	public void setNavItems(NavDrawerItem[] navItems) {
-		this.navItems = navItems;
-	}
+    public void setNavItems(NavDrawerItem[] navItems) {
+        this.navItems = navItems;
+    }
 
     public int getDrawerOpenDesc() {
         return drawerOpenDesc;
@@ -176,7 +176,7 @@ public class NavDrawerActivityConfiguration {
             return this;
         }
 
-        public Builder adapter( NavDrawerAdapter adapter) {
+        public Builder adapter(NavDrawerAdapter adapter) {
             mConf.setAdapter(adapter);
             return this;
         }

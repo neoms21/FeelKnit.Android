@@ -2,7 +2,7 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:background="#A4C3DC"
+    android:background="@color/mainBg"
     android:layout_height="match_parent" >
 
     <LinearLayout
@@ -18,7 +18,8 @@
     </LinearLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/whatYouWantInLeftDrawer"
         android:layout_width="290dp"
         android:layout_height="match_parent"
@@ -28,6 +29,7 @@
         <ListView
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
+            android:layout_weight="0.8"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="#000"
@@ -37,12 +39,14 @@
             />
 
        <Button
-           android:layout_width="match_parent"
-           style="@style/buttonStyle"
-           android:text="Signout Me!!"
-           android:layout_alignParentBottom="true"
-           android:layout_height="wrap_content" />
-    </RelativeLayout>
+           android:id="@+id/signout"
+        android:layout_width="match_parent"
+        android:layout_weight="0.2"
+        style="@style/buttonStyle"
+        android:text="Signout Me!!"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!--android:listSelector="@drawable/navdrawer_listselector"-->
 </android.support.v4.widget.DrawerLayout>

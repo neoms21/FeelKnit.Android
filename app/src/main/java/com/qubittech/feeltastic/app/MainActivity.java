@@ -1,6 +1,12 @@
 package com.qubittech.feeltastic.app;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 
 import com.qubittech.feeltastic.models.Feeling;
 import com.qubittech.feeltastic.navigation.AbstractNavDrawerActivity;
@@ -16,9 +22,13 @@ import java.util.List;
  * Created by Manoj on 08/06/2014.
  */
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
+
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
+
         NavMenuBuilder navBuilder = new NavMenuBuilder();
+
+
         String[] drawerItems = getResources().getStringArray(R.array.navigation_drawer_options);
         int id = 101;
         for (String item : drawerItems) {
@@ -43,7 +53,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
     @Override
     protected void onNavItemSelected(int id) {
-
+        String x = "";
     }
 
     @Override
@@ -52,6 +62,18 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         UserFeelingsFragment userFeelingsFragment = new UserFeelingsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("name", "From Activity");
+
+
+        Button btnSignout = (Button) findViewById(R.id.signout);
+        btnSignout.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+                settings.edit().remove("Username").commit();
+                settings.edit().remove("Password").commit();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+
 
         //set Fragmentclass Arguments
         userFeelingsFragment.setArguments(bundle);
@@ -73,13 +95,11 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 relatedFeelingsFragment, "Related Feelings").addToBackStack("RelatedFeelings").commit();
     }
 
-    public void AddCreateFeelingFragment()
-    {
+    public void AddCreateFeelingFragment() {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Share Feeling").addToBackStack("AddFeeling").commit();
     }
 
-    public void ShowCommentsFragment(Feeling feeling)
-    {
+    public void ShowCommentsFragment(Feeling feeling) {
         CommentsFragment commentsFragment = new CommentsFragment();
 
         Bundle bundle = new Bundle();
