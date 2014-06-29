@@ -59,11 +59,12 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UserFeelingsFragment userFeelingsFragment = new UserFeelingsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("name", "From Activity");
 
+        Intent intent = getIntent();
+        boolean isRegister = false;
+        Bundle bld = intent.getExtras();// ("IsFromRegister", isRegister);
 
+        isRegister = bld.getBoolean("IsFromRegister");
         Button btnSignout = (Button) findViewById(R.id.signout);
         btnSignout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -76,9 +77,15 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
 
         //set Fragmentclass Arguments
-        userFeelingsFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, userFeelingsFragment, "User Feelings").addToBackStack("UserFeelings").commit();
-
+        if (isRegister) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Add Feeling").addToBackStack("Add Feeling").commit();
+        } else {
+            UserFeelingsFragment userFeelingsFragment = new UserFeelingsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("name", "From Activity");
+            userFeelingsFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, userFeelingsFragment, "User Feelings").addToBackStack("UserFeelings").commit();
+        }
 
     }
 
