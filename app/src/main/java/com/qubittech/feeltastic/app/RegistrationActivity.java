@@ -62,10 +62,10 @@ public class RegistrationActivity extends Activity {
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("LocationReceived"));
 
-        userName = (EditText) findViewById(R.id.user);
-        password = (EditText) findViewById(R.id.password);
-        email = (EditText) findViewById(R.id.email);
-        location = (EditText) findViewById(R.id.location);
+        userName = (EditText) findViewById(R.id.txtUserName);
+        password = (EditText) findViewById(R.id.txtPassword);
+        email = (EditText) findViewById(R.id.txtEmailAddress);
+        location = (EditText) findViewById(R.id.txtLocation);
 
         Button register = (Button) findViewById(R.id.btnRegister);
 
@@ -77,7 +77,6 @@ public class RegistrationActivity extends Activity {
             startService(new Intent(TrackingService.ACTION_START_MONITORING));
             // Device
         }
-
 
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

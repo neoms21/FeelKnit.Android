@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qubittech.feeltastic.app.CommentsFragment;
+import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
 
@@ -64,7 +65,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder = new ViewHolder();
             holder.usernameTextView = (TextView) convertView.findViewById(R.id.name);
             holder.feelingTextView = (TextView) convertView.findViewById(R.id.feelingText);
-            holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
+//            holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
             holder.userIcon = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.supportButton = (Button) convertView.findViewById(R.id.btnSupport);
             holder.reportButton = (Button) convertView.findViewById(R.id.btnReport);
@@ -78,9 +79,13 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
             @Override
             public void onClick(View v) {
-                Intent commentsActivityIntent = new Intent(getContext(), CommentsFragment.class);
-                commentsActivityIntent.putExtra("feeling", feeling);
-                context.startActivity(commentsActivityIntent);
+
+                MainActivity mainActivity = (MainActivity) context;
+                mainActivity.ShowCommentsFragment(feeling);
+
+//                Intent commentsActivityIntent = new Intent(getContext(), CommentsFragment.class);
+//                commentsActivityIntent.putExtra("feeling", feeling);
+//                context.startActivity(commentsActivityIntent);
             }
         });
 

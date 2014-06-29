@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qubittech.feeltastic.app" android:versionCode="1"
+    package="com.qubittech.feeltastic.app"
+    android:versionCode="1"
     android:versionName="1.0">
+
     <uses-sdk android:minSdkVersion="14" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.qubittech.feeltastic.app.LoadingActivity"
-            android:label="@string/loading" >
+            android:label="@string/loading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -18,50 +20,24 @@
         </activity>
         <activity
             android:name="com.qubittech.feeltastic.app.RegistrationActivity"
-            android:label="@string/register" >
+            android:label="@string/register">
             <intent-filter>
                 <action android:name="com.qubittech.feeltastic.app.RegistrationActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name=".AddFeelingFragment"-->
-            <!--android:label="@string/addFeeling" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.qubittech.feeltastic.app.AddFeelingActivity" />-->
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name=".RelatedFeelingFragment"-->
-            <!--android:label="@string/relatedFeelings" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.qubittech.feeltastic.app.RelatedFeelingActivity" />-->
-
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name=".CommentsFragment"-->
-            <!--android:label="@string/comments" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.qubittech.feeltastic.app.CommentsActivity" />-->
-
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
 
         <activity
-        android:name="com.qubittech.feeltastic.app.MainActivity"
-        android:label="@string/app_name" >
-        <intent-filter>
-            <action android:name="com.qubittech.feeltastic.app.MainActivity" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-    </activity>
+            android:name="com.qubittech.feeltastic.app.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.qubittech.feeltastic.app.MainActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-        <service android:name="com.qubittech.feeltastic.services.TrackingService" >
+        <service android:name="com.qubittech.feeltastic.services.TrackingService">
             <intent-filter>
                 <action android:name="com.qubittech.START_MONITORING" />
                 <action android:name="com.qubittech.STOP_MONITORING" />

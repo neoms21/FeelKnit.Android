@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -36,7 +37,8 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+        TextView forgotLabel = (TextView) findViewById(R.id.forgotLabel);
+        forgotLabel.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         final EditText etUsername = (EditText) findViewById(R.id.txtUserName);
         final EditText etPassword = (EditText) findViewById(R.id.txtPassword);
 
@@ -56,6 +58,14 @@ public class LoginActivity extends Activity {
                     password = etPassword.getText().toString();
                     new LoginUserTask().execute(userName, password);
                     dialog = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait");
+                }
+            });
+
+            Button registrationButton = (Button) findViewById(R.id.btnRegister);
+
+            registrationButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
                 }
             });
 

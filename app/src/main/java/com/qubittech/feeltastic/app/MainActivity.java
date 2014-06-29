@@ -53,7 +53,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
     @Override
     protected void onNavItemSelected(int id) {
-        String x = "";
+
     }
 
     @Override

@@ -48,14 +48,14 @@ public class CommentsFragment extends Fragment {
         TextView username = (TextView) mainView.findViewById(R.id.name);
         username.setText(feeling.getUserName());
 
-        TextView feel = (TextView) mainView.findViewById(R.id.feelingText);
-        feel.setText(feeling.getFeelingText());
+        TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
+        feel.setText(feeling.getFeelingFormattedText(""));
 
-        TextView because = (TextView) mainView.findViewById(R.id.becauseText);
-        because.setText(feeling.getReason());
-
-        TextView so = (TextView) mainView.findViewById(R.id.soText);
-        so.setText(feeling.getAction());
+//        TextView because = (TextView) mainView.findViewById(R.id.becauseText);
+//        because.setText(feeling.getReason());
+//
+//        TextView so = (TextView) mainView.findViewById(R.id.soText);
+//        so.setText(feeling.getAction());
 
         TextView count = (TextView) mainView.findViewById(R.id.countCommentsLabel);
         count.setText(String.format("%d comments on this feeling", feeling.getComments().size()));

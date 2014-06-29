@@ -4,7 +4,7 @@
 
     <item
 
-        android:left="20dp"
+        android:left="10dp"
  android:drawable="@drawable/report">
 
     </item>

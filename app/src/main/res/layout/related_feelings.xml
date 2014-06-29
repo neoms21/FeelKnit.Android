@@ -11,6 +11,7 @@
         android:background="@color/whiteBg"
         android:layout_marginTop="5dp"
         android:id="@+id/feelingLayout"
+        android:minHeight="70dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -27,74 +28,75 @@
             android:layout_marginLeft="40dp"
             android:layout_alignTop="@id/userIconImage"
             android:text="TEMPORARY"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
 
         <TextView
-            android:layout_below="@id/userIconImage"
-            style="@style/relatedFeelingsLabels"
             android:id="@+id/tvFeelingLabel"
+            android:layout_marginTop="3dp"
+            android:layout_alignParentRight="true"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="left"
+            android:layout_toRightOf="@id/name"
+            android:layout_alignTop="@id/userIconImage"
             android:layout_marginLeft="10dp"
-            android:text="Feeling:"
-            android:typeface="normal" />
+             />
 
-        <TextView
-            android:layout_below="@id/feelingText"
-            android:id="@+id/becauseLabel"
-            style="@style/relatedFeelingsLabels"
-            android:layout_alignRight="@id/tvFeelingLabel"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="left"
-            android:text="Because:"
-            android:typeface="normal" />
+        <!--<TextView-->
+        <!--android:layout_below="@id/feelingText"-->
+        <!--android:id="@+id/becauseLabel"-->
+        <!--style="@style/relatedFeelingsLabels"-->
+        <!--android:layout_alignRight="@id/tvFeelingLabel"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:text="Because:"-->
+        <!--android:typeface="normal" />-->
 
-        <TextView
-            android:id="@+id/soLabel"
-            android:layout_alignRight="@id/tvFeelingLabel"
-            android:layout_below="@id/becauseLabel"
-            android:layout_marginTop="5dp"
-            style="@style/relatedFeelingsLabels"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="left"
-            android:text="So:"
-            android:typeface="normal" />
+        <!--<TextView-->
+        <!--android:id="@+id/soLabel"-->
+        <!--android:layout_alignRight="@id/tvFeelingLabel"-->
+        <!--android:layout_below="@id/becauseLabel"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--style="@style/relatedFeelingsLabels"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:text="So:"-->
+        <!--android:typeface="normal" />-->
 
-        <TextView
-            android:layout_alignTop="@id/tvFeelingLabel"
-            android:layout_marginLeft="90dp"
-            android:id="@+id/feelingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="feeling" />
+        <!--<TextView-->
+        <!--android:layout_alignTop="@id/tvFeelingLabel"-->
+        <!--android:layout_marginLeft="90dp"-->
+        <!--android:id="@+id/feelingText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="feeling" />-->
 
-        <TextView
-            android:layout_below="@id/feelingText"
-            android:id="@+id/becauseText"
-            android:layout_alignLeft="@id/feelingText"
-            android:layout_alignTop="@id/becauseLabel"
-            android:width="200dp"
-            android:maxLength="140"
-            android:layout_width="wrap_content"
-            android:hint="Reason.."
-            android:layout_height="wrap_content" />
+        <!--<TextView-->
+        <!--android:layout_below="@id/feelingText"-->
+        <!--android:id="@+id/becauseText"-->
+        <!--android:layout_alignLeft="@id/feelingText"-->
+        <!--android:layout_alignTop="@id/becauseLabel"-->
+        <!--android:width="200dp"-->
+        <!--android:maxLength="140"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:hint="Reason.."-->
+        <!--android:layout_height="wrap_content" />-->
 
-        <TextView
-            android:layout_below="@id/feelingText"
-            android:id="@+id/soText"
-            android:hint="Action..."
-            android:layout_alignTop="@id/soLabel"
-            android:width="200dp"
-            android:maxLength="140"
-            android:layout_alignLeft="@id/becauseText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <!--<TextView-->
+        <!--android:layout_below="@id/feelingText"-->
+        <!--android:id="@+id/soText"-->
+        <!--android:hint="Action..."-->
+        <!--android:layout_alignTop="@id/soLabel"-->
+        <!--android:width="200dp"-->
+        <!--android:maxLength="140"-->
+        <!--android:layout_alignLeft="@id/becauseText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
     </RelativeLayout>
 
@@ -107,7 +109,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="3dp"
         android:background="@color/loginLabel"
-        android:padding="10dp"        >
+        android:padding="10dp">
 
         <TextView
             android:textColor="@color/textColor"
@@ -120,10 +122,10 @@
 
     </LinearLayout>
 
-       <ListView
-    android:layout_below="@id/countLayout"
-    android:id="@+id/relatedFeelingsList"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"></ListView>
+    <ListView
+        android:layout_below="@id/countLayout"
+        android:id="@+id/relatedFeelingsList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ListView>
 
 </RelativeLayout>

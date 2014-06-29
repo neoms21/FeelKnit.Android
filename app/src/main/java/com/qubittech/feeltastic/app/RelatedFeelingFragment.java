@@ -29,12 +29,15 @@ public class RelatedFeelingFragment extends Fragment {
 //        setContentView(R.layout.related_feelings);
         Bundle args = getArguments();
 
-        Feeling feeling = (Feeling)args.getSerializable("feeling");
+        Feeling feeling = (Feeling) args.getSerializable("feeling");
         List<Feeling> feelings = (List<Feeling>) args.getSerializable("relatedFeelings");
 
-        TextView feelTextView = (TextView) mainView.findViewById(R.id.feelingText);
-        TextView count = (TextView) mainView.findViewById(R.id.countLabel);
+        TextView userNameTextView = (TextView) mainView.findViewById(R.id.name);
 
+        TextView feelTextView = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
+        TextView count = (TextView) mainView.findViewById(R.id.countLabel);
+        feeling.setFirstFeeling(true);
+        userNameTextView.setText("I");
         feelTextView.setText(feeling.getFeelingFormattedText("I"));
         count.setText(String.format("%d People feeling %s recently", feelings.size(), feeling.getFeelingText()));
 

@@ -52,12 +52,8 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
 
             @Override
             public void onClick(View v) {
-
                 MainActivity mainActivity = (MainActivity) context;
-//                Intent commentsActivityIntent = new Intent(getContext(), CommentsFragment.class);
-//                commentsActivityIntent.putExtra();
                 mainActivity.ShowCommentsFragment(feeling);
-//                context.startActivity(commentsActivityIntent);
             }
         });
 
