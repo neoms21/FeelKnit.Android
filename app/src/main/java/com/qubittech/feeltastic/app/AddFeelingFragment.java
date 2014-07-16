@@ -41,7 +41,22 @@ import util.UrlHelper;
 public class AddFeelingFragment extends Fragment {
 
     private static String username = "";
-    private String[] feelings = {"Happy", "Sad", "Excited", "Interested", "King", "Loser"};
+    private String[] feelings = {"Ashamed",
+            "Blessed",
+            "Embarrassed",
+            "Excited",
+            "Frustrated",
+            "Happy",
+            "Lonely",
+            "Loved",
+            "Pampered",
+            "Proud",
+            "Relieved",
+            "Sad",
+            "Scared",
+            "Sick",
+            "Worried",
+    };
     private Spinner spinnerFeelings;
     private String selectedFeeling = "";
     ProgressDialog dialog;

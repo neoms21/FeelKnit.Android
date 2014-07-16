@@ -10,10 +10,12 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -81,7 +83,9 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
+        mActionBar.setDisplayUseLogoEnabled(true);
         mActionBar.setCustomView(v);
+        mActionBar.setLogo(R.drawable.drawerheader);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
         mActionBar.setIcon(R.drawable.drawerheader);
     }
@@ -91,7 +95,7 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
     }
 
     protected int getDrawerIcon() {
-        return R.drawable.ic_drawer;
+        return R.drawable.drawer_shadow;
     }
 
     @Override

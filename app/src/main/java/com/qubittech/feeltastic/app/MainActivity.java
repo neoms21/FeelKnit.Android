@@ -64,7 +64,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         boolean isRegister = false;
         Bundle bld = intent.getExtras();// ("IsFromRegister", isRegister);
 
-        isRegister = bld.getBoolean("IsFromRegister");
+        isRegister = bld == null ? false : bld.getBoolean("IsFromRegister");
         Button btnSignout = (Button) findViewById(R.id.signout);
         btnSignout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
