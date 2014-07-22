@@ -33,6 +33,7 @@
             android:layout_height="wrap_content" />
 
 
+
         <TextView
             android:layout_below="@id/userIconImage"
             android:layout_alignTop="@id/name"
@@ -144,6 +145,7 @@
             android:layout_weight="0.8"
             android:id="@+id/newComment"
             android:text=""
+            android:textCursorDrawable="@null"
             android:textColorHint="@color/whiteBg"
             android:inputType="textMultiLine"
             android:padding="10dp"

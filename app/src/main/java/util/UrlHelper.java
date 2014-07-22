@@ -17,6 +17,7 @@ public class UrlHelper {
     public static final String COMMENTS = onEmulator ? BASE_URL_EMULATOR + "Comments" : BASE_URL + "Comments";
     public static final String FEELINGS = onEmulator ? BASE_URL_EMULATOR + "feelings" : BASE_URL + "feelings";
     public static final String USER_VERIFY = onEmulator ? BASE_URL_EMULATOR + "Users/Verify" : BASE_URL + "Users/Verify";
+    public static final String USER_KEY = onEmulator ? BASE_URL_EMULATOR + "Users/clientkey" : BASE_URL + "Users/clientkey";
     public static final String USER = onEmulator ? BASE_URL_EMULATOR + "Users" : BASE_URL + "Users";
     public static final String USERNAME = onEmulator ? BASE_URL_EMULATOR + "feelings/username/" : BASE_URL + "feelings/username/";
 

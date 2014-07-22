@@ -68,6 +68,7 @@
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="httpclient-cache-4.2.3" level="project" />
     <orderEntry type="library" exported="" name="httpclient-4.2.3" level="project" />
+    <orderEntry type="library" exported="" name="google-play-services" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.2.3" level="project" />
     <orderEntry type="library" exported="" name="fluent-hc-4.2.3" level="project" />
     <orderEntry type="library" exported="" name="commons-logging-1.1.1" level="project" />

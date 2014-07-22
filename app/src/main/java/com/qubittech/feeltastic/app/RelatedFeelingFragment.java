@@ -39,7 +39,7 @@ public class RelatedFeelingFragment extends Fragment {
         feeling.setFirstFeeling(true);
         userNameTextView.setText("I");
         feelTextView.setText(feeling.getFeelingFormattedText("I"));
-        count.setText(String.format("%d People feeling %s recently", feelings.size(), feeling.getFeelingText()));
+        count.setText(String.format("%d people feeling %s currently", feelings.size(), feeling.getFeelingText()));
 
         ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, feelings);
 

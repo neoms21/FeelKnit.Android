@@ -68,36 +68,43 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 //            holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
             holder.userIcon = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.supportButton = (Button) convertView.findViewById(R.id.btnSupport);
+            holder.supportButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
             holder.reportButton = (Button) convertView.findViewById(R.id.btnReport);
             holder.commentButton = (Button) convertView.findViewById(R.id.btnComment);
+            holder.commentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NavigateToCommentsView(feeling);
+                }
+            });
+
             holder.countTextView = (TextView) convertView.findViewById(R.id.commentsCount);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
 
         convertView.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
-                MainActivity mainActivity = (MainActivity) context;
-                mainActivity.ShowCommentsFragment(feeling);
-
-//                Intent commentsActivityIntent = new Intent(getContext(), CommentsFragment.class);
-//                commentsActivityIntent.putExtra("feeling", feeling);
-//                context.startActivity(commentsActivityIntent);
+                NavigateToCommentsView(feeling);
             }
         });
 
         holder.usernameTextView.setText(feeling.getUserName());
         holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
         holder.countTextView.setText(feeling.getComments().size() + "  comments");
-
-        //  if(!isRunningOnEmulator) holder.locationTextView.setText(getLocation(feeling));
-
         return convertView;
     }
 
+    private void NavigateToCommentsView(Feeling feeling) {
+        MainActivity mainActivity = (MainActivity) context;
+        mainActivity.ShowCommentsFragment(feeling);
+    }
 
     private String getLocation(Feeling feeling) {
         Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());

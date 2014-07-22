@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,11 @@ public class LoginActivity extends Activity {
     private String password;
 
     ProgressDialog dialog;
+    GoogleCloudMessaging gcm;
+    String regid;
+    String PROJECT_NUMBER = "846765263532";
+    boolean regIdRecevied = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +106,35 @@ public class LoginActivity extends Activity {
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String verifyUrl = UrlHelper.USER_VERIFY;
             String response = jsonHttpClient.PostParams(verifyUrl, args);
-            return Boolean.parseBoolean(response);
+            boolean result = Boolean.parseBoolean(response);
+
+            if (result) {
+                while (!regIdRecevied) {
+                    try {
+                        if (gcm == null) {
+                            gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                        }
+                        regid = gcm.register(PROJECT_NUMBER);
+                        String msg = "Device registered, registration ID=" + regid;
+                        Log.i("GCM", msg);
+                        regIdRecevied = true;
+
+                        args = new ArrayList<NameValuePair>();
+                        args.add(new BasicNameValuePair("username", params[0]));
+                        args.add(new BasicNameValuePair("key", regid));
+
+                        String keyUrl = UrlHelper.USER_KEY;
+                        jsonHttpClient.PostParams(keyUrl, args);
+
+
+                    } catch (IOException ex) {
+                        Log.i("Error:", ex.getMessage());
+
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
