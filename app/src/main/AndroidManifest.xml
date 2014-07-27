@@ -48,9 +48,22 @@
             android:name="com.qubittech.feeltastic.app.LoginActivity"
             android:label="@string/title_activity_login" />
 
+        <receiver
+            android:name="com.qubittech.feeltastic.receivers.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.hmkcode.android.gcm" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.qubittech.feeltastic.services.GcmMessageHandler" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 </manifest>

@@ -54,8 +54,6 @@ public class LoginActivity extends Activity {
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         if (settings.getString("Username", null) != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//            etUsername.setText(settings.getString("Username", "").toString());
-//            etPassword.setText(settings.getString("Password", "").toString());
         } else {
 
 
@@ -126,10 +124,8 @@ public class LoginActivity extends Activity {
                         String keyUrl = UrlHelper.USER_KEY;
                         jsonHttpClient.PostParams(keyUrl, args);
 
-
                     } catch (IOException ex) {
                         Log.i("Error:", ex.getMessage());
-
                     }
                 }
             }

@@ -111,8 +111,18 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("feeling", feeling);
-        bundle.putSerializable("user", "neoms21");
+        bundle.putSerializable("user", getUserName());
         commentsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, commentsFragment, "Comments").addToBackStack("Comments").commit();
+    }
+
+    private String getUserName() {
+        String name = "";
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        if (settings != null) {
+
+            name = settings.getString("Username", "").toString();
+        }
+        return name;
     }
 }

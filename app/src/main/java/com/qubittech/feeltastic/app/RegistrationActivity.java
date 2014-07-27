@@ -1,6 +1,7 @@
 package com.qubittech.feeltastic.app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,10 +15,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.qubittech.feeltastic.services.TrackingService;
 
 import org.apache.http.NameValuePair;
@@ -39,7 +42,11 @@ public class RegistrationActivity extends Activity {
     private EditText userName, password, email, location;
     TrackingService myService;
     boolean isBound = false;
-
+    ProgressDialog dialog;
+    GoogleCloudMessaging gcm;
+    String regid;
+    String PROJECT_NUMBER = "846765263532";
+    boolean regIdRecevied = false;
     private ServiceConnection myConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -79,7 +86,7 @@ public class RegistrationActivity extends Activity {
 
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                dialog = ProgressDialog.show(RegistrationActivity.this, "Regisstering", "Please wait");
                 new SaveUserTask().execute("try");
             }
         });
@@ -110,10 +117,34 @@ public class RegistrationActivity extends Activity {
     private class SaveUserTask extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPostExecute(String s) {
+            dialog.dismiss();
             if (s != "Failure") {
+                while (!regIdRecevied) {
+                    try {
+                        if (gcm == null) {
+                            gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                        }
+                        regid = gcm.register(PROJECT_NUMBER);
+                        String msg = "Device registered, registration ID=" + regid;
+                        Log.i("GCM", msg);
+                        regIdRecevied = true;
+                        List<NameValuePair> args = new ArrayList<NameValuePair>();
+                        JsonHttpClient jsonHttpClient = new JsonHttpClient();
+                        args = new ArrayList<NameValuePair>();
+                        args.add(new BasicNameValuePair("username", userName.getText().toString()));
+                        args.add(new BasicNameValuePair("key", regid));
+
+                        String keyUrl = UrlHelper.USER_KEY;
+                        jsonHttpClient.PostParams(keyUrl, args);
+
+                    } catch (IOException ex) {
+                        Log.i("Error:", ex.getMessage());
+                    }
+                }
                 Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                 intent.putExtra("IsFromRegister",true);
                 startActivity(intent);
+
             }
 
         }
@@ -123,8 +154,8 @@ public class RegistrationActivity extends Activity {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", userName.getText().toString()));
-            args.add(new BasicNameValuePair("email", password.getText().toString()));
-            args.add(new BasicNameValuePair("password", email.getText().toString()));
+            args.add(new BasicNameValuePair("password", password.getText().toString()));
+            args.add(new BasicNameValuePair("emailaddress", email.getText().toString()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String res = jsonHttpClient.PostParams(UrlHelper.USER, args);
             return res;

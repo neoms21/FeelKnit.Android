@@ -76,7 +76,8 @@ public class UserFeelingsFragment extends Fragment {
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();
             _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
-            _feelings.get(0).setFirstFeeling(true);
+            if (!_feelings.isEmpty())
+                _feelings.get(0).setFirstFeeling(true);
 
             ArrayAdapter arrayAdapter = new UserFeelingsAdapter(getActivity(), R.layout.listview, _feelings);
 

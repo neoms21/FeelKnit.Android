@@ -1,6 +1,7 @@
 package com.qubittech.feeltastic.app;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,12 +16,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.qubittech.feeltastic.adapters.CommentsAdapater;
+import com.qubittech.feeltastic.models.Comment;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import util.JsonHttpClient;
@@ -33,6 +36,9 @@ public class CommentsFragment extends Fragment {
 
     private ProgressDialog dialog;
     private String username;
+    private ArrayAdapter arrayAdapter;
+    private Feeling feeling;
+    private String commentText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +48,7 @@ public class CommentsFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        final Feeling feeling = (Feeling) args.getSerializable("feeling");
+        feeling = (Feeling) args.getSerializable("feeling");
         username = args.getString("user");
 
         TextView username = (TextView) mainView.findViewById(R.id.name);
@@ -50,12 +56,6 @@ public class CommentsFragment extends Fragment {
 
         TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
         feel.setText(feeling.getFeelingFormattedText(""));
-
-//        TextView because = (TextView) mainView.findViewById(R.id.becauseText);
-//        because.setText(feeling.getReason());
-//
-//        TextView so = (TextView) mainView.findViewById(R.id.soText);
-//        so.setText(feeling.getAction());
 
         TextView count = (TextView) mainView.findViewById(R.id.countCommentsLabel);
         count.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
@@ -66,19 +66,17 @@ public class CommentsFragment extends Fragment {
 
         saveCommentButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               // dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
+                dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
                 new SaveCommentTask().execute(commentEdiText.getText().toString(), feeling.getId());
             }
         });
-        ArrayAdapter arrayAdapter = new CommentsAdapater(getActivity(), R.layout.commentslistview, feeling.getComments());
-
+        arrayAdapter = new CommentsAdapater(getActivity(), R.layout.commentslistview, feeling.getComments());
         ListView listview = (ListView) mainView.findViewById(R.id.commentsList);
         // endTime = (System.nanoTime() - startTime) / 1000000000;
 
         listview.setAdapter(arrayAdapter);
         listview.setDivider(new ColorDrawable());
         listview.setDividerHeight(10);
-
         arrayAdapter.notifyDataSetChanged();
         return mainView;
     }
@@ -86,19 +84,41 @@ public class CommentsFragment extends Fragment {
     private class SaveCommentTask extends AsyncTask<String, Integer, String> {
 
         @Override
-        protected String doInBackground(String... params) {
-            String commentText = params[0];
+        protected String doInBackground(final String... params) {
+            commentText = params[0];
             String feelingId = params[1];
+
+
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("Text", params[0]));
             args.add(new BasicNameValuePair("User", username));
-
-//            args.add(new BasicNameValuePair("user", parentData.toString()));
-            //  args.add(new BasicNameValuePair("content", parentData.toString()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             return jsonHttpClient.PostParams(UrlHelper.COMMENTS + "/" + feelingId, args);
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            dialog.dismiss();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (feeling == null)
+                        return;
+
+                    Comment comment = new Comment();
+                    comment.setUser(username);
+                    comment.setText(commentText);
+                    comment.setPostedAt(new Date().toString());
+                    feeling.getComments().add(comment);
+                    arrayAdapter.notifyDataSetChanged();
+
+                }
+            });
+        }
+
+
     }
 
 }
