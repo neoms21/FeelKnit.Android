@@ -45,15 +45,25 @@
         </LinearLayout>
 
         <TextView
-            android:layout_below="@id/feelingTextLayout"
+
             android:id="@+id/commentsCount"
             android:layout_alignParentLeft="true"
+            android:layout_below="@id/feelingTextLayout"
             android:hint="comments"
-            android:width="200dp"
             android:layout_marginTop="7dp"
             android:layout_marginLeft="20dp"
             android:maxLength="140"
-            android:layout_alignLeft="@id/becauseText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+
+            android:id="@+id/supportCount"
+            android:hint="support"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/feelingTextLayout"
+            android:maxLength="140"
+            android:layout_toRightOf="@id/commentsCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>

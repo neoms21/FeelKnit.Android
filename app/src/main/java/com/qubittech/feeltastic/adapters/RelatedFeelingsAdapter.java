@@ -2,9 +2,9 @@ package com.qubittech.feeltastic.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +13,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.qubittech.feeltastic.app.CommentsFragment;
 import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import util.JsonHttpClient;
 import util.UrlHelper;
 
 /**
@@ -39,7 +43,8 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         TextView usernameTextView;
         TextView feelingTextView;
         TextView locationTextView;
-        TextView countTextView;
+        TextView commentsCountTextView;
+        TextView supportCountTextView;
         ImageView userIcon;
         Button commentButton;
         Button supportButton;
@@ -71,7 +76,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder.supportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    new IncreaseSupportCountTask().execute(feeling.getId());
                 }
             });
             holder.reportButton = (Button) convertView.findViewById(R.id.btnReport);
@@ -83,7 +88,8 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
                 }
             });
 
-            holder.countTextView = (TextView) convertView.findViewById(R.id.commentsCount);
+            holder.commentsCountTextView = (TextView) convertView.findViewById(R.id.commentsCount);
+            holder.supportCountTextView = (TextView) convertView.findViewById(R.id.supportCount);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
@@ -97,7 +103,8 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
         holder.usernameTextView.setText(feeling.getUserName());
         holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
-        holder.countTextView.setText(feeling.getComments().size() + "  comments");
+        holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
+        holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
         return convertView;
     }
 
@@ -115,6 +122,18 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             e.printStackTrace();
         }
         return addresses.size() > 0 ? addresses.get(0).getLocality() : "";
+    }
 
+    private class IncreaseSupportCountTask extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            args.add(new BasicNameValuePair("feelingId", params[0]));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            String supportUrl = UrlHelper.SUPPORT;
+            String response = jsonHttpClient.PostParams(supportUrl, args);
+            return true;
+        }
     }
 }

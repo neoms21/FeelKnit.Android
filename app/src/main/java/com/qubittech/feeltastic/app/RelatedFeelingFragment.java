@@ -25,10 +25,7 @@ public class RelatedFeelingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.related_feelings, container, false);
 
-
-//        setContentView(R.layout.related_feelings);
         Bundle args = getArguments();
-
         Feeling feeling = (Feeling) args.getSerializable("feeling");
         List<Feeling> feelings = (List<Feeling>) args.getSerializable("relatedFeelings");
 

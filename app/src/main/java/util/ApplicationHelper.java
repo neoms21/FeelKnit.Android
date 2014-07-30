@@ -7,5 +7,5 @@ import android.content.SharedPreferences;
  */
 public class ApplicationHelper {
 
-
+public static String UserName;
 }

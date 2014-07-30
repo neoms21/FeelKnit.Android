@@ -39,12 +39,12 @@ public class CommentsFragment extends Fragment {
     private ArrayAdapter arrayAdapter;
     private Feeling feeling;
     private String commentText;
+    private EditText commentEdiText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View mainView = inflater.inflate(R.layout.comments, container, false);
-
 
         Bundle args = getArguments();
 
@@ -60,7 +60,7 @@ public class CommentsFragment extends Fragment {
         TextView count = (TextView) mainView.findViewById(R.id.countCommentsLabel);
         count.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
 
-        final EditText commentEdiText = (EditText) mainView.findViewById(R.id.newComment);
+        commentEdiText = (EditText) mainView.findViewById(R.id.newComment);
 
         ImageView saveCommentButton = (ImageView) mainView.findViewById(R.id.newCommentButton);
 
@@ -106,7 +106,7 @@ public class CommentsFragment extends Fragment {
                 public void run() {
                     if (feeling == null)
                         return;
-
+                    commentEdiText.setText("");
                     Comment comment = new Comment();
                     comment.setUser(username);
                     comment.setText(commentText);

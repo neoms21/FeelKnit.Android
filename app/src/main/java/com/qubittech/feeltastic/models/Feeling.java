@@ -18,7 +18,7 @@ public class Feeling implements Serializable {
     private double latitude;
     private double longitude;
     private boolean isFirstFeeling;
-
+    private int supportCount;
 
     private List<Comment> comments;
 
@@ -115,5 +115,13 @@ public class Feeling implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getSupportCount() {
+        return supportCount;
+    }
+
+    public void setSupportCount(int supportCount) {
+        this.supportCount = supportCount;
     }
 }

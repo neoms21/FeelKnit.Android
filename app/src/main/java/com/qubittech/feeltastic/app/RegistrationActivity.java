@@ -86,7 +86,7 @@ public class RegistrationActivity extends Activity {
 
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dialog = ProgressDialog.show(RegistrationActivity.this, "Regisstering", "Please wait");
+                dialog = ProgressDialog.show(RegistrationActivity.this, "Registering User", "Please wait");
                 new SaveUserTask().execute("try");
             }
         });
@@ -118,35 +118,13 @@ public class RegistrationActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             dialog.dismiss();
+
             if (s != "Failure") {
-                while (!regIdRecevied) {
-                    try {
-                        if (gcm == null) {
-                            gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                        }
-                        regid = gcm.register(PROJECT_NUMBER);
-                        String msg = "Device registered, registration ID=" + regid;
-                        Log.i("GCM", msg);
-                        regIdRecevied = true;
-                        List<NameValuePair> args = new ArrayList<NameValuePair>();
-                        JsonHttpClient jsonHttpClient = new JsonHttpClient();
-                        args = new ArrayList<NameValuePair>();
-                        args.add(new BasicNameValuePair("username", userName.getText().toString()));
-                        args.add(new BasicNameValuePair("key", regid));
 
-                        String keyUrl = UrlHelper.USER_KEY;
-                        jsonHttpClient.PostParams(keyUrl, args);
-
-                    } catch (IOException ex) {
-                        Log.i("Error:", ex.getMessage());
-                    }
-                }
                 Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                 intent.putExtra("IsFromRegister",true);
                 startActivity(intent);
-
             }
-
         }
 
         @Override
@@ -158,6 +136,30 @@ public class RegistrationActivity extends Activity {
             args.add(new BasicNameValuePair("emailaddress", email.getText().toString()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String res = jsonHttpClient.PostParams(UrlHelper.USER, args);
+
+            while (!regIdRecevied) {
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                    }
+                    regid = gcm.register(PROJECT_NUMBER);
+                    String msg = "Device registered, registration ID=" + regid;
+                    Log.i("GCM", msg);
+                    regIdRecevied = true;
+                    args = new ArrayList<NameValuePair>();
+                    jsonHttpClient = new JsonHttpClient();
+                    args = new ArrayList<NameValuePair>();
+                    args.add(new BasicNameValuePair("username", userName.getText().toString()));
+                    args.add(new BasicNameValuePair("key", regid));
+
+                    String keyUrl = UrlHelper.USER_KEY;
+                    jsonHttpClient.PostParams(keyUrl, args);
+
+                } catch (IOException ex) {
+                    Log.i("Error:", ex.getMessage());
+                }
+            }
+
             return res;
         }
     }

@@ -228,11 +228,6 @@ public class AddFeelingFragment extends Fragment {
                 }.getType();
                 _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
                 mCallback.onFeelingCreated(_feeling, _feelings);
-
-//                Intent intent = new Intent(getActivity(), RelatedFeelingFragment.class);
-//                intent.putExtra("feeling", _feeling);
-//                intent.putExtra("relatedFeelings", (java.io.Serializable) _feelings);
-//                startActivity(intent);
             }
         }
 

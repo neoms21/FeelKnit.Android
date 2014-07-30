@@ -13,10 +13,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
 
+import com.qubittech.feeltastic.models.Feeling;
 import com.qubittech.feeltastic.receivers.GcmBroadcastReceiver;
+
+import java.util.List;
 
 public class GcmMessageHandler extends IntentService {
 
@@ -44,7 +49,11 @@ public class GcmMessageHandler extends IntentService {
         String messageType = gcm.getMessageType(intent);
 
 
+
         String user = extras.getString("user");
+        String feelingJson = extras.getString("feeling");
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+        Feeling feeling = gson.fromJson(feelingJson, Feeling.class);
         mes = String.format("%s %s", extras.getString("message"), user);
         Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
