@@ -9,7 +9,7 @@ public class UrlHelper {
     static boolean onEmulator;
 
     static {
-        onEmulator = isRunningOnEmulator();
+        onEmulator = false;//isRunningOnEmulator();
     }
 
     private static final String BASE_URL_EMULATOR = "http://10.0.3.2/FeelKnitService/";

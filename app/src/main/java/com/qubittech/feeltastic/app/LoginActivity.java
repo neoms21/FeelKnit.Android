@@ -87,11 +87,10 @@ public class LoginActivity extends Activity {
 
     private class LoginUserTask extends AsyncTask<String, Integer, Boolean> {
         @Override
-        protected void onPostExecute(Boolean s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(Boolean loginSuccessful) {
+            super.onPostExecute(loginSuccessful);
             dialog.dismiss();
-            if (s) {
-                System.out.println("User RESULT:" + s);
+            if (loginSuccessful) {
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("Username", userName);
