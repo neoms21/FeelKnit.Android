@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ public class CommentsFragment extends Fragment {
     private Feeling feeling;
     private String commentText;
     private EditText commentEdiText;
+    private ImageView saveCommentButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,8 +64,25 @@ public class CommentsFragment extends Fragment {
         count.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
 
         commentEdiText = (EditText) mainView.findViewById(R.id.newComment);
+        saveCommentButton = (ImageView) mainView.findViewById(R.id.newCommentButton);
 
-        ImageView saveCommentButton = (ImageView) mainView.findViewById(R.id.newCommentButton);
+        commentEdiText.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (s.length() == 0)
+                    saveCommentButton.setVisibility(View.INVISIBLE);
+                else
+                    saveCommentButton.setVisibility(View.VISIBLE);
+            }
+        });
 
         saveCommentButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -87,7 +107,6 @@ public class CommentsFragment extends Fragment {
         protected String doInBackground(final String... params) {
             commentText = params[0];
             String feelingId = params[1];
-
 
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();

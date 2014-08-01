@@ -158,6 +158,7 @@
         <ImageView
 
             android:id="@+id/newCommentButton"
+            android:visibility="invisible"
             android:layout_marginLeft="4dp"
             android:clickable="true"
             android:layout_gravity="center"

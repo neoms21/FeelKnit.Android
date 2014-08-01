@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,8 @@ public class LoginActivity extends Activity {
     String regid;
     String PROJECT_NUMBER = "846765263532";
     boolean regIdRecevied = false;
+    private EditText etUsername;
+    private EditText etPassword;
 
 
     @Override
@@ -52,8 +55,8 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
         TextView forgotLabel = (TextView) findViewById(R.id.forgotLabel);
         forgotLabel.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        final EditText etUsername = (EditText) findViewById(R.id.txtUserName);
-        final EditText etPassword = (EditText) findViewById(R.id.txtPassword);
+        etUsername = (EditText) findViewById(R.id.txtUserName);
+        etPassword = (EditText) findViewById(R.id.txtPassword);
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         if (settings.getString("Username", null) != null) {
@@ -63,6 +66,25 @@ public class LoginActivity extends Activity {
 
 
             Button loginButton = (Button) findViewById(R.id.btnLogin);
+
+            //TextWatcher
+            TextWatcher textWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                    checkFieldsForEmptyValues();
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                }
+            };
+            etUsername.addTextChangedListener(textWatcher);
+            etPassword.addTextChangedListener(textWatcher);
 
             loginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -84,6 +106,22 @@ public class LoginActivity extends Activity {
         }
     }
 
+    private void checkFieldsForEmptyValues() {
+        Button b = (Button) findViewById(R.id.btnLogin);
+
+        String s1 = etUsername.getText().toString().trim();
+        String s2 = etPassword.getText().toString().trim();
+
+        if (s1.length() > 0 || s2.length() > 0) {
+            b.setClickable(false);
+            b.setBackgroundColor(getResources().getColor(R.color.loginLabel));
+        } else {
+            b.setClickable(true);
+            b.setBackgroundColor(getResources().getColor(R.color.greyColor));
+        }
+
+    }
+
 
     private class LoginUserTask extends AsyncTask<String, Integer, Boolean> {
         @Override
@@ -98,9 +136,7 @@ public class LoginActivity extends Activity {
                 editor.commit();
                 ApplicationHelper.UserName = userName;
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            }
-            else
-            {
+            } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
                 builder1.setMessage("Wrong username/password");
                 builder1.setCancelable(true);
