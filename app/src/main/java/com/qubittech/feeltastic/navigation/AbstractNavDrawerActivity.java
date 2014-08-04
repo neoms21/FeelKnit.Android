@@ -168,9 +168,10 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
             setTitle(selectedItem.getLabel());
         }
 
-        if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
-            mDrawerLayout.closeDrawer(mDrawerList);
-        }
+        mDrawerLayout.closeDrawers();
+//        if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
+//            mDrawerLayout.closeDrawer(mDrawerLayout);
+//        }
     }
 
     @Override

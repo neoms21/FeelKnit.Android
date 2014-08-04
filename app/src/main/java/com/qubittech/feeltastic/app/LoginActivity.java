@@ -112,12 +112,12 @@ public class LoginActivity extends Activity {
         String s1 = etUsername.getText().toString().trim();
         String s2 = etPassword.getText().toString().trim();
 
-        if (s1.length() > 0 || s2.length() > 0) {
+        if (s1.length() == 0 || s2.length() == 0) {
             b.setClickable(false);
-            b.setBackgroundColor(getResources().getColor(R.color.loginLabel));
+            b.setBackgroundColor(getResources().getColor(R.color.greyColor));
         } else {
             b.setClickable(true);
-            b.setBackgroundColor(getResources().getColor(R.color.greyColor));
+            b.setBackgroundColor(getResources().getColor(R.color.loginLabel));
         }
 
     }

@@ -57,6 +57,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 .mainLayout(R.layout.activity_main)
                 .drawerLayoutId(R.id.drawer_layout)
                 .leftDrawerId(R.id.left_drawer)
+                .menu(menu)
                 .adapter(adapter)
                 .drawerIcon(R.drawable.ic_drawer)
                 .build();
@@ -66,7 +67,10 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
     @Override
     protected void onNavItemSelected(int id) {
+        switch (id) {
+            case 103:
 
+        }
     }
 
     @Override
@@ -76,7 +80,6 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         Intent intent = getIntent();
         boolean isRegister = false;
         Bundle bld = intent.getExtras();// ("IsFromRegister", isRegister);
-
 
         isRegister = bld == null ? false : bld.getBoolean("IsFromRegister");
         TextView usrTextView = (TextView) findViewById(R.id.usrName);
