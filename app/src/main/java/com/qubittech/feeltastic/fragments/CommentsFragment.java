@@ -1,4 +1,4 @@
-package com.qubittech.feeltastic.app;
+package com.qubittech.feeltastic.fragments;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.qubittech.feeltastic.adapters.CommentsAdapater;
+import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Comment;
 import com.qubittech.feeltastic.models.Feeling;
 

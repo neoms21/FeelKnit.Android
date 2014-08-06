@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.qubittech.feeltastic.app.CommentsFragment;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Comment;
 

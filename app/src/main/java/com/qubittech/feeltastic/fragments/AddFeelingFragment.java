@@ -1,4 +1,4 @@
-package com.qubittech.feeltastic.app;
+package com.qubittech.feeltastic.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;

@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.qubittech.feeltastic.fragments.AddFeelingFragment;
+import com.qubittech.feeltastic.fragments.CommentsFragment;
+import com.qubittech.feeltastic.fragments.RelatedFeelingFragment;
+import com.qubittech.feeltastic.fragments.UserFeelingsFragment;
+import com.qubittech.feeltastic.fragments.commentsFeelingsFragment;
 import com.qubittech.feeltastic.models.Feeling;
 import com.qubittech.feeltastic.navigation.AbstractNavDrawerActivity;
 import com.qubittech.feeltastic.navigation.NavDrawerActivityConfiguration;
@@ -22,7 +23,6 @@ import com.qubittech.feeltastic.navigation.NavMenuBuilder;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +31,11 @@ import util.ApplicationHelper;
 import util.JsonHttpClient;
 import util.UrlHelper;
 
-/**
- * Created by Manoj on 08/06/2014.
- */
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
 
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
-
         NavMenuBuilder navBuilder = new NavMenuBuilder();
-
-
         String[] drawerItems = getResources().getStringArray(R.array.navigation_drawer_options);
         int id = 101;
         for (String item : drawerItems) {
@@ -69,7 +63,10 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     protected void onNavItemSelected(int id) {
         switch (id) {
             case 103:
-
+                commentsFeelingsFragment fragment = new commentsFeelingsFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment , "Comments Feelings").addToBackStack("Comments" +
+                        "Feelings").commit();
+                break;
         }
     }
 
@@ -135,27 +132,19 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         commentsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, commentsFragment, "Comments").addToBackStack("Comments").commit();
     }
-//
-//    private String getUserName() {
-//        String name = "";
-//        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-//        if (settings != null) {
-//
-//            name = settings.getString("Username", "").toString();
-//        }
-//        return name;
-//    }
 
     private class ClearUserGcmKeyTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
 
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
-            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            String keyUrl = UrlHelper.CLEAR_USER_KEY;
-            return jsonHttpClient.PostParams(keyUrl, args);
-        }
+                List<NameValuePair> args = new ArrayList<NameValuePair>();
+                args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+                JsonHttpClient jsonHttpClient = new JsonHttpClient();
+                String keyUrl = UrlHelper.CLEAR_USER_KEY;
+                return jsonHttpClient.PostParams(keyUrl, args);
+            }
     }
+
+
 }

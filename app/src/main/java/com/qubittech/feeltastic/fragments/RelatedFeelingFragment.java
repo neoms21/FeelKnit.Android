@@ -1,4 +1,4 @@
-package com.qubittech.feeltastic.app;
+package com.qubittech.feeltastic.fragments;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.qubittech.feeltastic.adapters.RelatedFeelingsAdapter;
+import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
 
 import java.util.List;
@@ -41,7 +42,6 @@ public class RelatedFeelingFragment extends Fragment {
         ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, feelings);
 
         ListView listview = (ListView) mainView.findViewById(R.id.relatedFeelingsList);
-
 
         listview.setAdapter(arrayAdapter);
         listview.setDivider(new ColorDrawable());

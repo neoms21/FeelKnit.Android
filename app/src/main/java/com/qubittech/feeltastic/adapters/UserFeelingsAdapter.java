@@ -2,15 +2,12 @@ package com.qubittech.feeltastic.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.qubittech.feeltastic.app.CommentsFragment;
 import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
