@@ -2,10 +2,12 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-
-        android:left="10dp"
- android:drawable="@drawable/report">
-
+    <item android:left="18dp" android:right="-20dp">
+        <inset
+            android:insetTop="6dp"
+            android:insetBottom="6dp"
+            android:insetLeft="6dp"
+            android:insetRight="6dp"
+            android:drawable="@drawable/report"/>
     </item>
 </layer-list>

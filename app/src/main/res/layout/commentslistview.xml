@@ -20,9 +20,9 @@
             android:id="@+id/name"
             style="@style/userNameStyle"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="1dp"
             android:layout_alignTop="@id/userIconImage"
-            android:text="TEMPORARY"
+            android:text="neo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import util.ApplicationHelper;
 import util.JsonHttpClient;
 import util.UrlHelper;
 
@@ -56,7 +57,8 @@ public class CommentsFragment extends Fragment {
         username = args.getString("user");
 
         TextView username = (TextView) mainView.findViewById(R.id.name);
-        username.setText(feeling.getUserName());
+        String userName = ApplicationHelper.UserName == feeling.getUserName() ? "I" : feeling.getUserName();
+        username.setText(userName);
 
         TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
         feel.setText(feeling.getFeelingFormattedText(""));

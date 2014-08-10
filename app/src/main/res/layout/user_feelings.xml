@@ -6,11 +6,10 @@
     <TextView
         android:text="My Recent Feelings"
         android:background="@color/loginLabel"
-        android:layout_gravity="center"
-        android:paddingLeft="40dp"
+        android:gravity="center"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:textColor="@color/textColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

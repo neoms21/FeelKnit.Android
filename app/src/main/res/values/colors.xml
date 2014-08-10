@@ -4,6 +4,7 @@
     <color name="loginLabel">#2659A1</color>
     <color name="textColor">#FFFFFF</color>
     <color name="buttonColor">#629E36</color>
+    <color name="lightButtonColor">#2B6600</color>
     <color name="whiteBg">#FFFFFF</color>
     <color name="mainBg">#A4C3DC</color>
     <color name="greyColor">#6F7376</color>
