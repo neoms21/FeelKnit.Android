@@ -1,7 +1,6 @@
 package com.qubittech.feeltastic.fragments;
 
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,9 +28,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import util.ApplicationHelper;
-import util.JsonHttpClient;
-import util.UrlHelper;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 /**
  * Created by Manoj on 19/05/2014.
@@ -39,7 +38,7 @@ import util.UrlHelper;
 public class CommentsFragment extends Fragment {
 
     private ProgressDialog dialog;
-    private String username;
+//    private String username;
     private ArrayAdapter arrayAdapter;
     private Feeling feeling;
     private String commentText;
@@ -54,11 +53,11 @@ public class CommentsFragment extends Fragment {
         Bundle args = getArguments();
 
         feeling = (Feeling) args.getSerializable("feeling");
-        username = args.getString("user");
+//        username = ApplicationHelper.UserName;
 
-        TextView username = (TextView) mainView.findViewById(R.id.name);
-        String userName = ApplicationHelper.UserName == feeling.getUserName() ? "I" : feeling.getUserName();
-        username.setText(userName);
+        TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
+        String feelingUserName = ApplicationHelper.UserName == feeling.getUserName() ? "I" : feeling.getUserName();
+        feelingUserNameTextView.setText(feelingUserName);
 
         TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
         feel.setText(feeling.getFeelingFormattedText(""));
@@ -95,7 +94,6 @@ public class CommentsFragment extends Fragment {
         });
         arrayAdapter = new CommentsAdapater(getActivity(), R.layout.commentslistview, feeling.getComments());
         ListView listview = (ListView) mainView.findViewById(R.id.commentsList);
-        // endTime = (System.nanoTime() - startTime) / 1000000000;
 
         listview.setAdapter(arrayAdapter);
         listview.setDivider(new ColorDrawable());
@@ -114,7 +112,7 @@ public class CommentsFragment extends Fragment {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("Text", params[0]));
-            args.add(new BasicNameValuePair("User", username));
+            args.add(new BasicNameValuePair("User", ApplicationHelper.UserName));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             return jsonHttpClient.PostParams(UrlHelper.COMMENTS + "/" + feelingId, args);
         }
@@ -130,7 +128,7 @@ public class CommentsFragment extends Fragment {
                         return;
                     commentEdiText.setText("");
                     Comment comment = new Comment();
-                    comment.setUser(username);
+                    comment.setUser("me"); // Because while in comments whenver anyone save it'll be that user
                     comment.setText(commentText);
                     comment.setPostedAt(new Date().toString());
                     feeling.getComments().add(comment);

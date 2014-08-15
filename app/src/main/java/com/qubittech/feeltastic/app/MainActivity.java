@@ -27,9 +27,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.ApplicationHelper;
-import util.JsonHttpClient;
-import util.UrlHelper;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
 
@@ -85,6 +85,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         btnSignout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                ApplicationHelper.UserName = "";
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 settings.edit().remove("Username").commit();
                 settings.edit().remove("Password").commit();

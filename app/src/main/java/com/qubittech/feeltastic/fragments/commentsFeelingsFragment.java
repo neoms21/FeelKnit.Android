@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.qubittech.feeltastic.adapters.RelatedFeelingsAdapter;
-import com.qubittech.feeltastic.adapters.UserFeelingsAdapter;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
 
@@ -25,9 +24,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.ApplicationHelper;
-import util.JsonHttpClient;
-import util.UrlHelper;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 public class commentsFeelingsFragment extends Fragment {
 

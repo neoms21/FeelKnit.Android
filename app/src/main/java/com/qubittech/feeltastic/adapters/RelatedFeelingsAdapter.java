@@ -5,6 +5,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import util.JsonHttpClient;
-import util.UrlHelper;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.GMailSender;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 /**
  * Created by Manoj on 18/05/2014.
@@ -87,6 +90,12 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
                     NavigateToCommentsView(feeling);
                 }
             });
+            holder.reportButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new reportFeelingTask().execute(feeling.getId().toString());
+                }
+            });
 
             holder.commentsCountTextView = (TextView) convertView.findViewById(R.id.commentsCount);
             holder.supportCountTextView = (TextView) convertView.findViewById(R.id.supportCount);
@@ -132,6 +141,20 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             args.add(new BasicNameValuePair("feelingId", params[0]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String supportUrl = UrlHelper.SUPPORT;
+            String response = jsonHttpClient.PostParams(supportUrl, args);
+            return true;
+        }
+    }
+
+    private class reportFeelingTask extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            args.add(new BasicNameValuePair("feelingId", params[0]));
+            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            String supportUrl = UrlHelper.EMAILREPORT;
             String response = jsonHttpClient.PostParams(supportUrl, args);
             return true;
         }

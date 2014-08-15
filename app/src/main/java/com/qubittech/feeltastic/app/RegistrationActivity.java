@@ -1,13 +1,16 @@
 package com.qubittech.feeltastic.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -31,8 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import util.JsonHttpClient;
-import util.UrlHelper;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 /**
  * Created by Manoj on 19/04/2014.
@@ -101,6 +105,7 @@ public class RegistrationActivity extends Activity {
 
             Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
             List<Address> addresses = null;
+
             try {
                 addresses = gcd.getFromLocation(currentLatitude, currentLongitude, 1);
             } catch (IOException e) {
@@ -109,26 +114,45 @@ public class RegistrationActivity extends Activity {
             if (addresses.size() > 0)
                 location.setText(addresses.get(0).getLocality());
 
-
             // location.setText(String.format("%s%s", currentLatitude.toString(), currentLongitude.toString()));
         }
     };
 
-    private class SaveUserTask extends AsyncTask<String, Integer, String> {
+    private class SaveUserTask extends AsyncTask<String, Integer, Boolean> {
+
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Boolean result) {
             dialog.dismiss();
 
-            if (s != "Failure") {
-
+            if (result) {
+                SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("Username", userName.getText().toString());
+                editor.putString("Password", password.getText().toString());
+                editor.commit();
+                ApplicationHelper.UserName = userName.getText().toString();
                 Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-                intent.putExtra("IsFromRegister",true);
+                intent.putExtra("IsFromRegister", true);
                 startActivity(intent);
+            }
+            else {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(RegistrationActivity.this);
+                builder1.setMessage("Username already exists!");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }
+                );
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Boolean doInBackground(String... params) {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", userName.getText().toString()));
@@ -160,7 +184,7 @@ public class RegistrationActivity extends Activity {
                 }
             }
 
-            return res;
+            return Boolean.parseBoolean(res);
         }
     }
 }

@@ -1,4 +1,4 @@
-package util;
+package com.qubittech.feeltastic.util;
 
 import android.os.Build;
 
@@ -6,6 +6,7 @@ import android.os.Build;
  * Created by Manoj on 01/06/2014.
  */
 public class UrlHelper {
+
     static boolean onEmulator;
 
     static {
@@ -23,6 +24,7 @@ public class UrlHelper {
     public static final String USERNAME = onEmulator ? BASE_URL_EMULATOR + "feelings/username/" : BASE_URL + "feelings/username/";
     public static final String SUPPORT = onEmulator ? BASE_URL_EMULATOR + "feelings/support" : BASE_URL + "feelings/support";
     public static final String COMMENTSFEELING = onEmulator ? BASE_URL_EMULATOR + "feelings/comments/%s" : BASE_URL + "feelings/comments/%s";
+    public static final String EMAILREPORT = onEmulator ? BASE_URL_EMULATOR + "feelings/email/report" : BASE_URL + "feelings/email/report";
 
 
     public static boolean isRunningOnEmulator() {

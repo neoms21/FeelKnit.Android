@@ -33,8 +33,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.JsonHttpClient;
-import util.UrlHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 /**
  * Created by Manoj on 04/05/2014.

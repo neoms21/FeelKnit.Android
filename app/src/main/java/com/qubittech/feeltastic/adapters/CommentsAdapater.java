@@ -13,7 +13,7 @@ import com.qubittech.feeltastic.models.Comment;
 
 import java.util.List;
 
-import util.DateFormatter;
+import com.qubittech.feeltastic.util.DateFormatter;
 
 /**
 * Created by Manoj on 19/06/2014.

@@ -1,4 +1,4 @@
-package util;
+package com.qubittech.feeltastic.util;
 
 import com.google.gson.GsonBuilder;
 

@@ -1,7 +1,6 @@
 package com.qubittech.feeltastic.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -28,8 +27,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.JsonHttpClient;
-import util.UrlHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 /**
  * Created by Manoj on 31/05/2014.
@@ -47,6 +46,7 @@ public class UserFeelingsFragment extends Fragment {
         String username = "";
         dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
         Button newFeeling = (Button) mainView.findViewById(R.id.newFeelingButton);
+
 
         newFeeling.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

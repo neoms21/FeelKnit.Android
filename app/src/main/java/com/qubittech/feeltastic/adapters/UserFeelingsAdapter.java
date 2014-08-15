@@ -14,7 +14,7 @@ import com.qubittech.feeltastic.models.Feeling;
 
 import java.util.List;
 
-import util.DateFormatter;
+import com.qubittech.feeltastic.util.DateFormatter;
 
 /**
  * Created by Manoj on 14/06/2014.

@@ -1,6 +1,4 @@
-package util;
-
-import android.content.SharedPreferences;
+package com.qubittech.feeltastic.util;
 
 /**
  * Created by Manoj on 01/06/2014.
