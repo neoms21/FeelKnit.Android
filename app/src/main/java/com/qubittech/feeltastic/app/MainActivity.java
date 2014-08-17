@@ -39,7 +39,8 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         String[] drawerItems = getResources().getStringArray(R.array.navigation_drawer_options);
         int id = 101;
         for (String item : drawerItems) {
-            navBuilder.addSectionItem(id, item, item.toLowerCase(), true, getApplicationContext());
+            String[] parts = item.split(",");
+            navBuilder.addSectionItem(id, parts[0], parts[1], true, getApplicationContext());
             id++;
         }
 
@@ -62,6 +63,9 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     protected void onNavItemSelected(int id) {
         switch (id) {
+            case 102:
+                StartUserFeelingsFragment();
+                break;
             case 103:
                 commentsFeelingsFragment fragment = new commentsFeelingsFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment , "Comments Feelings").addToBackStack("Comments" +
@@ -99,12 +103,16 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         if (isRegister) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Add Feeling").addToBackStack("Add Feeling").commit();
         } else {
-            UserFeelingsFragment userFeelingsFragment = new UserFeelingsFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("name", "From Activity");
-            userFeelingsFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, userFeelingsFragment, "User Feelings").addToBackStack("UserFeelings").commit();
+            StartUserFeelingsFragment();
         }
+    }
+
+    private void StartUserFeelingsFragment() {
+        UserFeelingsFragment userFeelingsFragment = new UserFeelingsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("name", "From Activity");
+        userFeelingsFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, userFeelingsFragment, "User Feelings").addToBackStack("UserFeelings").commit();
     }
 
     @Override

@@ -15,10 +15,10 @@
     <string name="loading">FeelKnit</string>
 
     <string-array name="navigation_drawer_options">
-        <item>Notifications</item>
-        <item>Messages</item>
-        <item>Comments</item>
-        <item>Settings</item>
+        <item>Notifications,notifications</item>
+        <item>My Feelings,usericon</item>
+        <item>Comments,comments</item>
+        <item>Settings,settings</item>
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
