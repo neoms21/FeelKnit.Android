@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
+import com.qubittech.feeltastic.models.Comment;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
@@ -23,6 +24,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,6 +81,9 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder.supportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int existingCount = feeling.getSupportCount();
+                    feeling.setSupportCount(existingCount + 1);
+                    notifyDataSetChanged();
                     new IncreaseSupportCountTask().execute(feeling.getId());
                 }
             });
@@ -141,6 +146,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             args.add(new BasicNameValuePair("feelingId", params[0]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String supportUrl = UrlHelper.SUPPORT;
+            supportUrl = String.format(supportUrl, params[0]);
             String response = jsonHttpClient.PostParams(supportUrl, args);
             return true;
         }
@@ -154,8 +160,8 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            String supportUrl = UrlHelper.EMAILREPORT;
-            String response = jsonHttpClient.PostParams(supportUrl, args);
+            String emailUrl = UrlHelper.EMAILREPORT;
+            String response = jsonHttpClient.PostUrlParams(emailUrl, args);
             return true;
         }
     }

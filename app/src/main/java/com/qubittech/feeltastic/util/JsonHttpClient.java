@@ -1,5 +1,7 @@
 package com.qubittech.feeltastic.util;
 
+import android.util.Log;
+
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.Header;
@@ -10,6 +12,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -71,6 +74,7 @@ public class JsonHttpClient {
 
     public String PostParams(String url, final List<NameValuePair> params) {
         HttpResponse response = null;
+        Log.d("Feelknit", "Url:" + url);
         String returnString = "Failure";
         try {
             JSONObject jsonObj = new JSONObject();
@@ -86,6 +90,43 @@ public class JsonHttpClient {
             httpPost.setHeader("Content-Type", "application/json");
             httpPost.setHeader("Accept", "application/json");
             httpPost.setEntity(entity);
+
+            HttpClient client = new DefaultHttpClient();
+
+            try {
+                response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    returnString = out.toString();
+                } else {
+                    // Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+        }
+        return returnString;
+    }
+
+    public String PostUrlParams(String url, final List<NameValuePair> params) {
+        HttpResponse response = null;
+        Log.d("Feelknit", "Url:" + url);
+        String returnString = "Failure";
+        try {
+
+
+// Create the POST object and add the parameters
+            HttpPost httpPost = new HttpPost(url);
+
+            httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             HttpClient client = new DefaultHttpClient();
 
             try {
@@ -172,7 +213,8 @@ public class JsonHttpClient {
         }
         return null;
     }
- public String Get(String url, List<NameValuePair> params) {
+
+    public String Get(String url, List<NameValuePair> params) {
         DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
         String paramString = URLEncodedUtils.format(params, "utf-8");
         url += "?" + paramString;
@@ -193,7 +235,7 @@ public class JsonHttpClient {
 
                 String resultString = convertStreamToString(inputStream);
                 inputStream.close();
-                return resultString ; //new GsonBuilder().create().fromJson(resultString, objectClass);
+                return resultString; //new GsonBuilder().create().fromJson(resultString, objectClass);
 
             }
 
