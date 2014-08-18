@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.qubittech.feeltastic.adapters.CommentsAdapater;
+import com.qubittech.feeltastic.adapters.CommentsAdapter;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Comment;
 import com.qubittech.feeltastic.models.Feeling;
@@ -53,6 +53,8 @@ public class CommentsFragment extends Fragment {
         Bundle args = getArguments();
 
         feeling = (Feeling) args.getSerializable("feeling");
+        if(feeling == null)
+            return mainView;
 //        username = ApplicationHelper.UserName;
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
@@ -92,7 +94,7 @@ public class CommentsFragment extends Fragment {
                 new SaveCommentTask().execute(commentEdiText.getText().toString(), feeling.getId());
             }
         });
-        arrayAdapter = new CommentsAdapater(getActivity(), R.layout.commentslistview, feeling.getComments());
+        arrayAdapter = new CommentsAdapter(getActivity(), R.layout.commentslistview, feeling);
         ListView listview = (ListView) mainView.findViewById(R.id.commentsList);
 
         listview.setAdapter(arrayAdapter);

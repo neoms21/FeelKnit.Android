@@ -8,20 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Comment;
 
 import java.util.List;
 
+import com.qubittech.feeltastic.models.Feeling;
 import com.qubittech.feeltastic.util.DateFormatter;
 
 /**
 * Created by Manoj on 19/06/2014.
 */
-public class CommentsAdapater extends ArrayAdapter<Comment> {
+public class CommentsAdapter extends ArrayAdapter<Comment> {
 
     int resource;
     Context context;
+String feelingText;
 
     /*private view holder class*/
     private class ViewHolder {
@@ -30,9 +33,10 @@ public class CommentsAdapater extends ArrayAdapter<Comment> {
         TextView postedAtTextView;
     }
 
-    public CommentsAdapater(Context context, int resource, List<Comment> comments) {
+    public CommentsAdapter(Context context, int resource, Feeling feeling) {
 
-        super(context, resource, comments);
+        super(context, resource, feeling.getComments());
+        feelingText = feeling.getFeelingText();
         this.context = context;
     }
 
@@ -48,6 +52,14 @@ public class CommentsAdapater extends ArrayAdapter<Comment> {
             holder.commentTextView = (TextView) convertView.findViewById(R.id.comment);
             holder.postedAtTextView = (TextView) convertView.findViewById(R.id.postedAt);
             holder.userTextView = (TextView) convertView.findViewById(R.id.name);
+            holder.userTextView.setClickable(true);
+            holder.userTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    MainActivity mainActivity = (MainActivity) context;
+//                    mainActivity.ShowCommentsFragment(new Feeling());
+                }
+            });
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
