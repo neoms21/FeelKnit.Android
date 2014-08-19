@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.qubittech.feeltastic.fragments.AddFeelingFragment;
 import com.qubittech.feeltastic.fragments.CommentsFragment;
 import com.qubittech.feeltastic.fragments.RelatedFeelingFragment;
@@ -68,7 +70,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 break;
             case 103:
                 commentsFeelingsFragment fragment = new commentsFeelingsFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment , "Comments Feelings").addToBackStack("Comments" +
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, "Comments Feelings").addToBackStack("Comments" +
                         "Feelings").commit();
                 break;
         }
@@ -132,9 +134,14 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Share Feeling").addToBackStack("AddFeeling").commit();
     }
 
-    public void ShowCommentsFragment(Feeling feeling) {
-        CommentsFragment commentsFragment = new CommentsFragment();
+    public void ShowCommentsFragment(Feeling feeling, String feelingText, String username) {
 
+        if (feeling == null) {
+            new getUserFeeingTask().execute(feelingText, username);
+            return;
+        }
+
+        CommentsFragment commentsFragment = new CommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("feeling", feeling);
         bundle.putSerializable("user", ApplicationHelper.UserName);
@@ -147,12 +154,34 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         @Override
         protected String doInBackground(String... params) {
 
-                List<NameValuePair> args = new ArrayList<NameValuePair>();
-                args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
-                JsonHttpClient jsonHttpClient = new JsonHttpClient();
-                String keyUrl = UrlHelper.CLEAR_USER_KEY;
-                return jsonHttpClient.PostParams(keyUrl, args);
-            }
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            String keyUrl = UrlHelper.CLEAR_USER_KEY;
+            return jsonHttpClient.PostParams(keyUrl, args);
+        }
+    }
+
+
+    private class getUserFeeingTask extends AsyncTask<String, Integer, Feeling> {
+        @Override
+        protected void onPostExecute(Feeling feeling) {
+            ShowCommentsFragment(feeling, null, null);
+        }
+
+        @Override
+        protected Feeling doInBackground(String... params) {
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            args.add(new BasicNameValuePair("feeling", params[0]));
+            args.add(new BasicNameValuePair("username", params[1]));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            String url = UrlHelper.USER_FEELINGS;
+            String response = jsonHttpClient.Get(url, args);
+            Gson gson = new Gson();
+            Feeling feeling;
+            feeling = gson.fromJson(response, Feeling.class);
+            return feeling;
+        }
     }
 
 

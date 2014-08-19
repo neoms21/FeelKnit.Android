@@ -56,8 +56,9 @@ String feelingText;
             holder.userTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    MainActivity mainActivity = (MainActivity) context;
-//                    mainActivity.ShowCommentsFragment(new Feeling());
+                    MainActivity mainActivity = (MainActivity) context;
+                    mainActivity.ShowCommentsFragment(null,feelingText,comment.getUser()
+                    );
                 }
             });
             convertView.setTag(holder);

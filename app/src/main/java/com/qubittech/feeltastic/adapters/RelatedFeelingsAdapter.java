@@ -5,7 +5,6 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
-import com.qubittech.feeltastic.models.Comment;
 import com.qubittech.feeltastic.models.Feeling;
 
 import org.apache.http.NameValuePair;
@@ -24,12 +22,10 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import com.qubittech.feeltastic.util.ApplicationHelper;
-import com.qubittech.feeltastic.util.GMailSender;
 import com.qubittech.feeltastic.util.JsonHttpClient;
 import com.qubittech.feeltastic.util.UrlHelper;
 
@@ -124,7 +120,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     private void NavigateToCommentsView(Feeling feeling) {
         MainActivity mainActivity = (MainActivity) context;
-        mainActivity.ShowCommentsFragment(feeling);
+        mainActivity.ShowCommentsFragment(feeling, null, null);
     }
 
     private String getLocation(Feeling feeling) {

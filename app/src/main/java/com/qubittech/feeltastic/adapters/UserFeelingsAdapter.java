@@ -50,7 +50,7 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) context;
-                mainActivity.ShowCommentsFragment(feeling);
+                mainActivity.ShowCommentsFragment(feeling, null, null);
             }
         });
 
