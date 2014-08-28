@@ -62,7 +62,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         final Feeling feeling = getItem(position);
 
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -74,15 +74,15 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 //            holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
             holder.userIcon = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.supportButton = (Button) convertView.findViewById(R.id.btnSupport);
+            if(feeling.getSupportUsers().contains(ApplicationHelper.UserName))
+                holder.supportButton.setText("Un-Support");
             holder.supportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int existingCount = feeling.getSupportCount();
-                    feeling.setSupportCount(existingCount + 1);
-                    notifyDataSetChanged();
-                    new IncreaseSupportCountTask().execute(feeling.getId());
+                    manipulateSupportButton(feeling, holder.supportButton);
                 }
             });
+
             holder.reportButton = (Button) convertView.findViewById(R.id.btnReport);
             holder.commentButton = (Button) convertView.findViewById(R.id.btnComment);
             holder.commentButton.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +118,28 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         return convertView;
     }
 
+    private void manipulateSupportButton(Feeling feeling, Button supportButton) {
+
+        if (feeling.getSupportUsers().contains(ApplicationHelper.UserName)) {
+            supportButton.setText("Support");
+            int existingCount = feeling.getSupportCount();
+            feeling.setSupportCount(existingCount - 1);
+            notifyDataSetChanged();
+            feeling.getSupportUsers().remove(ApplicationHelper.UserName);
+            new DecreaseSupportCountTask().execute(feeling.getId());
+        }
+        else
+        {
+            supportButton.setText("Un-Support");
+            int existingCount = feeling.getSupportCount();
+            feeling.getSupportUsers().add(ApplicationHelper.UserName);
+            feeling.setSupportCount(existingCount + 1);
+            notifyDataSetChanged();
+            new IncreaseSupportCountTask().execute(feeling.getId());
+        }
+    }
+
+
     private void NavigateToCommentsView(Feeling feeling) {
         MainActivity mainActivity = (MainActivity) context;
         mainActivity.ShowCommentsFragment(feeling, null, null);
@@ -140,10 +162,24 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         protected Boolean doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
+            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            String supportUrl = UrlHelper.SUPPORT;
-            supportUrl = String.format(supportUrl, params[0]);
-            String response = jsonHttpClient.PostParams(supportUrl, args);
+            String supportUrl = UrlHelper.INCREASE_SUPPORT;
+            String response = jsonHttpClient.PostUrlParams(supportUrl, args);
+            return true;
+        }
+    }
+
+    private class DecreaseSupportCountTask extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            args.add(new BasicNameValuePair("feelingId", params[0]));
+            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            String supportUrl = UrlHelper.DECREASE_SUPPORT;
+            String response = jsonHttpClient.PostUrlParams(supportUrl, args);
             return true;
         }
     }

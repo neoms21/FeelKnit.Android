@@ -19,8 +19,8 @@ public class Feeling implements Serializable {
     private double longitude;
     private boolean isFirstFeeling;
     private int supportCount;
-
     private List<Comment> comments;
+    private List<String> supportUsers;
 
     public String getFeelingText() {
         return this.feelingText;
@@ -61,7 +61,6 @@ public class Feeling implements Serializable {
     public void setAction(String action) {
         this.action = action;
     }
-
 
     public String getUserName() {
         return userName;
@@ -123,5 +122,13 @@ public class Feeling implements Serializable {
 
     public void setSupportCount(int supportCount) {
         this.supportCount = supportCount;
+    }
+
+    public List<String> getSupportUsers() {
+        return supportUsers;
+    }
+
+    public void setSupportUsers(List<String> supportUsers) {
+        this.supportUsers = supportUsers;
     }
 }
