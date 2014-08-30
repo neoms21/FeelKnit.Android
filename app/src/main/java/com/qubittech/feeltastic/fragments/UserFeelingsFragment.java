@@ -27,6 +27,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.qubittech.feeltastic.util.ApplicationHelper;
 import com.qubittech.feeltastic.util.JsonHttpClient;
 import com.qubittech.feeltastic.util.UrlHelper;
 
@@ -55,18 +56,18 @@ public class UserFeelingsFragment extends Fragment {
 //                startActivity(new Intent(getActivity(), AddFeelingFragment.class));
             }
         });
-        username = getUserName(username);
-        new FetchUserFeelingsTask().execute(username);
+//        username = getUserName(username);
+        new FetchUserFeelingsTask().execute(ApplicationHelper.UserName);
         return mainView;
     }
 
-    private String getUserName(String username) {
-        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
-        if (settings != null) {
-            username = settings.getString("Username", "").toString();
-        }
-        return username;
-    }
+//    private String getUserName(String username) {
+//        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
+//        if (settings != null) {
+//            username = settings.getString("Username", "").toString();
+//        }
+//        return username;
+//    }
 
     private class FetchUserFeelingsTask extends AsyncTask<String, Integer, String> {
         @Override
@@ -75,8 +76,7 @@ public class UserFeelingsFragment extends Fragment {
 
             System.out.println("User Feelings:" + s);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
-            Type collectionType = new TypeToken<List<Feeling>>() {
-            }.getType();
+            Type collectionType = new TypeToken<List<Feeling>>(){}.getType();
             _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
             if (!_feelings.isEmpty())
                 _feelings.get(0).setFirstFeeling(true);

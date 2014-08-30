@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crittercism.app.Crittercism;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.apache.http.NameValuePair;
@@ -57,6 +58,7 @@ public class LoginActivity extends Activity {
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         if (settings.getString("Username", null) != null) {
             ApplicationHelper.UserName = settings.getString("Username", null);
+            Crittercism.setUsername(ApplicationHelper.UserName);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {
 

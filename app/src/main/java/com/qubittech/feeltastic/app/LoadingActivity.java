@@ -14,6 +14,7 @@ public class LoadingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
+
         Crittercism.initialize(getApplicationContext(), "53dab3b10729df413b000004");
         dialog = ProgressDialog.show(LoadingActivity.this, "Loading", "Please wait...", true);
         dialog.setContentView(R.layout.progress);

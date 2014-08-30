@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.crittercism.app.Crittercism;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qubittech.feeltastic.fragments.AddFeelingFragment;
