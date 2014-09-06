@@ -15,6 +15,7 @@ import com.qubittech.feeltastic.models.Comment;
 import java.util.List;
 
 import com.qubittech.feeltastic.models.Feeling;
+import com.qubittech.feeltastic.util.ApplicationHelper;
 import com.qubittech.feeltastic.util.DateFormatter;
 
 /**
@@ -66,7 +67,7 @@ String feelingText;
             holder = (ViewHolder) convertView.getTag();
 
 
-        holder.userTextView.setText(comment.getUser());
+        holder.userTextView.setText(ApplicationHelper.UserName.equals(comment.getUser()) ? "me" : comment.getUser());
         holder.commentTextView.setText(comment.getText());
         holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
         //holder.soTextView.setText(feeling.ge());

@@ -3,6 +3,7 @@ package com.qubittech.feeltastic.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,16 +16,16 @@ public class DateFormatter {
 
     public static String Format(String strDate)
     {
-        strDate= strDate.replace('Z',' ');
+        String result = "";
+        SimpleDateFormat intermediateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yy HH:mm");
-        Date date = new Date();
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         try {
-            date = sdf.parse(strDate);
+            result = intermediateFormat.format(sdf.parse(strDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return sdf2.format(date);
+        return result;
     }
 }
 

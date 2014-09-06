@@ -83,9 +83,11 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         Intent intent = getIntent();
         boolean isRegister = false;
-        Bundle bld = intent.getExtras();// ("IsFromRegister", isRegister);
+        Bundle bundle = intent.getExtras();// ("IsFromRegister", isRegister);
 
-        isRegister = bld == null ? false : bld.getBoolean("IsFromRegister");
+        isRegister = bundle == null ? false : bundle.getBoolean("IsFromRegister");
+        Feeling feeling = bundle == null ? null : (Feeling) bundle.get("feeling");
+
         TextView usrTextView = (TextView) findViewById(R.id.usrName);
         usrTextView.setText(ApplicationHelper.UserName);
         Button btnSignout = (Button) findViewById(R.id.signout);
@@ -105,6 +107,8 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         //set Fragmentclass Arguments
         if (isRegister) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Add Feeling").addToBackStack("Add Feeling").commit();
+        } else if (feeling != null) {
+            ShowCommentsFragment(feeling, null, null);
         } else {
             StartUserFeelingsFragment();
         }

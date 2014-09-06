@@ -16,7 +16,7 @@
 
     <string-array name="navigation_drawer_options">
         <item>Notifications,notifications</item>
-        <item>My Feelings,usericon</item>
+        <item>My Feelings,userdrawer</item>
         <item>Comments,comments</item>
         <item>Settings,settings</item>
     </string-array>

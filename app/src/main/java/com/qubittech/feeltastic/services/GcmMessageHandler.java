@@ -6,12 +6,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crittercism.app.Crittercism;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +22,7 @@ import com.qubittech.feeltastic.app.R;
 
 import com.qubittech.feeltastic.models.Feeling;
 import com.qubittech.feeltastic.receivers.GcmBroadcastReceiver;
+import com.qubittech.feeltastic.util.ApplicationHelper;
 
 import java.util.List;
 
@@ -48,8 +51,6 @@ public class GcmMessageHandler extends IntentService {
         // in your BroadcastReceiver.
         String messageType = gcm.getMessageType(intent);
 
-
-
         String user = extras.getString("user");
         String feelingJson = extras.getString("feeling");
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -62,15 +63,21 @@ public class GcmMessageHandler extends IntentService {
                 .setContentText(mes) // message for notification
                 .setAutoCancel(true); // clear notification after click
 
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        if (settings.getString("Username", null) != null && ApplicationHelper.UserName == null) {
+            Crittercism.initialize(getApplicationContext(), "53dab3b10729df413b000004");
+            ApplicationHelper.UserName = settings.getString("Username", null);
+            Crittercism.setUsername(ApplicationHelper.UserName);
+        }
+
         Intent intnt = new Intent(this, MainActivity.class);
+        intnt.putExtra("feeling",feeling);
+
         PendingIntent pi = PendingIntent.getActivity(this, 0, intnt, PendingIntent.FLAG_ONE_SHOT);
         mBuilder.setContentIntent(pi);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(0, mBuilder.build());
-
-
         GcmBroadcastReceiver.completeWakefulIntent(intent);
-
     }
 }
