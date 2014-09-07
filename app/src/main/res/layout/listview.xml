@@ -49,16 +49,17 @@
             android:id="@+id/commentsCount"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/feelingTextLayout"
-            android:hint="comments"
+            android:hint="0"
             android:layout_marginTop="7dp"
             android:layout_marginLeft="20dp"
             android:maxLength="140"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
 
             android:id="@+id/supportCount"
-            android:hint="support"
+            android:hint="0"
             android:layout_marginTop="7dp"
             android:layout_marginLeft="10dp"
             android:layout_below="@id/feelingTextLayout"
@@ -66,6 +67,29 @@
             android:layout_toRightOf="@id/commentsCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <TextView
+
+            android:id="@+id/feelingShared"
+            android:hint="0"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="10dp"
+            android:text=""
+            android:layout_below="@id/feelingTextLayout"
+            android:layout_alignParentRight="true"
+            android:maxLength="140"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/blockingView"
+            android:background="@color/greyColor"
+            android:layout_below="@id/feelingShared"
+            android:layout_marginTop="3dp"
+            android:visibility="invisible"
+            android:layout_alignLeft="@id/commentsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This feeling has been reported and awaiting admin decision" />
     </RelativeLayout>
 
     <LinearLayout
@@ -91,7 +115,7 @@
             android:id="@+id/btnSupport"
             android:layout_marginLeft="2dp"
 
-           android:paddingRight="7dp"
+            android:paddingRight="7dp"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@id/soText"

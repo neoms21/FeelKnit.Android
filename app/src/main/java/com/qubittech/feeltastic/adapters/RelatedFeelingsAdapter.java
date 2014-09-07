@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.DateFormatter;
 import com.qubittech.feeltastic.util.JsonHttpClient;
 import com.qubittech.feeltastic.util.UrlHelper;
 
@@ -46,10 +47,12 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         TextView locationTextView;
         TextView commentsCountTextView;
         TextView supportCountTextView;
+        TextView feelingDateTextView;
         ImageView userIcon;
         Button commentButton;
         Button supportButton;
         Button reportButton;
+        TextView blockingView;
     }
 
 
@@ -70,52 +73,80 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             convertView = mInflater.inflate(R.layout.listview, null);
             holder = new ViewHolder();
             holder.usernameTextView = (TextView) convertView.findViewById(R.id.name);
+            holder.blockingView = (TextView) convertView.findViewById(R.id.blockingView);
             holder.feelingTextView = (TextView) convertView.findViewById(R.id.feelingText);
+            holder.feelingDateTextView = (TextView) convertView.findViewById(R.id.feelingShared);
 //            holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
             holder.userIcon = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.supportButton = (Button) convertView.findViewById(R.id.btnSupport);
-            if(feeling.getSupportUsers().contains(ApplicationHelper.UserName))
-                holder.supportButton.setText("Un-Support");
-            holder.supportButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    manipulateSupportButton(feeling, holder.supportButton);
-                }
-            });
-
             holder.reportButton = (Button) convertView.findViewById(R.id.btnReport);
             holder.commentButton = (Button) convertView.findViewById(R.id.btnComment);
-            holder.commentButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavigateToCommentsView(feeling);
-                }
-            });
-            holder.reportButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new reportFeelingTask().execute(feeling.getId().toString());
-                }
-            });
-
             holder.commentsCountTextView = (TextView) convertView.findViewById(R.id.commentsCount);
             holder.supportCountTextView = (TextView) convertView.findViewById(R.id.supportCount);
-            convertView.setTag(holder);
-        } else
-            holder = (ViewHolder) convertView.getTag();
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavigateToCommentsView(feeling);
+            if (feeling.isReported()) {
+                setReportedFeeling(holder, feeling);
+            } else {
+
+                holder.feelingDateTextView.setText(DateFormatter.Format(feeling.getFeelingDate()));
+                holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
+                holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
+                holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
+
+//            if (feeling.getSupportUsers().contains(ApplicationHelper.UserName))
+//                holder.supportButton.setText("Un-Support");
+                holder.supportButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        manipulateSupportButton(feeling, holder.supportButton);
+                    }
+                });
+
+                holder.commentButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NavigateToCommentsView(feeling);
+                    }
+                });
+                holder.reportButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        new reportFeelingTask().execute(feeling.getId().toString());
+                        feeling.setReported(true);
+                        notifyDataSetChanged();
+                    }
+                });
+
+
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NavigateToCommentsView(feeling);
+                    }
+                });
+
             }
-        });
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+            if (feeling.isReported())
+                setReportedFeeling(holder, feeling);
+        }
 
         holder.usernameTextView.setText(feeling.getUserName());
-        holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
-        holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
-        holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
         return convertView;
+    }
+
+    private void setReportedFeeling(ViewHolder holder, Feeling feeling) {
+        holder.blockingView.setVisibility(View.VISIBLE);
+        holder.blockingView.bringToFront();
+        holder.usernameTextView.setText(feeling.getUserName());
+        holder.feelingTextView.setText("");
+        int color = getContext().getResources().getColor(R.color.greyColor);
+        holder.commentButton.setBackgroundColor(color);
+        holder.supportButton.setBackgroundColor(color);
+        holder.reportButton.setBackgroundColor(color);
     }
 
     private void manipulateSupportButton(Feeling feeling, Button supportButton) {
@@ -127,9 +158,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             notifyDataSetChanged();
             feeling.getSupportUsers().remove(ApplicationHelper.UserName);
             new DecreaseSupportCountTask().execute(feeling.getId());
-        }
-        else
-        {
+        } else {
             supportButton.setText("Un-Support");
             int existingCount = feeling.getSupportCount();
             feeling.getSupportUsers().add(ApplicationHelper.UserName);
