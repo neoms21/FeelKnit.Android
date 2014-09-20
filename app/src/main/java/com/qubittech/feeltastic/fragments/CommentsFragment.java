@@ -24,6 +24,7 @@ import com.qubittech.feeltastic.models.Feeling;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -128,11 +129,12 @@ public class CommentsFragment extends Fragment {
                 public void run() {
                     if (feeling == null)
                         return;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     commentEdiText.setText("");
                     Comment comment = new Comment();
-                    comment.setUser("me"); // Because while in comments whenver anyone save it'll be that user
+                    comment.setUser("me"); // Because while in comments whenever anyone save it'll be that user
                     comment.setText(commentText);
-                    comment.setPostedAt(new Date().toString());
+                    comment.setPostedAt(sdf.format(new Date()));
                     feeling.getComments().add(comment);
                     arrayAdapter.notifyDataSetChanged();
 

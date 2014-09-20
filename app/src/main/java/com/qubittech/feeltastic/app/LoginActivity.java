@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bugsense.trace.BugSense;
+import com.bugsense.trace.BugSenseHandler;
 import com.crittercism.app.Crittercism;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -48,19 +50,30 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+            return;
+        }
         setContentView(R.layout.login);
         TextView forgotLabel = (TextView) findViewById(R.id.forgotLabel);
         forgotLabel.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        forgotLabel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("From",2);
+                startActivity(intent);
+            }
+        });
+
         etUsername = (EditText) findViewById(R.id.txtUserName);
         etPassword = (EditText) findViewById(R.id.txtPassword);
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         if (settings.getString("Username", null) != null) {
             ApplicationHelper.UserName = settings.getString("Username", null);
-            Crittercism.setUsername(ApplicationHelper.UserName);
+            //BugSenseHandler.setUserIdentifier(ApplicationHelper.UserName);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {
-
 
             Button loginButton = (Button) findViewById(R.id.btnLogin);
 
@@ -118,8 +131,6 @@ public class LoginActivity extends Activity {
         }
 
     }
-
-
 
     private class LoginUserTask extends AsyncTask<String, Integer, Boolean> {
         @Override

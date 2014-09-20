@@ -34,6 +34,7 @@ public class commentsFeelingsFragment extends Fragment {
     private View mainView;
     ProgressDialog dialog;
     private static List<Feeling> feelings;
+    private ListView listview;
 
     /**
      * Use this factory method to create a new instance of
@@ -72,11 +73,12 @@ public class commentsFeelingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.comments_feelings, container, false);
 
-        if (feelings == null) {
-            dialog = ProgressDialog.show(getActivity(), "Getting feelings", "Please wait...", true);
-            new getMyFeelingsCommentsTask().execute();
-        } else
-            new populateListTask().execute();
+        //if (feelings == null) {
+        dialog = ProgressDialog.show(getActivity(), "Getting feelings", "Please wait...", true);
+        listview = (ListView) mainView.findViewById(R.id.commentsFeelingsList);
+        new getMyFeelingsCommentsTask().execute();
+//        } else
+//            new populateListTask().execute();
         return mainView;
     }
 
@@ -116,7 +118,7 @@ public class commentsFeelingsFragment extends Fragment {
 
     private void populateFeelingsList(List<Feeling> feelings) {
         ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, feelings);
-        ListView listview = (ListView) getView().findViewById(R.id.commentsFeelingsList);
+
         listview.setAdapter(arrayAdapter);
         listview.setDivider(new ColorDrawable());
         listview.setDividerHeight(15);

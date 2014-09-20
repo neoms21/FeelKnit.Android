@@ -1,7 +1,6 @@
 package com.qubittech.feeltastic.fragments;
 
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,16 +19,15 @@ import com.qubittech.feeltastic.adapters.UserFeelingsAdapter;
 import com.qubittech.feeltastic.app.MainActivity;
 import com.qubittech.feeltastic.app.R;
 import com.qubittech.feeltastic.models.Feeling;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 import org.apache.http.NameValuePair;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.qubittech.feeltastic.util.ApplicationHelper;
-import com.qubittech.feeltastic.util.JsonHttpClient;
-import com.qubittech.feeltastic.util.UrlHelper;
 
 /**
  * Created by Manoj on 31/05/2014.
@@ -38,36 +36,32 @@ public class UserFeelingsFragment extends Fragment {
 
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
+    private ListView listview;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View mainView = inflater.inflate(R.layout.user_feelings, container, false);
-
         String username = "";
         dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
         Button newFeeling = (Button) mainView.findViewById(R.id.newFeelingButton);
-
+        listview = (ListView) mainView.findViewById(R.id.userFeelingsList);
 
         newFeeling.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 MainActivity activity = (MainActivity) getActivity();
                 activity.AddCreateFeelingFragment();
-//                startActivity(new Intent(getActivity(), AddFeelingFragment.class));
             }
         });
-//        username = getUserName(username);
         new FetchUserFeelingsTask().execute(ApplicationHelper.UserName);
         return mainView;
     }
-
-//    private String getUserName(String username) {
-//        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
-//        if (settings != null) {
-//            username = settings.getString("Username", "").toString();
-//        }
-//        return username;
-//    }
 
     private class FetchUserFeelingsTask extends AsyncTask<String, Integer, String> {
         @Override
@@ -76,14 +70,15 @@ public class UserFeelingsFragment extends Fragment {
 
             System.out.println("User Feelings:" + s);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
-            Type collectionType = new TypeToken<List<Feeling>>(){}.getType();
-            _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
+            Type collectionType = new TypeToken<List<Feeling>>() {
+            }.getType();
+            _feelings = gson.fromJson(s, collectionType);
             if (!_feelings.isEmpty())
                 _feelings.get(0).setFirstFeeling(true);
 
             ArrayAdapter arrayAdapter = new UserFeelingsAdapter(getActivity(), R.layout.listview, _feelings);
 
-            ListView listview = (ListView) getView().findViewById(R.id.userFeelingsList);
+
 
             listview.setAdapter(arrayAdapter);
             listview.setDivider(new ColorDrawable());

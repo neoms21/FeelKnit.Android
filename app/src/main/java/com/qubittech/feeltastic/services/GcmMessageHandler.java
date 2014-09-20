@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.crittercism.app.Crittercism;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
@@ -65,12 +66,13 @@ public class GcmMessageHandler extends IntentService {
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         if (settings.getString("Username", null) != null && ApplicationHelper.UserName == null) {
-            Crittercism.initialize(getApplicationContext(), "53dab3b10729df413b000004");
+          BugSenseHandler.initAndStartSession(getApplicationContext(), "e9e97454");
             ApplicationHelper.UserName = settings.getString("Username", null);
-            Crittercism.setUsername(ApplicationHelper.UserName);
+            BugSenseHandler.setUserIdentifier(ApplicationHelper.UserName);
         }
 
         Intent intnt = new Intent(this, MainActivity.class);
+        intnt.putExtra("From",3);
         intnt.putExtra("feeling",feeling);
 
         PendingIntent pi = PendingIntent.getActivity(this, 0, intnt, PendingIntent.FLAG_ONE_SHOT);

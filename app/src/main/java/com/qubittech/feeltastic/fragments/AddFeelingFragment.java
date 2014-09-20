@@ -80,7 +80,6 @@ public class AddFeelingFragment extends Fragment {
 
         View addFeelingView = inflater.inflate(R.layout.activity_feeling, container, false);
         _feeling = new Feeling();
-//        setContentView(R.layout.activity_feeling);
         spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingText);
         username = getUserName();
 

@@ -83,59 +83,63 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder.commentButton = (Button) convertView.findViewById(R.id.btnComment);
             holder.commentsCountTextView = (TextView) convertView.findViewById(R.id.commentsCount);
             holder.supportCountTextView = (TextView) convertView.findViewById(R.id.supportCount);
-
-            if (feeling.isReported()) {
-                setReportedFeeling(holder, feeling);
-            } else {
-
-                holder.feelingDateTextView.setText(DateFormatter.Format(feeling.getFeelingDate()));
-                holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
-                holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
-                holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
-
-//            if (feeling.getSupportUsers().contains(ApplicationHelper.UserName))
-//                holder.supportButton.setText("Un-Support");
-                holder.supportButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        manipulateSupportButton(feeling, holder.supportButton);
-                    }
-                });
-
-                holder.commentButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        NavigateToCommentsView(feeling);
-                    }
-                });
-                holder.reportButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        new reportFeelingTask().execute(feeling.getId().toString());
-                        feeling.setReported(true);
-                        notifyDataSetChanged();
-                    }
-                });
-
-
-                convertView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        NavigateToCommentsView(feeling);
-                    }
-                });
-
-            }
+            setFeelingInListView(convertView, holder, feeling);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
-            if (feeling.isReported())
-                setReportedFeeling(holder, feeling);
+            setFeelingInListView(convertView, holder, feeling);
         }
 
         holder.usernameTextView.setText(feeling.getUserName());
         return convertView;
+    }
+
+    private void setFeelingInListView(View convertView, ViewHolder holder, Feeling feeling) {
+        if (feeling.isReported()) {
+            setReportedFeeling(holder, feeling);
+        } else {
+            setUnreportedFeeling(convertView, holder, feeling);
+        }
+    }
+
+    private void setUnreportedFeeling(View convertView, final ViewHolder holder, final Feeling feeling) {
+        holder.feelingDateTextView.setText(DateFormatter.Format(feeling.getFeelingDate()));
+        holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
+        holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
+        holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
+        if (feeling.getSupportUsers().contains(ApplicationHelper.UserName))
+        {
+            holder.supportButton.setText("Un-Support");
+        }
+        holder.supportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manipulateSupportButton(feeling, holder.supportButton);
+            }
+        });
+
+        holder.commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigateToCommentsView(feeling);
+            }
+        });
+        holder.reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new reportFeelingTask().execute(feeling.getId().toString());
+                feeling.setReported(true);
+                notifyDataSetChanged();
+            }
+        });
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigateToCommentsView(feeling);
+            }
+        });
     }
 
     private void setReportedFeeling(ViewHolder holder, Feeling feeling) {
@@ -144,9 +148,16 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         holder.usernameTextView.setText(feeling.getUserName());
         holder.feelingTextView.setText("");
         int color = getContext().getResources().getColor(R.color.greyColor);
-        holder.commentButton.setBackgroundColor(color);
-        holder.supportButton.setBackgroundColor(color);
-        holder.reportButton.setBackgroundColor(color);
+        DisableButton(holder.commentButton, color);//.setBackgroundColor(color);
+        DisableButton(holder.supportButton, color);//.setBackgroundColor(color);
+        DisableButton(holder.reportButton, color);//.setBackgroundColor(color);
+    }
+
+    private void DisableButton(Button button, int color)
+    {
+        button.setEnabled(false);
+        button.setClickable(false);
+        button.setBackgroundColor(color);
     }
 
     private void manipulateSupportButton(Feeling feeling, Button supportButton) {
@@ -167,7 +178,6 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             new IncreaseSupportCountTask().execute(feeling.getId());
         }
     }
-
 
     private void NavigateToCommentsView(Feeling feeling) {
         MainActivity mainActivity = (MainActivity) context;

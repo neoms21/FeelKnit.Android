@@ -1,5 +1,6 @@
 package com.qubittech.feeltastic.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -8,11 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.crittercism.app.Crittercism;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.qubittech.feeltastic.fragments.AddFeelingFragment;
 import com.qubittech.feeltastic.fragments.CommentsFragment;
+import com.qubittech.feeltastic.fragments.ForgotFragment;
 import com.qubittech.feeltastic.fragments.RelatedFeelingFragment;
 import com.qubittech.feeltastic.fragments.UserFeelingsFragment;
 import com.qubittech.feeltastic.fragments.commentsFeelingsFragment;
@@ -22,6 +22,9 @@ import com.qubittech.feeltastic.navigation.NavDrawerActivityConfiguration;
 import com.qubittech.feeltastic.navigation.NavDrawerAdapter;
 import com.qubittech.feeltastic.navigation.NavDrawerItem;
 import com.qubittech.feeltastic.navigation.NavMenuBuilder;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -29,10 +32,6 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.qubittech.feeltastic.util.ApplicationHelper;
-import com.qubittech.feeltastic.util.JsonHttpClient;
-import com.qubittech.feeltastic.util.UrlHelper;
 
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
 
@@ -78,14 +77,39 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     }
 
     @Override
+    public void onBackPressed() {
+        UserFeelingsFragment myFragment = (UserFeelingsFragment) getSupportFragmentManager().findFragmentByTag("User Feelings");
+        if (myFragment.isVisible()) {
+            startActivity(GetIntent(MainActivity.class));
+            startActivity(GetIntent(LoginActivity.class));
+            startActivity(GetIntent(LoadingActivity.class));
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private Intent GetIntent(Class cls) {
+        Intent intent = new Intent(MainActivity.this, cls);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        return intent;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+            return;
+        }
+        int switchNum = 0;
         Intent intent = getIntent();
-        boolean isRegister = false;
+        //boolean isRegister = false;
         Bundle bundle = intent.getExtras();// ("IsFromRegister", isRegister);
-
-        isRegister = bundle == null ? false : bundle.getBoolean("IsFromRegister");
+        if (bundle != null) {
+            switchNum = bundle.getInt("From");
+        }
+        //  isRegister = bundle == null ? false : bundle.getBoolean("IsFromRegister");
         Feeling feeling = bundle == null ? null : (Feeling) bundle.get("feeling");
 
         TextView usrTextView = (TextView) findViewById(R.id.usrName);
@@ -94,23 +118,32 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         btnSignout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                String username = ApplicationHelper.UserName;
                 ApplicationHelper.UserName = "";
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 settings.edit().remove("Username").commit();
                 settings.edit().remove("Password").commit();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                new ClearUserGcmKeyTask().execute("");
+                new ClearUserGcmKeyTask().execute(username);
             }
         });
 
-
-        //set Fragmentclass Arguments
-        if (isRegister) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Add Feeling").addToBackStack("Add Feeling").commit();
-        } else if (feeling != null) {
-            ShowCommentsFragment(feeling, null, null);
-        } else {
-            StartUserFeelingsFragment();
+        switch (switchNum) {
+            case 0:
+                StartUserFeelingsFragment();
+                break;
+            //Registration
+            case 1:
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Add Feeling").addToBackStack("Add Feeling").commit();
+                break;
+            case 2:
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new ForgotFragment(), "Forgot Password").commit();
+                break;
+            case 3:
+                ShowCommentsFragment(feeling, null, null);
+                break;
+            default:
+                break;
         }
     }
 
@@ -139,7 +172,8 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AddFeelingFragment(), "Share Feeling").addToBackStack("AddFeeling").commit();
     }
 
-    public void ShowCommentsFragment(Feeling feeling, String feelingText, String username) {
+    public void ShowCommentsFragment(Feeling feeling, String feelingText,
+                                     String username) {
 
         if (feeling == null) {
             new getUserFeeingTask().execute(feelingText, username);
@@ -160,7 +194,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         protected String doInBackground(String... params) {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+            args.add(new BasicNameValuePair("username", params[0]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String keyUrl = UrlHelper.CLEAR_USER_KEY;
             return jsonHttpClient.PostParams(keyUrl, args);

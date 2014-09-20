@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.crittercism.app.Crittercism;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.qubittech.feeltastic.services.TrackingService;
@@ -132,9 +133,9 @@ public class RegistrationActivity extends Activity {
                 editor.putString("Password", password.getText().toString());
                 editor.commit();
                 ApplicationHelper.UserName = userName.getText().toString();
-                Crittercism.setUsername(ApplicationHelper.UserName);
+                BugSenseHandler.setUserIdentifier(ApplicationHelper.UserName);
                 Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-                intent.putExtra("IsFromRegister", true);
+                intent.putExtra("From", 1);
                 startActivity(intent);
             }
             else {
