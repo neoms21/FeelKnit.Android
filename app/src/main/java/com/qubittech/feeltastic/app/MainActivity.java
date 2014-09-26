@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
-
+    private ApplicationHelper applicationHelper;
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
         NavMenuBuilder navBuilder = new NavMenuBuilder();
@@ -79,7 +79,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     public void onBackPressed() {
         UserFeelingsFragment myFragment = (UserFeelingsFragment) getSupportFragmentManager().findFragmentByTag("User Feelings");
-        if (myFragment.isVisible()) {
+        if (myFragment != null && myFragment.isVisible()) {
             startActivity(GetIntent(MainActivity.class));
             startActivity(GetIntent(LoginActivity.class));
             startActivity(GetIntent(LoadingActivity.class));
@@ -98,6 +98,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applicationHelper = (ApplicationHelper) getApplicationContext();
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
             return;
@@ -113,13 +114,13 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         Feeling feeling = bundle == null ? null : (Feeling) bundle.get("feeling");
 
         TextView usrTextView = (TextView) findViewById(R.id.usrName);
-        usrTextView.setText(ApplicationHelper.UserName);
+        usrTextView.setText(applicationHelper.getUserName());
         Button btnSignout = (Button) findViewById(R.id.signout);
 
         btnSignout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String username = ApplicationHelper.UserName;
-                ApplicationHelper.UserName = "";
+                String username = applicationHelper.getUserName();
+                applicationHelper.setUserName("");
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 settings.edit().remove("Username").commit();
                 settings.edit().remove("Password").commit();
@@ -183,7 +184,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         CommentsFragment commentsFragment = new CommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("feeling", feeling);
-        bundle.putSerializable("user", ApplicationHelper.UserName);
+        bundle.putSerializable("user", applicationHelper.getUserName());
         commentsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, commentsFragment, "Comments").addToBackStack("Comments").commit();
     }

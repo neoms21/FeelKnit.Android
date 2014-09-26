@@ -37,10 +37,12 @@ public class UserFeelingsFragment extends Fragment {
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
     private ListView listview;
+    private ApplicationHelper applicationHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         setRetainInstance(true);
     }
 
@@ -59,7 +61,7 @@ public class UserFeelingsFragment extends Fragment {
                 activity.AddCreateFeelingFragment();
             }
         });
-        new FetchUserFeelingsTask().execute(ApplicationHelper.UserName);
+        new FetchUserFeelingsTask().execute(applicationHelper.getUserName());
         return mainView;
     }
 
@@ -77,7 +79,6 @@ public class UserFeelingsFragment extends Fragment {
                 _feelings.get(0).setFirstFeeling(true);
 
             ArrayAdapter arrayAdapter = new UserFeelingsAdapter(getActivity(), R.layout.listview, _feelings);
-
 
 
             listview.setAdapter(arrayAdapter);

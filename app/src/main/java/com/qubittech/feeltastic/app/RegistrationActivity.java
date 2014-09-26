@@ -45,6 +45,7 @@ import com.qubittech.feeltastic.util.UrlHelper;
  */
 public class RegistrationActivity extends Activity {
 
+    private ApplicationHelper applicationHelper;
     private EditText userName, password, email, location;
     TrackingService myService;
     boolean isBound = false;
@@ -70,6 +71,7 @@ public class RegistrationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applicationHelper = (ApplicationHelper) getApplicationContext();
         setContentView(R.layout.registration);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("LocationReceived"));
@@ -132,8 +134,8 @@ public class RegistrationActivity extends Activity {
                 editor.putString("Username", userName.getText().toString());
                 editor.putString("Password", password.getText().toString());
                 editor.commit();
-                ApplicationHelper.UserName = userName.getText().toString();
-                BugSenseHandler.setUserIdentifier(ApplicationHelper.UserName);
+                applicationHelper.setUserName(userName.getText().toString());
+                BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
                 Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                 intent.putExtra("From", 1);
                 startActivity(intent);

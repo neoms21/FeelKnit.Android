@@ -46,6 +46,7 @@ public class LoginActivity extends Activity {
     boolean regIdRecevied = false;
     private EditText etUsername;
     private EditText etPassword;
+    private ApplicationHelper applicationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class LoginActivity extends Activity {
             finish();
             return;
         }
+        applicationHelper = (ApplicationHelper) getApplicationContext();
         setContentView(R.layout.login);
         TextView forgotLabel = (TextView) findViewById(R.id.forgotLabel);
         forgotLabel.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -70,8 +72,8 @@ public class LoginActivity extends Activity {
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         if (settings.getString("Username", null) != null) {
-            ApplicationHelper.UserName = settings.getString("Username", null);
-            //BugSenseHandler.setUserIdentifier(ApplicationHelper.UserName);
+            applicationHelper.setUserName(settings.getString("Username", null));
+            BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {
 
@@ -143,7 +145,7 @@ public class LoginActivity extends Activity {
                 editor.putString("Username", userName);
                 editor.putString("Password", password);
                 editor.commit();
-                ApplicationHelper.UserName = userName;
+                applicationHelper.setUserName(userName);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);

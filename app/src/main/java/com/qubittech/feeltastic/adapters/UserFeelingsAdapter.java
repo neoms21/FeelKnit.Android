@@ -40,6 +40,7 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder.feelingTextView = (TextView) convertView.findViewById(R.id.userFeelingText);
             holder.feelingTimeTextView = (TextView) convertView.findViewById(R.id.feelingTime);
             holder.countTextView = (TextView) convertView.findViewById(R.id.userFeelingCommentsCount);
+            holder.supportCountTextView = (TextView) convertView.findViewById(R.id.userFeelingSupportCount);
 
             convertView.setTag(holder);
         } else
@@ -57,6 +58,7 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
         holder.feelingTextView.setText("I " + feeling.getFeelingFormattedText("I"));
         holder.feelingTimeTextView.setText(DateFormatter.Format(feeling.getFeelingDate().toString()));
         holder.countTextView.setText(feeling.getComments().size() + "  comments");
+        holder.supportCountTextView.setText(feeling.getSupportCount() + "  supported");
 
         return convertView;
     }
@@ -66,6 +68,7 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
         TextView feelingTextView;
         TextView feelingTimeTextView;
         TextView countTextView;
+        TextView supportCountTextView;
     }
 
 

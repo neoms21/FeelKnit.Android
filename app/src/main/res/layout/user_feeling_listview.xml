@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="I am feeling HOT because temperature has rose to hot levels"/>
+        android:text="I am feeling HOT because temperature has risen to hot levels"/>
 
     <TextView
         android:layout_below="@id/userFeelingText"
@@ -30,5 +30,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="100 comments"/>
+    <TextView
+        android:layout_below="@id/userFeelingText"
+        android:paddingRight="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignTop="@id/userFeelingCommentsCount"
+        android:layout_toRightOf="@id/userFeelingCommentsCount"
+        android:id="@+id/userFeelingSupportCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20 supports"/>
 
 </RelativeLayout>

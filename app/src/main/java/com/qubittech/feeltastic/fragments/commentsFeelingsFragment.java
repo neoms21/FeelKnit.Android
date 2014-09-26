@@ -30,7 +30,7 @@ import com.qubittech.feeltastic.util.UrlHelper;
 
 public class commentsFeelingsFragment extends Fragment {
 
-    //    private OnFragmentInteractionListener mListener;
+    private ApplicationHelper applicationHelper;
     private View mainView;
     ProgressDialog dialog;
     private static List<Feeling> feelings;
@@ -62,10 +62,7 @@ public class commentsFeelingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
     }
 
     @Override
@@ -111,7 +108,7 @@ public class commentsFeelingsFragment extends Fragment {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String commentsFeelingUrl = UrlHelper.COMMENTSFEELING;
-            commentsFeelingUrl = String.format(commentsFeelingUrl, ApplicationHelper.UserName);
+            commentsFeelingUrl = String.format(commentsFeelingUrl, applicationHelper.getUserName());
             return jsonHttpClient.Get(commentsFeelingUrl, args);
         }
     }

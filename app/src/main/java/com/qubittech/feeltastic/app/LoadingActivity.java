@@ -13,13 +13,29 @@ import android.os.Bundle;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.crittercism.app.Crittercism;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.qubittech.feeltastic.models.Feeling;
+import com.qubittech.feeltastic.util.ApplicationHelper;
+import com.qubittech.feeltastic.util.JsonHttpClient;
+import com.qubittech.feeltastic.util.UrlHelper;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoadingActivity extends Activity {
     ProgressDialog dialog;
+    private ApplicationHelper applicationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applicationHelper = (ApplicationHelper) getApplicationContext();
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
             return;
@@ -58,28 +74,26 @@ public class LoadingActivity extends Activity {
     }
 
 
-    private class LoadingTask extends AsyncTask {
+    private class LoadingTask extends AsyncTask<String, Integer, String> {
 
         @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Type collectionType = new TypeToken<List<String>>() {
+            }.getType();
+            Gson gson = new GsonBuilder().create();
+            List<String> feels = gson.fromJson(s, collectionType);
+            applicationHelper.setFeelTexts(feels);
             startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
             dialog.dismiss();
         }
 
         @Override
-        protected Object doInBackground(Object[] objects) {
+        protected String doInBackground(String... params) {
 
-            try {
-                Thread.sleep(200);
-
-            } catch (InterruptedException e) {
-
-
-            }
-
-            return null;
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            return jsonHttpClient.Get(UrlHelper.GET_FEELS, args);
         }
     }
 

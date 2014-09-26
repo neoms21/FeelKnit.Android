@@ -33,6 +33,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.qubittech.feeltastic.util.ApplicationHelper;
 import com.qubittech.feeltastic.util.JsonHttpClient;
 import com.qubittech.feeltastic.util.UrlHelper;
 
@@ -42,28 +43,13 @@ import com.qubittech.feeltastic.util.UrlHelper;
 public class AddFeelingFragment extends Fragment {
 
     private static String username = "";
-    private String[] feelings = {"Ashamed",
-            "Blessed",
-            "Embarrassed",
-            "Excited",
-            "Frustrated",
-            "Happy",
-            "Lonely",
-            "Loved",
-            "Pampered",
-            "Proud",
-            "Relieved",
-            "Sad",
-            "Scared",
-            "Sick",
-            "Worried",
-    };
+    private static List<String> dbDefinedFeelings;
     private Spinner spinnerFeelings;
     private String selectedFeeling = "";
     ProgressDialog dialog;
     private Feeling _feeling = null;
-    private List<Feeling> _feelings = null;
-
+    private List<Feeling> relatedFeelings = null;
+    private ApplicationHelper applicationHelper;
     private String TAG = "SpinnerHint";
 
     private LayoutInflater mInflator;
@@ -77,11 +63,12 @@ public class AddFeelingFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
+        dbDefinedFeelings = ((ApplicationHelper) (getActivity().getApplicationContext())).getFeelTexts();
         View addFeelingView = inflater.inflate(R.layout.activity_feeling, container, false);
         _feeling = new Feeling();
         spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingText);
-        username = getUserName();
+        username = applicationHelper.getUserName();
 
         final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
         final EditText so = (EditText) addFeelingView.findViewById(R.id.soText);
@@ -131,15 +118,15 @@ public class AddFeelingFragment extends Fragment {
         }
     }
 
-    private String getUserName() {
-        String name = "";
-        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
-        if (settings != null) {
-
-            name = settings.getString("Username", "").toString();
-        }
-        return name;
-    }
+//    private String getUserName() {
+//        String name = "";
+//        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
+//        if (settings != null) {
+//
+//            name = settings.getString("Username", "").toString();
+//        }
+//        return name;
+//    }
 
     private SpinnerAdapter typeSpinnerAdapter = new BaseAdapter() {
 
@@ -155,7 +142,7 @@ public class AddFeelingFragment extends Fragment {
             if (!selected) {
                 text.setText("Please select a value");
             } else {
-                text.setText(feelings[position]);
+                text.setText(dbDefinedFeelings.get(position));
             }
             return convertView;
         }
@@ -167,12 +154,12 @@ public class AddFeelingFragment extends Fragment {
 
         @Override
         public Object getItem(int position) {
-            return feelings[position];
+            return dbDefinedFeelings.get(position);
         }
 
         @Override
         public int getCount() {
-            return feelings.length;
+            return dbDefinedFeelings.size();
         }
 
         public View getDropDownView(int position, View convertView,
@@ -181,7 +168,7 @@ public class AddFeelingFragment extends Fragment {
                 convertView = mInflator.inflate(R.layout.customspinner, null);
             }
             text = (TextView) convertView.findViewById(R.id.text);
-            text.setText(feelings[position]);
+            text.setText(dbDefinedFeelings.get(position));
             return convertView;
         }
 
@@ -226,8 +213,8 @@ public class AddFeelingFragment extends Fragment {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
                 Type collectionType = new TypeToken<List<Feeling>>() {
                 }.getType();
-                _feelings = (List<Feeling>) gson.fromJson(s, collectionType);
-                mCallback.onFeelingCreated(_feeling, _feelings);
+                relatedFeelings = (List<Feeling>) gson.fromJson(s, collectionType);
+                mCallback.onFeelingCreated(_feeling, relatedFeelings);
             }
         }
 

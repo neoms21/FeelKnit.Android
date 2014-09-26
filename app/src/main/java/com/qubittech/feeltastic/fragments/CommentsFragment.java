@@ -38,6 +38,7 @@ import com.qubittech.feeltastic.util.UrlHelper;
  */
 public class CommentsFragment extends Fragment {
 
+    private ApplicationHelper applicationHelper;
     private ProgressDialog dialog;
 //    private String username;
     private ArrayAdapter arrayAdapter;
@@ -48,7 +49,7 @@ public class CommentsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+applicationHelper = (ApplicationHelper)getActivity().getApplicationContext();
         View mainView = inflater.inflate(R.layout.comments, container, false);
 
         Bundle args = getArguments();
@@ -59,7 +60,7 @@ public class CommentsFragment extends Fragment {
 //        username = ApplicationHelper.UserName;
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
-        String feelingUserName = ApplicationHelper.UserName == feeling.getUserName() ? "I" : feeling.getUserName();
+        String feelingUserName = applicationHelper.getUserName() == feeling.getUserName() ? "I" : feeling.getUserName();
         feelingUserNameTextView.setText(feelingUserName);
 
         TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
@@ -115,7 +116,7 @@ public class CommentsFragment extends Fragment {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("Text", params[0]));
-            args.add(new BasicNameValuePair("User", ApplicationHelper.UserName));
+            args.add(new BasicNameValuePair("User", applicationHelper.getUserName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             return jsonHttpClient.PostParams(UrlHelper.COMMENTS + "/" + feelingId, args);
         }

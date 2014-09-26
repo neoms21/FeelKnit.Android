@@ -39,6 +39,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     Context context;
     boolean isUserFeelings = false;
     boolean isRunningOnEmulator = false;
+    private final ApplicationHelper applicationHelper;
 
     /*private view holder class*/
     private class ViewHolder {
@@ -59,6 +60,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     public RelatedFeelingsAdapter(Context context, int resource, List<Feeling> feelings) {
 
         super(context, resource, feelings);
+        applicationHelper = (ApplicationHelper) context.getApplicationContext();
         isRunningOnEmulator = UrlHelper.isRunningOnEmulator();
         this.context = context;
     }
@@ -107,7 +109,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
         holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
         holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
-        if (feeling.getSupportUsers().contains(ApplicationHelper.UserName))
+        if (feeling.getSupportUsers().contains(applicationHelper.getUserName()))
         {
             holder.supportButton.setText("Un-Support");
         }
@@ -162,17 +164,17 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     private void manipulateSupportButton(Feeling feeling, Button supportButton) {
 
-        if (feeling.getSupportUsers().contains(ApplicationHelper.UserName)) {
+        if (feeling.getSupportUsers().contains(applicationHelper.getUserName())) {
             supportButton.setText("Support");
             int existingCount = feeling.getSupportCount();
             feeling.setSupportCount(existingCount - 1);
             notifyDataSetChanged();
-            feeling.getSupportUsers().remove(ApplicationHelper.UserName);
+            feeling.getSupportUsers().remove(applicationHelper.getUserName());
             new DecreaseSupportCountTask().execute(feeling.getId());
         } else {
             supportButton.setText("Un-Support");
             int existingCount = feeling.getSupportCount();
-            feeling.getSupportUsers().add(ApplicationHelper.UserName);
+            feeling.getSupportUsers().add(applicationHelper.getUserName());
             feeling.setSupportCount(existingCount + 1);
             notifyDataSetChanged();
             new IncreaseSupportCountTask().execute(feeling.getId());
@@ -201,7 +203,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         protected Boolean doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
-            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+            args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String supportUrl = UrlHelper.INCREASE_SUPPORT;
             String response = jsonHttpClient.PostUrlParams(supportUrl, args);
@@ -215,7 +217,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         protected Boolean doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
-            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+            args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String supportUrl = UrlHelper.DECREASE_SUPPORT;
             String response = jsonHttpClient.PostUrlParams(supportUrl, args);
@@ -229,7 +231,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         protected Boolean doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
-            args.add(new BasicNameValuePair("username", ApplicationHelper.UserName));
+            args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
             String emailUrl = UrlHelper.EMAILREPORT;
             String response = jsonHttpClient.PostUrlParams(emailUrl, args);

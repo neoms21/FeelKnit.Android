@@ -19,13 +19,14 @@ import com.qubittech.feeltastic.util.ApplicationHelper;
 import com.qubittech.feeltastic.util.DateFormatter;
 
 /**
-* Created by Manoj on 19/06/2014.
-*/
+ * Created by Manoj on 19/06/2014.
+ */
 public class CommentsAdapter extends ArrayAdapter<Comment> {
 
     int resource;
     Context context;
-String feelingText;
+    String feelingText;
+    private final ApplicationHelper applicationHelper;
 
     /*private view holder class*/
     private class ViewHolder {
@@ -37,6 +38,7 @@ String feelingText;
     public CommentsAdapter(Context context, int resource, Feeling feeling) {
 
         super(context, resource, feeling.getComments());
+        applicationHelper = (ApplicationHelper) context.getApplicationContext();
         feelingText = feeling.getFeelingText();
         this.context = context;
     }
@@ -58,7 +60,7 @@ String feelingText;
                 @Override
                 public void onClick(View view) {
                     MainActivity mainActivity = (MainActivity) context;
-                    mainActivity.ShowCommentsFragment(null,feelingText,comment.getUser()
+                    mainActivity.ShowCommentsFragment(null, feelingText, comment.getUser()
                     );
                 }
             });
@@ -67,7 +69,7 @@ String feelingText;
             holder = (ViewHolder) convertView.getTag();
 
 
-        holder.userTextView.setText(ApplicationHelper.UserName.equals(comment.getUser()) ? "me" : comment.getUser());
+        holder.userTextView.setText(applicationHelper.getUserName().equals(comment.getUser()) ? "me" : comment.getUser());
         holder.commentTextView.setText(comment.getText());
         holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
         //holder.soTextView.setText(feeling.ge());

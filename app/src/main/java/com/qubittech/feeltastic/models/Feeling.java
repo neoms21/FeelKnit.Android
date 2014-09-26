@@ -1,5 +1,7 @@
 package com.qubittech.feeltastic.models;
 
+import com.qubittech.feeltastic.util.Utilities;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -106,7 +108,14 @@ public class Feeling implements Serializable {
     public String getFeelingFormattedText(String pronoun) {
         String p = pronoun.equals("I") ? "am" : "is";
 
-        return String.format("%s feeling %s because %s", isFirstFeeling ? p : "was", feelingText, reason);
+        if (Utilities.isNullOrBlank(reason) && Utilities.isNullOrBlank(action))
+            return String.format("%s feeling %s", isFirstFeeling ? p : "was", feelingText);
+        if (Utilities.isNullOrBlank(reason) && !Utilities.isNullOrBlank(action))
+            return String.format("%s feeling %s so %s", isFirstFeeling ? p : "was", feelingText, action);
+        if (!Utilities.isNullOrBlank(reason) && Utilities.isNullOrBlank(action))
+            return String.format("%s feeling %s because %s", isFirstFeeling ? p : "was", feelingText, reason);
+
+        return String.format("%s feeling %s because %s so %s", isFirstFeeling ? p : "was", feelingText, reason, action);
     }
 
     public String getId() {
