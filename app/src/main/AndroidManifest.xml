@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qubittech.feeltastic.app"
+    package="com.qubittech.feelknit.app"
     android:versionCode="1"
     android:versionName="1.0">
 
     <uses-sdk android:minSdkVersion="14" />
     <application
-        android:name="com.qubittech.feeltastic.util.ApplicationHelper"
+
+        android:name="com.qubittech.feelknit.util.ApplicationHelper"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.qubittech.feeltastic.app.LoadingActivity"
+            android:name="com.qubittech.feelknit.app.LoadingActivity"
             android:label="@string/loading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,25 +21,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.qubittech.feeltastic.app.RegistrationActivity"
+            android:name="com.qubittech.feelknit.app.RegistrationActivity"
             android:label="@string/register">
             <intent-filter>
-                <action android:name="com.qubittech.feeltastic.app.RegistrationActivity" />
+                <action android:name="com.qubittech.feelknit.app.RegistrationActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
 
         <activity
-            android:name="com.qubittech.feeltastic.app.MainActivity"
+            android:name="com.qubittech.feelknit.app.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="com.qubittech.feeltastic.app.MainActivity" />
+                <action android:name="com.qubittech.feelknit.app.MainActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <service android:name="com.qubittech.feeltastic.services.TrackingService">
+        <service android:name="com.qubittech.feelknit.services.TrackingService">
             <intent-filter>
                 <action android:name="com.qubittech.START_MONITORING" />
                 <action android:name="com.qubittech.STOP_MONITORING" />
@@ -46,18 +47,18 @@
         </service>
 
         <activity
-            android:name="com.qubittech.feeltastic.app.LoginActivity"
+            android:name="com.qubittech.feelknit.app.LoginActivity"
             android:label="@string/title_activity_login" />
 
         <receiver
-            android:name="com.qubittech.feeltastic.receivers.GcmBroadcastReceiver"
+            android:name="com.qubittech.feelknit.receivers.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="com.hmkcode.android.gcm" />
             </intent-filter>
         </receiver>
-        <service android:name="com.qubittech.feeltastic.services.GcmMessageHandler" />
+        <service android:name="com.qubittech.feelknit.services.GcmMessageHandler" />
 
     </application>
 
