@@ -10,7 +10,7 @@ public class Comment implements Serializable {
     private String text;
     private String user;
     private String postedAt;
-
+    private User commentUser;
 
     public String getText() {
         return text;
@@ -34,5 +34,13 @@ public class Comment implements Serializable {
 
     public void setPostedAt(String postedAt) {
         this.postedAt = postedAt;
+    }
+
+    public User getCommentUser() {
+        return commentUser;
+    }
+
+    public void setCommentUser(User commentUser) {
+        this.commentUser = commentUser;
     }
 }

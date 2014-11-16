@@ -26,29 +26,32 @@ public class RelatedFeelingFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.related_feelings, container, false);
 
         Bundle args = getArguments();
-        Feeling feeling = (Feeling) args.getSerializable("feeling");
-        List<Feeling> feelings = (List<Feeling>) args.getSerializable("relatedFeelings");
+        if (args == null) {
+        } else {
+            Feeling feeling = (Feeling) args.getSerializable("feeling");
+            List<Feeling> feelings = (List<Feeling>) args.getSerializable("relatedFeelings");
 
-        TextView userNameTextView = (TextView) mainView.findViewById(R.id.name);
+            TextView userNameTextView = (TextView) mainView.findViewById(R.id.name);
 
-        TextView feelTextView = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
-        TextView count = (TextView) mainView.findViewById(R.id.countLabel);
-        feeling.setFirstFeeling(true);
-        userNameTextView.setText("I");
-        feelTextView.setText(feeling.getFeelingFormattedText("I"));
-        count.setText(String.format("%d %s feeling %s currently", feelings.size(), feelings.size() == 1 ? "person" : "people", feeling.getFeelingText()));
+            TextView feelTextView = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
+            TextView count = (TextView) mainView.findViewById(R.id.countLabel);
+            feeling.setFirstFeeling(true);
+            userNameTextView.setText("I");
+            feelTextView.setText(feeling.getFeelingFormattedText("I"));
+            count.setText(String.format("%d %s feeling %s currently", feelings.size(), feelings.size() == 1 ? "person" : "people", feeling.getFeelingText()));
 
-        ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, feelings);
+            ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, feelings);
 
-        ListView listview = (ListView) mainView.findViewById(R.id.relatedFeelingsList);
+            ListView listview = (ListView) mainView.findViewById(R.id.relatedFeelingsList);
 
-        listview.setAdapter(arrayAdapter);
-        listview.setDivider(new ColorDrawable());
-        listview.setDividerHeight(10);
+            listview.setAdapter(arrayAdapter);
+            listview.setDivider(new ColorDrawable());
+            listview.setDividerHeight(10);
 
-        arrayAdapter.notifyDataSetChanged();
+            arrayAdapter.notifyDataSetChanged();
 
-        return mainView;
-        //Intent feelingIntent = getIntent()
+        }
+
+        return mainView; //Intent feelingIntent = getIntent()
     }
 }

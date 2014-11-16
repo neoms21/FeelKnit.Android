@@ -1,0 +1,48 @@
+<LinearLayout
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:background="@color/mainBg"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/lblChoose"
+        android:layout_width="wrap_content"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:textColor="@color/lightButtonColor"
+        android:textStyle="bold"
+        android:layout_height="wrap_content" android:text="Choose an Avatar :"
+        />
+
+    <ListView
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/lightButtonColor"
+        android:id="@+id/avatarList"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ListView>
+
+    <LinearLayout
+        android:layout_weight="0"
+        android:layout_below="@id/avatarList"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/skipButton"
+            android:layout_weight="1"
+            style="@style/buttonStyle"
+            android:text="Skip"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/saveAvatarButton"
+            android:layout_weight="1"
+            style="@style/buttonStyle"
+            android:text="Save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </LinearLayout>

@@ -18,9 +18,25 @@
         <item>Notifications,notifications</item>
         <item>My Feelings,userdrawer</item>
         <item>Comments,comments</item>
+        <item>Related Feelings,userdrawer</item>
         <item>Settings,settings</item>
     </string-array>
 
+    <string-array name="avatars">
+        <item>ironman</item>
+        <item>agnes</item>
+        <item>chef</item>
+        <item>blackwidow</item>
+        <item>girl1</item>
+        <item>girl2</item>
+        <item>girl3</item>
+        <item>evilminion</item>
+        <item>kungfuminion</item>
+        <item>hulk</item>
+        <item>thor</item>
+    </string-array>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_save_avatar">Save Avatar</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import com.qubittech.feelknit.navigation.NavDrawerAdapter;
 import com.qubittech.feelknit.navigation.NavDrawerItem;
 import com.qubittech.feelknit.navigation.NavMenuBuilder;
 import com.qubittech.feelknit.util.ApplicationHelper;
+import com.qubittech.feelknit.util.ImageHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
@@ -37,7 +39,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
         NavMenuBuilder navBuilder = new NavMenuBuilder();
-        String[] drawerItems = getResources().getStringArray(com.qubittech.feelknit.app.R.array.navigation_drawer_options);
+        String[] drawerItems = getResources().getStringArray(R.array.navigation_drawer_options);
         int id = 101;
         for (String item : drawerItems) {
             String[] parts = item.split(",");
@@ -71,6 +73,11 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 commentsFeelingsFragment fragment = new commentsFeelingsFragment();
                 getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, fragment, "Comments Feelings").addToBackStack("Comments" +
                         "Feelings").commit();
+                break;
+            case 104:
+                RelatedFeelingFragment relatedFeelingFragment = new RelatedFeelingFragment();
+                getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, relatedFeelingFragment, "Related Feelings")
+                        .addToBackStack("Related Feelings").commit();
                 break;
         }
     }
@@ -112,6 +119,10 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         //  isRegister = bundle == null ? false : bundle.getBoolean("IsFromRegister");
         Feeling feeling = bundle == null ? null : (Feeling) bundle.get("feeling");
 
+        ImageView userIconImageView = (ImageView) findViewById(R.id.leftDrawerUserIcon);
+        if(applicationHelper.getAvatar()!=null)
+        ImageHelper.setBitMap(userIconImageView, getApplicationContext(), applicationHelper.getAvatar(), 60, 70);
+
         TextView usrTextView = (TextView) findViewById(com.qubittech.feelknit.app.R.id.usrName);
         usrTextView.setText(applicationHelper.getUserName());
         Button btnSignout = (Button) findViewById(com.qubittech.feelknit.app.R.id.signout);
@@ -122,7 +133,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 applicationHelper.setUserName("");
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 settings.edit().remove("Username").commit();
-                settings.edit().remove("Password").commit();
+                settings.edit().remove("Avatar").commit();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 new ClearUserGcmKeyTask().execute(username);
             }

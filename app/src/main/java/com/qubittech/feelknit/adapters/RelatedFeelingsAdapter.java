@@ -2,6 +2,8 @@ package com.qubittech.feelknit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -27,6 +29,7 @@ import java.util.Locale;
 
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.DateFormatter;
+import com.qubittech.feelknit.util.ImageHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
@@ -109,6 +112,9 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
         holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
         holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
+    //    holder.userIcon.setImageResource(context.getResources().getIdentifier( feeling.getUser().getAvatar(), "drawable", context.getPackageName()));
+        ImageHelper.setBitMap(holder.userIcon,context,feeling.getUser().getAvatar(),60,70);
+
         if (feeling.getSupportUsers().contains(applicationHelper.getUserName()))
         {
             holder.supportButton.setText("Un-Support");
@@ -139,6 +145,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 NavigateToCommentsView(feeling);
             }
         });

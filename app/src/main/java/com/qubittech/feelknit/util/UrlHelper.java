@@ -17,10 +17,11 @@ public class UrlHelper {
     private static final String BASE_URL = "http://feelknitservice.apphb.com/";
     public static final String COMMENTS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Comments";
     public static final String FEELINGS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings";
-    public static final String USER_VERIFY = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/Verify";
+    public static final String USER_LOGIN = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/Verify";
     public static final String USER_KEY = (onEmulator ? BASE_URL_EMULATOR  : BASE_URL )+ "Users/clientkey";
     public static final String CLEAR_USER_KEY = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/clearkey";
     public static final String USER = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users";
+    public static final String SAVE_AVATAR= (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/saveAvatar";
     public static final String USERNAME = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings/username/";
     public static final String INCREASE_SUPPORT = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings/increasesupport";
     public static final String DECREASE_SUPPORT = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings/decreasesupport";

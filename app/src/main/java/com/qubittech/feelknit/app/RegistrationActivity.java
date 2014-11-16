@@ -135,11 +135,10 @@ public class RegistrationActivity extends Activity {
                 editor.commit();
                 applicationHelper.setUserName(userName.getText().toString());
                 BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
-                Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                Intent intent = new Intent(RegistrationActivity.this, SaveAvatarActivity.class);
                 intent.putExtra("From", 1);
                 startActivity(intent);
-            }
-            else {
+            } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(RegistrationActivity.this);
                 builder1.setMessage("Username already exists!");
                 builder1.setCancelable(true);

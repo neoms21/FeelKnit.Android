@@ -5,14 +5,23 @@ package com.qubittech.feelknit.models;
  */
 public class User {
 
-    private String UserName;
+    private String userName;
+    private String avatar;
 
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        UserName = userName;
+        this.userName = userName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

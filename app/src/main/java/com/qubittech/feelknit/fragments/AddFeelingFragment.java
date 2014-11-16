@@ -212,7 +212,7 @@ public class AddFeelingFragment extends Fragment {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
                 Type collectionType = new TypeToken<List<Feeling>>() {
                 }.getType();
-                relatedFeelings = (List<Feeling>) gson.fromJson(s, collectionType);
+                relatedFeelings = gson.fromJson(s, collectionType);
                 mCallback.onFeelingCreated(_feeling, relatedFeelings);
             }
         }

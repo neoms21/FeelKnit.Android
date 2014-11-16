@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.qubittech.feelknit.util.ApplicationHelper;
+import com.qubittech.feelknit.util.ImageHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
@@ -40,7 +41,7 @@ public class CommentsFragment extends Fragment {
 
     private ApplicationHelper applicationHelper;
     private ProgressDialog dialog;
-//    private String username;
+    //    private String username;
     private ArrayAdapter arrayAdapter;
     private Feeling feeling;
     private String commentText;
@@ -49,15 +50,19 @@ public class CommentsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-applicationHelper = (ApplicationHelper)getActivity().getApplicationContext();
+        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         View mainView = inflater.inflate(R.layout.comments, container, false);
 
         Bundle args = getArguments();
 
         feeling = (Feeling) args.getSerializable("feeling");
-        if(feeling == null)
+        if (feeling == null)
             return mainView;
 //        username = ApplicationHelper.UserName;
+
+        ImageView userImageView = (ImageView) mainView.findViewById(R.id.userIconImage);
+        if (feeling.getUser() != null && feeling.getUser().getAvatar() != null)
+            ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 60, 70);
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
         String feelingUserName = applicationHelper.getUserName() == feeling.getUserName() ? "I" : feeling.getUserName();
@@ -92,7 +97,7 @@ applicationHelper = (ApplicationHelper)getActivity().getApplicationContext();
 
         saveCommentButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
+                dialog = ProgressDialog.show(getActivity(), "Saving comment", "Please wait...", true);
                 new SaveCommentTask().execute(commentEdiText.getText().toString(), feeling.getId());
             }
         });
@@ -112,8 +117,6 @@ applicationHelper = (ApplicationHelper)getActivity().getApplicationContext();
         protected String doInBackground(final String... params) {
             commentText = params[0];
             String feelingId = params[1];
-
-
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("Text", params[0]));
             args.add(new BasicNameValuePair("User", applicationHelper.getUserName()));

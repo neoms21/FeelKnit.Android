@@ -11,7 +11,7 @@ public class ApplicationHelper extends Application {
 
     private String userName;
     private List<String> feelTexts;
-
+    private String avatar;
 
     public String getUserName() {
         return userName;
@@ -27,6 +27,14 @@ public class ApplicationHelper extends Application {
 
     public void setFeelTexts(List<String> feelTexts) {
         this.feelTexts = feelTexts;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
 //public static String UserName;

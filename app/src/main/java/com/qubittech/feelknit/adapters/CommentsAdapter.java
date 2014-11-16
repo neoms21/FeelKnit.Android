@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qubittech.feelknit.app.MainActivity;
@@ -15,6 +16,7 @@ import com.qubittech.feelknit.models.Comment;
 import com.qubittech.feelknit.models.Feeling;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.DateFormatter;
+import com.qubittech.feelknit.util.ImageHelper;
 
 /**
  * Created by Manoj on 19/06/2014.
@@ -31,6 +33,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         TextView commentTextView;
         TextView userTextView;
         TextView postedAtTextView;
+        ImageView userImageView;
     }
 
     public CommentsAdapter(Context context, int resource, Feeling feeling) {
@@ -53,6 +56,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             holder.commentTextView = (TextView) convertView.findViewById(R.id.comment);
             holder.postedAtTextView = (TextView) convertView.findViewById(R.id.postedAt);
             holder.userTextView = (TextView) convertView.findViewById(R.id.name);
+            holder.userImageView = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.userTextView.setClickable(true);
             holder.userTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,7 +74,9 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         holder.userTextView.setText(applicationHelper.getUserName().equals(comment.getUser()) ? "me" : comment.getUser());
         holder.commentTextView.setText(comment.getText());
         holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
-        //holder.soTextView.setText(feeling.ge());
+        if (comment.getCommentUser() != null || comment.getUser() == "me") {
+            ImageHelper.setBitMap(holder.userImageView, context, comment.getUser() == "me" ? applicationHelper.getAvatar() : comment.getCommentUser().getAvatar(), 60, 70);
+        }
 
 //        if (applied) {
 //            convertView.setBackgroundColor(Color.rgb(201, 201, 201));

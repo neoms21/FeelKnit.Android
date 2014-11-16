@@ -2,44 +2,45 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qubittech.feelknit.app"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="14" />
-    <application
 
+    <application
         android:name="com.qubittech.feelknit.util.ApplicationHelper"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="com.qubittech.feelknit.app.LoadingActivity"
-            android:label="@string/loading">
+            android:name=".LoadingActivity"
+            android:label="@string/loading" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.qubittech.feelknit.app.RegistrationActivity"
-            android:label="@string/register">
+            android:name=".RegistrationActivity"
+            android:label="@string/register" >
             <intent-filter>
                 <action android:name="com.qubittech.feelknit.app.RegistrationActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
         <activity
-            android:name="com.qubittech.feelknit.app.MainActivity"
-            android:label="@string/app_name">
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.qubittech.feelknit.app.MainActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <service android:name="com.qubittech.feelknit.services.TrackingService">
+        <service android:name="com.qubittech.feelknit.services.TrackingService" >
             <intent-filter>
                 <action android:name="com.qubittech.START_MONITORING" />
                 <action android:name="com.qubittech.STOP_MONITORING" />
@@ -47,7 +48,7 @@
         </service>
 
         <activity
-            android:name="com.qubittech.feelknit.app.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
 
         <receiver
@@ -55,11 +56,21 @@
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.hmkcode.android.gcm" />
             </intent-filter>
         </receiver>
+
         <service android:name="com.qubittech.feelknit.services.GcmMessageHandler" />
 
+        <activity
+            android:name=".SaveAvatarActivity"
+            android:label="@string/title_activity_save_avatar"
+            android:parentActivityName=".RegistrationActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.qubittech.feelknit.app.RegistrationActivity" />
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

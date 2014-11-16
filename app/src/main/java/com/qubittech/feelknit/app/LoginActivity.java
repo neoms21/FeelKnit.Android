@@ -24,9 +24,15 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.qubittech.feelknit.models.Feeling;
+import com.qubittech.feelknit.models.LoginResult;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
@@ -69,8 +75,11 @@ public class LoginActivity extends Activity {
         etPassword = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtPassword);
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        if (settings.getString("Username", null) != null) {
-            applicationHelper.setUserName(settings.getString("Username", null));
+        String uname = settings.getString("Username", null);
+        String avatar = settings.getString("Avatar", null);
+        if (uname != null) {
+            applicationHelper.setUserName(uname);
+            applicationHelper.setAvatar(avatar);
             BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {
@@ -132,18 +141,19 @@ public class LoginActivity extends Activity {
 
     }
 
-    private class LoginUserTask extends AsyncTask<String, Integer, Boolean> {
+    private class LoginUserTask extends AsyncTask<String, Integer, LoginResult> {
         @Override
-        protected void onPostExecute(Boolean loginSuccessful) {
-            super.onPostExecute(loginSuccessful);
+        protected void onPostExecute(LoginResult loginResult) {
+            super.onPostExecute(loginResult);
             dialog.dismiss();
-            if (loginSuccessful) {
+            if (loginResult.isLoginSuccessful()) {
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("Username", userName);
-                editor.putString("Password", password);
+                editor.putString("Avatar", loginResult.getAvatar());
                 editor.commit();
                 applicationHelper.setUserName(userName);
+                applicationHelper.setAvatar(loginResult.getAvatar());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
@@ -162,16 +172,18 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected LoginResult doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", params[0]));
             args.add(new BasicNameValuePair("password", params[1]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient();
-            String verifyUrl = UrlHelper.USER_VERIFY;
+            String verifyUrl = UrlHelper.USER_LOGIN;
             String response = jsonHttpClient.PostParams(verifyUrl, args);
-            boolean result = Boolean.parseBoolean(response);
 
-            if (result) {
+            Gson gson = new GsonBuilder().create();
+            LoginResult result =gson.fromJson(response, LoginResult.class);
+
+            if (result.isLoginSuccessful()) {
                 while (!regIdRecevied) {
                     try {
                         if (gcm == null) {
@@ -179,7 +191,6 @@ public class LoginActivity extends Activity {
                         }
                         regid = gcm.register(PROJECT_NUMBER);
                         String msg = "Device registered, registration ID=" + regid;
-                        Log.i("GCM", msg);
                         regIdRecevied = true;
 
                         args = new ArrayList<NameValuePair>();
