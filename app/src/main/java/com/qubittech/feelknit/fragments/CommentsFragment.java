@@ -62,7 +62,7 @@ public class CommentsFragment extends Fragment {
 
         ImageView userImageView = (ImageView) mainView.findViewById(R.id.userIconImage);
         if (feeling.getUser() != null && feeling.getUser().getAvatar() != null)
-            ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 60, 70);
+            ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 100, 100);
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
         String feelingUserName = applicationHelper.getUserName() == feeling.getUserName() ? "I" : feeling.getUserName();

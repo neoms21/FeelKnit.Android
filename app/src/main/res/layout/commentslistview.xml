@@ -11,16 +11,17 @@
 
         <ImageView
             android:layout_margin="5dp"
+
             android:id="@+id/userIconImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/usericon" />
 
         <TextView
             android:id="@+id/name"
             style="@style/userNameStyle"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="13dp"
             android:layout_alignTop="@id/userIconImage"
             android:text="neo"
             android:layout_width="match_parent"
@@ -31,7 +32,7 @@
             android:layout_alignTop="@id/tvFeelingLabel"
             android:layout_alignLeft="@id/userIconImage"
             android:id="@+id/comment"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="comment" />

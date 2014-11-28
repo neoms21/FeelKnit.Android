@@ -112,11 +112,10 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
         holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
         holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
-    //    holder.userIcon.setImageResource(context.getResources().getIdentifier( feeling.getUser().getAvatar(), "drawable", context.getPackageName()));
-        ImageHelper.setBitMap(holder.userIcon,context,feeling.getUser().getAvatar(),60,70);
+        if (feeling.getUser() != null && feeling.getUser().getAvatar() != null)
+            ImageHelper.setBitMap(holder.userIcon, context, feeling.getUser().getAvatar(), 100, 100);
 
-        if (feeling.getSupportUsers().contains(applicationHelper.getUserName()))
-        {
+        if (feeling.getSupportUsers().contains(applicationHelper.getUserName())) {
             holder.supportButton.setText("Un-Support");
         }
         holder.supportButton.setOnClickListener(new View.OnClickListener() {
@@ -162,8 +161,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         DisableButton(holder.reportButton, color);//.setBackgroundColor(color);
     }
 
-    private void DisableButton(Button button, int color)
-    {
+    private void DisableButton(Button button, int color) {
         button.setEnabled(false);
         button.setClickable(false);
         button.setBackgroundColor(color);

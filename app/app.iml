@@ -80,7 +80,6 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="crittercism-android-agent-4.5.3" level="project" />
     <orderEntry type="library" exported="" name="mail" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="commons-codec-1.6" level="project" />
@@ -90,6 +89,7 @@
     <orderEntry type="library" exported="" name="httpclient-cache-4.2.3" level="project" />
     <orderEntry type="library" exported="" name="additionnal" level="project" />
     <orderEntry type="library" exported="" name="bugsense-3.5" level="project" />
+    <orderEntry type="library" exported="" name="crittercism-android-agent-5.0.3" level="project" />
     <orderEntry type="library" exported="" name="httpclient-4.2.3" level="project" />
     <orderEntry type="library" exported="" name="google-play-services" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.2.3" level="project" />

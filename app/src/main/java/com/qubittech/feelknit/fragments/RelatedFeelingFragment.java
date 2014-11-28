@@ -1,5 +1,6 @@
 package com.qubittech.feelknit.fragments;
 
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -7,51 +8,96 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.qubittech.feelknit.adapters.RelatedFeelingsAdapter;
 import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Feeling;
+import com.qubittech.feelknit.util.ApplicationHelper;
+import com.qubittech.feelknit.util.ImageHelper;
+import com.qubittech.feelknit.util.JsonHttpClient;
+import com.qubittech.feelknit.util.UrlHelper;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Manoj on 13/05/2014.
  */
 public class RelatedFeelingFragment extends Fragment {
+    private ApplicationHelper applicationHelper;
+    private View mainView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.related_feelings, container, false);
-
+        mainView = inflater.inflate(R.layout.related_feelings, container, false);
+        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         Bundle args = getArguments();
         if (args == null) {
+            new fetchRelatedFeelingsTask().execute("");
         } else {
             Feeling feeling = (Feeling) args.getSerializable("feeling");
             List<Feeling> feelings = (List<Feeling>) args.getSerializable("relatedFeelings");
-
-            TextView userNameTextView = (TextView) mainView.findViewById(R.id.name);
-
-            TextView feelTextView = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
-            TextView count = (TextView) mainView.findViewById(R.id.countLabel);
-            feeling.setFirstFeeling(true);
-            userNameTextView.setText("I");
-            feelTextView.setText(feeling.getFeelingFormattedText("I"));
-            count.setText(String.format("%d %s feeling %s currently", feelings.size(), feelings.size() == 1 ? "person" : "people", feeling.getFeelingText()));
-
-            ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, feelings);
-
-            ListView listview = (ListView) mainView.findViewById(R.id.relatedFeelingsList);
-
-            listview.setAdapter(arrayAdapter);
-            listview.setDivider(new ColorDrawable());
-            listview.setDividerHeight(10);
-
-            arrayAdapter.notifyDataSetChanged();
-
+            ShowRelatedFeelings(feeling, feelings);
         }
 
         return mainView; //Intent feelingIntent = getIntent()
+    }
+
+    private void ShowRelatedFeelings(Feeling feeling, List<Feeling> feelings) {
+        TextView userNameTextView = (TextView) mainView.findViewById(R.id.name);
+        ImageView userIcon = (ImageView) mainView.findViewById(R.id.userIconImage);
+        ImageHelper.setBitMap(userIcon, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 100, 100);
+
+        TextView feelTextView = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
+        TextView count = (TextView) mainView.findViewById(R.id.countLabel);
+        feeling.setFirstFeeling(true);
+        userNameTextView.setText("I");
+        feelTextView.setText(feeling.getFeelingFormattedText("I"));
+        count.setText(String.format("%d %s feeling %s currently", feelings.size(), feelings.size() == 1 ? "person" : "people", feeling.getFeelingText()));
+
+        ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, feelings);
+
+        ListView listview = (ListView) mainView.findViewById(R.id.relatedFeelingsList);
+
+        listview.setAdapter(arrayAdapter);
+        listview.setDivider(new ColorDrawable());
+        listview.setDividerHeight(10);
+
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+    private class fetchRelatedFeelingsTask extends AsyncTask<String, Integer, List<Feeling>> {
+
+        @Override
+        protected void onPostExecute(List<Feeling> feelings) {
+            super.onPostExecute(feelings);
+            if (feelings.size() > 1) {
+                feelings.remove(0);
+                ShowRelatedFeelings(feelings.get(0), feelings.size() == 1 ? new ArrayList<Feeling>() : feelings);
+            }
+        }
+
+        @Override
+        protected List<Feeling> doInBackground(String... params) {
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            String res = jsonHttpClient.Get(String.format(UrlHelper.RELATED_FEELINGS, applicationHelper.getUserName()), args);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+            Type collectionType = new TypeToken<List<Feeling>>() {
+            }.getType();
+            List<Feeling> feelings = gson.fromJson(res, collectionType);
+            return feelings;
+        }
+
     }
 }

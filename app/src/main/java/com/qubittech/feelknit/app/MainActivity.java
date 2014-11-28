@@ -121,7 +121,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         ImageView userIconImageView = (ImageView) findViewById(R.id.leftDrawerUserIcon);
         if(applicationHelper.getAvatar()!=null)
-        ImageHelper.setBitMap(userIconImageView, getApplicationContext(), applicationHelper.getAvatar(), 60, 70);
+        ImageHelper.setBitMap(userIconImageView, getApplicationContext(), applicationHelper.getAvatar(), 100, 100);
 
         TextView usrTextView = (TextView) findViewById(com.qubittech.feelknit.app.R.id.usrName);
         usrTextView.setText(applicationHelper.getUserName());
