@@ -25,6 +25,9 @@ import android.widget.EditText;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.qubittech.feelknit.models.LoginResult;
 import com.qubittech.feelknit.services.TrackingService;
 
 import org.apache.http.NameValuePair;
@@ -39,9 +42,6 @@ import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
-/**
- * Created by Manoj on 19/04/2014.
- */
 public class RegistrationActivity extends Activity {
 
     private ApplicationHelper applicationHelper;
@@ -121,17 +121,17 @@ public class RegistrationActivity extends Activity {
         }
     };
 
-    private class SaveUserTask extends AsyncTask<String, Integer, Boolean> {
+    private class SaveUserTask extends AsyncTask<String, Integer, LoginResult> {
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(LoginResult result) {
             dialog.dismiss();
 
-            if (result) {
+            if (result.isLoginSuccessful()) {
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("Username", userName.getText().toString());
-                editor.putString("Password", password.getText().toString());
+                editor.putString("Token", result.getToken());
                 editor.commit();
                 applicationHelper.setUserName(userName.getText().toString());
                 BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
@@ -155,14 +155,17 @@ public class RegistrationActivity extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected LoginResult doInBackground(String... params) {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", userName.getText().toString()));
             args.add(new BasicNameValuePair("password", password.getText().toString()));
             args.add(new BasicNameValuePair("emailaddress", email.getText().toString()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String res = jsonHttpClient.PostParams(UrlHelper.USER, args);
+
+            Gson gson = new GsonBuilder().create();
+            LoginResult result =gson.fromJson(res, LoginResult.class);
 
             while (!regIdRecevied) {
                 try {
@@ -174,7 +177,7 @@ public class RegistrationActivity extends Activity {
                     Log.i("GCM", msg);
                     regIdRecevied = true;
                     args = new ArrayList<NameValuePair>();
-                    jsonHttpClient = new JsonHttpClient();
+                    jsonHttpClient = new JsonHttpClient(applicationHelper);
                     args = new ArrayList<NameValuePair>();
                     args.add(new BasicNameValuePair("username", userName.getText().toString()));
                     args.add(new BasicNameValuePair("key", regid));
@@ -187,7 +190,7 @@ public class RegistrationActivity extends Activity {
                 }
             }
 
-            return Boolean.parseBoolean(res);
+            return result;
         }
     }
 }

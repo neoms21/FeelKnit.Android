@@ -206,7 +206,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", params[0]));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String keyUrl = UrlHelper.CLEAR_USER_KEY;
             return jsonHttpClient.PostParams(keyUrl, args);
         }
@@ -224,7 +224,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feeling", params[0]));
             args.add(new BasicNameValuePair("username", params[1]));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String url = UrlHelper.USER_FEELINGS;
             String response = jsonHttpClient.Get(url, args);
             Gson gson = new Gson();

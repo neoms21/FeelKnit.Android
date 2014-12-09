@@ -3,6 +3,7 @@ package com.qubittech.feelknit.app;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,14 +25,11 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.qubittech.feelknit.models.Feeling;
 import com.qubittech.feelknit.models.LoginResult;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
@@ -45,9 +43,9 @@ public class LoginActivity extends Activity {
 
     ProgressDialog dialog;
     GoogleCloudMessaging gcm;
-    String regid;
+    String regId;
     String PROJECT_NUMBER = "846765263532";
-    boolean regIdRecevied = false;
+    boolean regIdReceived = false;
     private EditText etUsername;
     private EditText etPassword;
     private ApplicationHelper applicationHelper;
@@ -77,9 +75,11 @@ public class LoginActivity extends Activity {
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         String uname = settings.getString("Username", null);
         String avatar = settings.getString("Avatar", null);
+        String token = settings.getString("Token", null);
         if (uname != null) {
             applicationHelper.setUserName(uname);
             applicationHelper.setAvatar(avatar);
+            applicationHelper.setAuthorizationToken(token);
             BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {
@@ -147,13 +147,15 @@ public class LoginActivity extends Activity {
             super.onPostExecute(loginResult);
             dialog.dismiss();
             if (loginResult.isLoginSuccessful()) {
-                SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+                SharedPreferences settings = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("Username", userName);
                 editor.putString("Avatar", loginResult.getAvatar());
+                editor.putString("Token", loginResult.getToken());
                 editor.commit();
                 applicationHelper.setUserName(userName);
                 applicationHelper.setAvatar(loginResult.getAvatar());
+                applicationHelper.setAuthorizationToken(loginResult.getToken());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
@@ -176,7 +178,7 @@ public class LoginActivity extends Activity {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", params[0]));
             args.add(new BasicNameValuePair("password", params[1]));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String verifyUrl = UrlHelper.USER_LOGIN;
             String response = jsonHttpClient.PostParams(verifyUrl, args);
 
@@ -184,18 +186,18 @@ public class LoginActivity extends Activity {
             LoginResult result =gson.fromJson(response, LoginResult.class);
 
             if (result.isLoginSuccessful()) {
-                while (!regIdRecevied) {
+                while (!regIdReceived) {
                     try {
                         if (gcm == null) {
                             gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                         }
-                        regid = gcm.register(PROJECT_NUMBER);
-                        String msg = "Device registered, registration ID=" + regid;
-                        regIdRecevied = true;
+                        regId = gcm.register(PROJECT_NUMBER);
+                        String msg = "Device registered, registration ID=" + regId;
+                        regIdReceived = true;
 
                         args = new ArrayList<NameValuePair>();
                         args.add(new BasicNameValuePair("username", params[0]));
-                        args.add(new BasicNameValuePair("key", regid));
+                        args.add(new BasicNameValuePair("key", regId));
 
                         String keyUrl = UrlHelper.USER_KEY;
                         jsonHttpClient.PostParams(keyUrl, args);

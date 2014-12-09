@@ -4,14 +4,12 @@ import android.app.Application;
 
 import java.util.List;
 
-/**
- * Created by Manoj on 01/06/2014.
- */
 public class ApplicationHelper extends Application {
 
     private String userName;
     private List<String> feelTexts;
     private String avatar;
+    private String authorizationToken;
 
     public String getUserName() {
         return userName;
@@ -35,6 +33,14 @@ public class ApplicationHelper extends Application {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getAuthorizationToken() {
+        return authorizationToken;
+    }
+
+    public void setAuthorizationToken(String authorizationToken) {
+        this.authorizationToken = authorizationToken;
     }
 
 //public static String UserName;

@@ -81,7 +81,7 @@ public class SaveAvatarActivity extends Activity {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
             args.add(new BasicNameValuePair("avatar", selectedAvatar));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String res = jsonHttpClient.PostParams(UrlHelper.SAVE_AVATAR, args);
             return Boolean.parseBoolean(res);
         }

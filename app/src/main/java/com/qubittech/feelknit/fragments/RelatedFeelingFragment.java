@@ -1,9 +1,10 @@
 package com.qubittech.feelknit.fragments;
 
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
+import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +25,14 @@ import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Manoj on 13/05/2014.
- */
 public class RelatedFeelingFragment extends Fragment {
     private ApplicationHelper applicationHelper;
+    private ProgressDialog dialog;
     private View mainView;
 
     @Override
@@ -43,6 +41,7 @@ public class RelatedFeelingFragment extends Fragment {
         applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         Bundle args = getArguments();
         if (args == null) {
+            dialog = ProgressDialog.show(getActivity(), "Getting related feelings", "Please wait...", true);
             new fetchRelatedFeelingsTask().execute("");
         } else {
             Feeling feeling = (Feeling) args.getSerializable("feeling");
@@ -80,23 +79,24 @@ public class RelatedFeelingFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Feeling> feelings) {
+            dialog.dismiss();
             super.onPostExecute(feelings);
-            if (feelings.size() > 1) {
+            if (feelings.size() > 0) {
+                Feeling firstFeeling  = feelings.get(0);
                 feelings.remove(0);
-                ShowRelatedFeelings(feelings.get(0), feelings.size() == 1 ? new ArrayList<Feeling>() : feelings);
+                ShowRelatedFeelings(firstFeeling, feelings.size() == 1 ? new ArrayList<Feeling>() : feelings);
             }
         }
 
         @Override
         protected List<Feeling> doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String res = jsonHttpClient.Get(String.format(UrlHelper.RELATED_FEELINGS, applicationHelper.getUserName()), args);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();
-            List<Feeling> feelings = gson.fromJson(res, collectionType);
-            return feelings;
+            return gson.fromJson(res, collectionType);
         }
 
     }

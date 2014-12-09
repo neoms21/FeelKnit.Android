@@ -29,9 +29,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Manoj on 31/05/2014.
- */
 public class UserFeelingsFragment extends Fragment {
 
     private List<Feeling> _feelings = null;
@@ -50,7 +47,6 @@ public class UserFeelingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View mainView = inflater.inflate(R.layout.user_feelings, container, false);
-        String username = "";
         dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
         Button newFeeling = (Button) mainView.findViewById(R.id.newFeelingButton);
         listview = (ListView) mainView.findViewById(R.id.userFeelingsList);
@@ -91,7 +87,7 @@ public class UserFeelingsFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             return jsonHttpClient.Get(UrlHelper.USERNAME + params[0], args);
         }
     }

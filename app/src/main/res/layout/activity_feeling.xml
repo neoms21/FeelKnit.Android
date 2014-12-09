@@ -6,13 +6,13 @@
 
     <Spinner
         android:layout_marginTop="20dp"
-        android:id="@+id/feelingText"
+        android:id="@+id/feelingSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
          />
 
     <EditText
-        android:layout_below="@id/feelingText"
+        android:layout_below="@id/feelingSpinner"
         android:text=""
         android:background="@drawable/edittext_createfeeling"
         android:id="@+id/becauseText"
@@ -31,7 +31,7 @@
 
 
     <EditText
-        android:layout_below="@id/feelingText"
+        android:layout_below="@id/feelingSpinner"
         android:id="@+id/soText"
         android:textColor="@color/loginLabel"
         android:hint="What am I doing..."

@@ -2,8 +2,6 @@ package com.qubittech.feelknit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -18,6 +16,11 @@ import android.widget.TextView;
 import com.qubittech.feelknit.app.MainActivity;
 import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Feeling;
+import com.qubittech.feelknit.util.ApplicationHelper;
+import com.qubittech.feelknit.util.DateFormatter;
+import com.qubittech.feelknit.util.ImageHelper;
+import com.qubittech.feelknit.util.JsonHttpClient;
+import com.qubittech.feelknit.util.UrlHelper;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -27,20 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.qubittech.feelknit.util.ApplicationHelper;
-import com.qubittech.feelknit.util.DateFormatter;
-import com.qubittech.feelknit.util.ImageHelper;
-import com.qubittech.feelknit.util.JsonHttpClient;
-import com.qubittech.feelknit.util.UrlHelper;
-
-/**
- * Created by Manoj on 18/05/2014.
- */
 public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
-    int resource;
     Context context;
-    boolean isUserFeelings = false;
     boolean isRunningOnEmulator = false;
     private final ApplicationHelper applicationHelper;
 
@@ -135,7 +127,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             @Override
             public void onClick(View v) {
 
-                new reportFeelingTask().execute(feeling.getId().toString());
+                new reportFeelingTask().execute(feeling.getId());
                 feeling.setReported(true);
                 notifyDataSetChanged();
             }
@@ -209,9 +201,9 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String supportUrl = UrlHelper.INCREASE_SUPPORT;
-            String response = jsonHttpClient.PostUrlParams(supportUrl, args);
+            jsonHttpClient.PostUrlParams(supportUrl, args);
             return true;
         }
     }
@@ -223,9 +215,9 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String supportUrl = UrlHelper.DECREASE_SUPPORT;
-            String response = jsonHttpClient.PostUrlParams(supportUrl, args);
+            jsonHttpClient.PostUrlParams(supportUrl, args);
             return true;
         }
     }
@@ -237,9 +229,9 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String emailUrl = UrlHelper.EMAILREPORT;
-            String response = jsonHttpClient.PostUrlParams(emailUrl, args);
+            jsonHttpClient.PostUrlParams(emailUrl, args);
             return true;
         }
     }

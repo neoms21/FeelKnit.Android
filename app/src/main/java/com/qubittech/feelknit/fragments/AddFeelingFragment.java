@@ -36,9 +36,6 @@ import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
-/**
- * Created by Manoj on 04/05/2014.
- */
 public class AddFeelingFragment extends Fragment {
 
     private static String username = "";
@@ -66,7 +63,7 @@ public class AddFeelingFragment extends Fragment {
         dbDefinedFeelings = ((ApplicationHelper) (getActivity().getApplicationContext())).getFeelTexts();
         View addFeelingView = inflater.inflate(R.layout.activity_feeling, container, false);
         _feeling = new Feeling();
-        spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingText);
+        spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingSpinner);
         username = applicationHelper.getUserName();
 
         final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
@@ -171,7 +168,6 @@ public class AddFeelingFragment extends Fragment {
             return convertView;
         }
 
-        ;
     };
 
     private AdapterView.OnItemSelectedListener typeSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -206,7 +202,7 @@ public class AddFeelingFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if (s != "Failure") {
+            if (!s.equals("Failure")) {
                 dialog.dismiss();
                 System.out.println("OUTPUT:" + s);
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -231,7 +227,7 @@ public class AddFeelingFragment extends Fragment {
             _feeling.setUserName(username);
 //            args.add(new BasicNameValuePair("user", parentData.toString()));
             //  args.add(new BasicNameValuePair("content", parentData.toString()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             return jsonHttpClient.PostParams(UrlHelper.FEELINGS, args);
         }
     }

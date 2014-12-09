@@ -31,10 +31,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
-/**
- * Created by Manoj on 22/04/2014.
- */
 public class JsonHttpClient {
+
+    private final ApplicationHelper _applicationHelper;
+
+    public JsonHttpClient(ApplicationHelper applicationHelper) {
+        _applicationHelper = applicationHelper;
+    }
 
     public <T> T PostObject(final String url, final T object, final Class<T> objectClass) {
         DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
@@ -46,6 +49,7 @@ public class JsonHttpClient {
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
             httpPost.setHeader("Accept-Encoding", "gzip");
+            httpPost.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
 
             HttpResponse httpResponse = defaultHttpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
@@ -73,8 +77,7 @@ public class JsonHttpClient {
     }
 
     public String PostParams(String url, final List<NameValuePair> params) {
-        HttpResponse response = null;
-        Log.d("Feelknit", "Url:" + url);
+        HttpResponse response;
         String returnString = "Failure";
         try {
             JSONObject jsonObj = new JSONObject();
@@ -89,6 +92,7 @@ public class JsonHttpClient {
             entity.setContentType("application/json");
             httpPost.setHeader("Content-Type", "application/json");
             httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
             httpPost.setEntity(entity);
 
             HttpClient client = new DefaultHttpClient();
@@ -117,7 +121,7 @@ public class JsonHttpClient {
     }
 
     public String PostUrlParams(String url, final List<NameValuePair> params) {
-        HttpResponse response = null;
+        HttpResponse response;
         Log.d("Feelknit", "Url:" + url);
         String returnString = "Failure";
         try {
@@ -125,7 +129,7 @@ public class JsonHttpClient {
 
 // Create the POST object and add the parameters
             HttpPost httpPost = new HttpPost(url);
-
+            httpPost.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
             httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             HttpClient client = new DefaultHttpClient();
 
@@ -161,17 +165,17 @@ public class JsonHttpClient {
     private String convertStreamToString(InputStream inputStream) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
+        String line;
         try {
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line + "\n");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {
             try {
                 inputStream.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
@@ -223,7 +227,7 @@ public class JsonHttpClient {
 
             httpGet.setHeader("Accept", "application/json");
             httpGet.setHeader("Accept-Encoding", "gzip");
-
+            httpGet.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
             HttpResponse httpResponse = defaultHttpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
             if (httpEntity != null) {
@@ -232,10 +236,9 @@ public class JsonHttpClient {
                 if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
                     inputStream = new GZIPInputStream(inputStream);
                 }
-
-                String resultString = convertStreamToString(inputStream);
-                inputStream.close();
-                return resultString; //new GsonBuilder().create().fromJson(resultString, objectClass);
+                return convertStreamToString(inputStream);
+               //
+                //return resultString; //new GsonBuilder().create().fromJson(resultString, objectClass);
 
             }
 
@@ -244,6 +247,8 @@ public class JsonHttpClient {
         } catch (ClientProtocolException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return null;
@@ -255,7 +260,7 @@ public class JsonHttpClient {
         url += "?" + paramString;
         HttpDelete httpDelete = new HttpDelete(url);
 
-        HttpResponse httpResponse = null;
+        HttpResponse httpResponse;
         try {
             httpResponse = defaultHttpClient.execute(httpDelete);
             return httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_NO_CONTENT;

@@ -106,7 +106,7 @@ applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         @Override
         protected String doInBackground(String... strings) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             String commentsFeelingUrl = UrlHelper.COMMENTSFEELING;
             commentsFeelingUrl = String.format(commentsFeelingUrl, applicationHelper.getUserName());
             return jsonHttpClient.Get(commentsFeelingUrl, args);

@@ -34,9 +34,6 @@ import com.qubittech.feelknit.util.ImageHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
-/**
- * Created by Manoj on 19/05/2014.
- */
 public class CommentsFragment extends Fragment {
 
     private ApplicationHelper applicationHelper;
@@ -65,7 +62,7 @@ public class CommentsFragment extends Fragment {
             ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 100, 100);
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
-        String feelingUserName = applicationHelper.getUserName() == feeling.getUserName() ? "I" : feeling.getUserName();
+        String feelingUserName = applicationHelper.getUserName().equals(feeling.getUserName()) ? "I" : feeling.getUserName();
         feelingUserNameTextView.setText(feelingUserName);
 
         TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
@@ -120,7 +117,7 @@ public class CommentsFragment extends Fragment {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("Text", params[0]));
             args.add(new BasicNameValuePair("User", applicationHelper.getUserName()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             return jsonHttpClient.PostParams(UrlHelper.COMMENTS + "/" + feelingId, args);
         }
 

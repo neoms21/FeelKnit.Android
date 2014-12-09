@@ -89,7 +89,7 @@ public class LoadingActivity extends Activity {
         protected String doInBackground(String... params) {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient();
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
             return jsonHttpClient.Get(UrlHelper.GET_FEELS, args);
         }
     }
