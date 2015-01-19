@@ -2,9 +2,6 @@ package com.qubittech.feelknit.util;
 
 import android.os.Build;
 
-/**
- * Created by Manoj on 01/06/2014.
- */
 public class UrlHelper {
 
     static boolean onEmulator;
@@ -17,7 +14,7 @@ public class UrlHelper {
     private static final String BASE_URL = "http://feelknitservice.apphb.com/";
     public static final String COMMENTS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Comments";
     public static final String FEELINGS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings";
-    public static final String USER_LOGIN = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/Verify";
+    public static final String USER_LOGIN = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/login";
     public static final String USER_KEY = (onEmulator ? BASE_URL_EMULATOR  : BASE_URL )+ "Users/clientkey";
     public static final String CLEAR_USER_KEY = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/clearkey";
     public static final String USER = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users";

@@ -71,6 +71,12 @@ public class UserFeelingsFragment extends Fragment {
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();
             _feelings = gson.fromJson(s, collectionType);
+            if(_feelings == null)
+            {
+                dialog.dismiss();
+                return;
+            }
+
             if (!_feelings.isEmpty())
                 _feelings.get(0).setFirstFeeling(true);
 
