@@ -8,8 +8,7 @@
         android:layout_marginTop="20dp"
         android:id="@+id/feelingSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-         />
+        android:layout_height="wrap_content" />
 
     <EditText
         android:layout_below="@id/feelingSpinner"
@@ -30,15 +29,15 @@
         android:layout_marginBottom="10dp" />
 
 
-    <EditText
+    <TextView
         android:layout_below="@id/feelingSpinner"
         android:id="@+id/soText"
         android:textColor="@color/loginLabel"
-        android:hint="What am I doing..."
+        android:text="What do I do ?"
         android:padding="5dp"
-        android:background="@drawable/edittext_createfeeling"
         android:textColorHint="@color/loginLabel"
         android:maxLength="140"
+        android:textSize="18dp"
         android:layout_alignLeft="@id/becauseText"
         android:layout_alignRight="@id/becauseText"
         android:layout_width="match_parent"

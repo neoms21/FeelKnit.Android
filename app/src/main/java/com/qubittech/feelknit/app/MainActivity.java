@@ -173,7 +173,6 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         bundle.putSerializable("feeling", feeling);
         bundle.putSerializable("relatedFeelings", (Serializable) relatedFeelings);
 
-        //set Fragmentclass Arguments
         relatedFeelingsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame,
                 relatedFeelingsFragment, "Related Feelings").addToBackStack("RelatedFeelings").commit();
@@ -187,7 +186,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                                      String username) {
 
         if (feeling == null) {
-            new getUserFeeingTask().execute(feelingText, username);
+            new getUserFeelingTask().execute(feelingText, username);
             return;
         }
 
@@ -213,7 +212,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     }
 
 
-    private class getUserFeeingTask extends AsyncTask<String, Integer, Feeling> {
+    private class getUserFeelingTask extends AsyncTask<String, Integer, Feeling> {
         @Override
         protected void onPostExecute(Feeling feeling) {
             ShowCommentsFragment(feeling, null, null);

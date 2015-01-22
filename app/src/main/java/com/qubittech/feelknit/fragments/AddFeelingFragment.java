@@ -67,7 +67,7 @@ public class AddFeelingFragment extends Fragment {
         username = applicationHelper.getUserName();
 
         final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
-        final EditText so = (EditText) addFeelingView.findViewById(R.id.soText);
+        final TextView so = (TextView) addFeelingView.findViewById(R.id.soText);
 
         spinnerFeelings.setAdapter(typeSpinnerAdapter);
         spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);

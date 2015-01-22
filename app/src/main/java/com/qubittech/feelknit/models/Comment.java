@@ -2,15 +2,12 @@ package com.qubittech.feelknit.models;
 
 import java.io.Serializable;
 
-/**
- * Created by Manoj on 28/05/2014.
- */
 public class Comment implements Serializable {
 
     private String text;
     private String user;
     private String postedAt;
-    private User commentUser;
+    private String userAvatar;
 
     public String getText() {
         return text;
@@ -36,11 +33,11 @@ public class Comment implements Serializable {
         this.postedAt = postedAt;
     }
 
-    public User getCommentUser() {
-        return commentUser;
+    public String getUserAvatar() {
+        return userAvatar;
     }
 
-    public void setCommentUser(User commentUser) {
-        this.commentUser = commentUser;
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 }

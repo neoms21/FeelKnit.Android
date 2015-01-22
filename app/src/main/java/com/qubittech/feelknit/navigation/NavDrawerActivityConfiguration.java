@@ -19,7 +19,7 @@ public class NavDrawerActivityConfiguration {
     private NavDrawerAdapter mAdapter;
 
     public boolean hasMenuItemWithId(long id) {
-        NavDrawerAdapter adapter = (NavDrawerAdapter) getAdapter();
+        NavDrawerAdapter adapter = getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             if (id == adapter.getItem(i).getId()) {
                 return true;
@@ -29,7 +29,7 @@ public class NavDrawerActivityConfiguration {
     }
 
     public void removeMenuItemWithId(long id) {
-        NavDrawerAdapter adapter = (NavDrawerAdapter) getAdapter();
+        NavDrawerAdapter adapter = getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             if (id == adapter.getItem(i).getId()) {
                 adapter.remove(adapter.getItem(i));
@@ -39,7 +39,7 @@ public class NavDrawerActivityConfiguration {
     }
 
     public void addMenuItemAtIndex(NavDrawerItem item, int index) {
-        NavDrawerAdapter adapter = (NavDrawerAdapter) getAdapter();
+        NavDrawerAdapter adapter = getAdapter();
         adapter.insert(item, index);
     }
 
@@ -154,8 +154,8 @@ public class NavDrawerActivityConfiguration {
             return this;
         }
 
-        public Builder menu(NavDrawerItem menuitems[]) {
-            mConf.setNavItems(menuitems);
+        public Builder menu(NavDrawerItem menuItems[]) {
+            mConf.setNavItems(menuItems);
             return this;
         }
 

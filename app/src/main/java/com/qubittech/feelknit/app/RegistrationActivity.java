@@ -50,9 +50,9 @@ public class RegistrationActivity extends Activity {
     boolean isBound = false;
     ProgressDialog dialog;
     GoogleCloudMessaging gcm;
-    String regid;
+    String regId;
     String PROJECT_NUMBER = "846765263532";
-    boolean regIdRecevied = false;
+    boolean regIdReceived = false;
     private ServiceConnection myConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -167,20 +167,20 @@ public class RegistrationActivity extends Activity {
             Gson gson = new GsonBuilder().create();
             LoginResult result =gson.fromJson(res, LoginResult.class);
 
-            while (!regIdRecevied) {
+            while (!regIdReceived) {
                 try {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     }
-                    regid = gcm.register(PROJECT_NUMBER);
-                    String msg = "Device registered, registration ID=" + regid;
+                    regId = gcm.register(PROJECT_NUMBER);
+                    String msg = "Device registered, registration ID=" + regId;
                     Log.i("GCM", msg);
-                    regIdRecevied = true;
+                    regIdReceived = true;
                     args = new ArrayList<NameValuePair>();
                     jsonHttpClient = new JsonHttpClient(applicationHelper);
                     args = new ArrayList<NameValuePair>();
                     args.add(new BasicNameValuePair("username", userName.getText().toString()));
-                    args.add(new BasicNameValuePair("key", regid));
+                    args.add(new BasicNameValuePair("key", regId));
 
                     String keyUrl = UrlHelper.USER_KEY;
                     jsonHttpClient.PostParams(keyUrl, args);

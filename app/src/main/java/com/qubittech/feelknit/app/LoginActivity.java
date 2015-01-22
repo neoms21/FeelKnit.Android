@@ -73,11 +73,11 @@ public class LoginActivity extends Activity {
         etPassword = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtPassword);
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        String uname = settings.getString("Username", null);
+        String username = settings.getString("Username", null);
         String avatar = settings.getString("Avatar", null);
         String token = settings.getString("Token", null);
-        if (uname != null) {
-            applicationHelper.setUserName(uname);
+        if (username != null) {
+            applicationHelper.setUserName(username);
             applicationHelper.setAvatar(avatar);
             applicationHelper.setAuthorizationToken(token);
             BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());

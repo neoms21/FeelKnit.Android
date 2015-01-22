@@ -10,19 +10,18 @@ import android.widget.ImageView;
  */
 public class ImageHelper {
 
-    public static void setBitMap(ImageView imageView, Context context, String avatar, int wdth, int hght)
-    {
+    public static void setBitMap(ImageView imageView, Context context, String avatar, int wdth, int hght) {
         Bitmap bmp;
         int width = wdth;
         int height = hght;
-
+        if (avatar == null || avatar == "")
+            return;
         try {
             bmp = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(
                     avatar, "drawable", context.getPackageName()));//image is your image
             bmp = Bitmap.createScaledBitmap(bmp, width, height, true);
             imageView.setImageBitmap(bmp);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.toString());
         }
     }

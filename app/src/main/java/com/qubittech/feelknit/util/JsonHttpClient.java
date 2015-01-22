@@ -238,7 +238,6 @@ public class JsonHttpClient {
                 }
                 return convertStreamToString(inputStream);
                //
-                //return resultString; //new GsonBuilder().create().fromJson(resultString, objectClass);
 
             }
 

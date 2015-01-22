@@ -62,11 +62,12 @@ public class CommentsFragment extends Fragment {
             ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 100, 100);
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
-        String feelingUserName = applicationHelper.getUserName().equals(feeling.getUserName()) ? "I" : feeling.getUserName();
+        boolean currentUser = applicationHelper.getUserName().equals(feeling.getUserName());
+        String feelingUserName = currentUser ? "I" : feeling.getUserName();
         feelingUserNameTextView.setText(feelingUserName);
 
         TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
-        feel.setText(feeling.getFeelingFormattedText(""));
+        feel.setText(feeling.getFeelingFormattedText(currentUser ? "I" : ""));
 
         TextView count = (TextView) mainView.findViewById(R.id.countCommentsLabel);
         count.setText(String.format("%d comments on this feeling", feeling.getComments().size()));

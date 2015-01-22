@@ -17,7 +17,6 @@
 
         <ImageView
             android:layout_margin="5dp"
-
             android:id="@+id/userIconImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -26,7 +25,7 @@
         <TextView
             android:id="@+id/name"
             style="@style/userNameStyle"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="68dp"
             android:layout_marginTop="15dp"
             android:layout_alignTop="@id/userIconImage"
             android:text="username"
@@ -36,8 +35,8 @@
         <TextView
             android:layout_below="@id/userIconImage"
             android:layout_alignTop="@id/name"
-            android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/name"
+            android:layout_marginTop="4dp"
             android:id="@+id/tvFeelingLabel"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -76,7 +75,7 @@
         android:layout_weight="1"
         android:id="@+id/commentsList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_weight="0"

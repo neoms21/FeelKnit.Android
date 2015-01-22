@@ -74,8 +74,8 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         holder.userTextView.setText(applicationHelper.getUserName().equals(comment.getUser()) ? "me" : comment.getUser());
         holder.commentTextView.setText(comment.getText());
         holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
-        if (comment.getCommentUser() != null || comment.getUser() == "me") {
-            ImageHelper.setBitMap(holder.userImageView, context, comment.getUser() == "me" ? applicationHelper.getAvatar() : comment.getCommentUser().getAvatar(), 100, 100);
+        if (comment.getUser() != null || comment.getUser() == "me") {
+            ImageHelper.setBitMap(holder.userImageView, context, comment.getUser() == "me" ? applicationHelper.getAvatar() : comment.getUserAvatar(), 100, 100);
         }
 
 //        if (applied) {

@@ -31,16 +31,16 @@ public class Feeling implements Serializable {
         return this.feelingText;
     }
 
-    public void setFeelingText(String feelingtext) {
-        this.feelingText = feelingtext;
+    public void setFeelingText(String feelingText) {
+        this.feelingText = feelingText;
     }
 
     public String getFeelingTextLower() {
         return this.feelingTextLower;
     }
 
-    public void setFeelingTextLower(String feelingtextlower) {
-        this.feelingTextLower = feelingtextlower;
+    public void setFeelingTextLower(String feelingTextLower) {
+        this.feelingTextLower = feelingTextLower;
     }
 
     public String getFeelingDate() {

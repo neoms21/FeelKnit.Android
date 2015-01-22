@@ -53,10 +53,12 @@ public class RelatedFeelingFragment extends Fragment {
     }
 
     private void ShowRelatedFeelings(Feeling feeling, List<Feeling> feelings) {
+
         TextView userNameTextView = (TextView) mainView.findViewById(R.id.name);
         ImageView userIcon = (ImageView) mainView.findViewById(R.id.userIconImage);
-        ImageHelper.setBitMap(userIcon, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 100, 100);
-
+        ImageHelper.setBitMap(userIcon, getActivity().getApplicationContext(), applicationHelper.getAvatar() , 100, 100);
+        if(feelings == null)
+            return;
         TextView feelTextView = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
         TextView count = (TextView) mainView.findViewById(R.id.countLabel);
         feeling.setFirstFeeling(true);
@@ -84,7 +86,7 @@ public class RelatedFeelingFragment extends Fragment {
             if (feelings.size() > 0) {
                 Feeling firstFeeling  = feelings.get(0);
                 feelings.remove(0);
-                ShowRelatedFeelings(firstFeeling, feelings.size() == 1 ? new ArrayList<Feeling>() : feelings);
+                ShowRelatedFeelings(firstFeeling, feelings.size() == 0 ? new ArrayList<Feeling>() : feelings);
             }
         }
 

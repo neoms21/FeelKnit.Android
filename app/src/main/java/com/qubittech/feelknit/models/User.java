@@ -1,9 +1,8 @@
 package com.qubittech.feelknit.models;
 
-/**
- * Created by Manoj on 18/05/2014.
- */
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String userName;
     private String avatar;

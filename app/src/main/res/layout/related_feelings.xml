@@ -27,8 +27,9 @@
         <TextView
             android:id="@+id/name"
             style="@style/userNameStyle"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="55dp"
+            android:text="User"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="65dp"
             android:layout_alignTop="@id/userIconImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -37,12 +38,14 @@
         <TextView
             android:id="@+id/tvFeelingLabel"
             android:layout_alignParentRight="true"
+            android:text="feeling"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="left"
             android:layout_toRightOf="@id/name"
             android:layout_alignTop="@id/name"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
              />
 
     </RelativeLayout>
@@ -65,7 +68,7 @@
             android:layout_width="wrap_content"
             android:textAlignment="center"
             android:text="People Feeling Same"
-            android:layout_height="wrap_content"></TextView>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
@@ -73,6 +76,6 @@
         android:layout_below="@id/countLayout"
         android:id="@+id/relatedFeelingsList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
