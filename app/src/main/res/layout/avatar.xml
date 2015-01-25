@@ -14,6 +14,7 @@
         android:layout_height="wrap_content" android:text="Choose an Avatar :"
         />
 
+
     <ListView
         android:choiceMode="singleChoice"
         android:listSelector="@color/lightButtonColor"

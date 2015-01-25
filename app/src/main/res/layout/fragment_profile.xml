@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:background="@color/mainBg">
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:id="@+id/userNameBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userAvatar"
+            android:src="@drawable/evilminion" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/userAvatar"
+            android:layout_marginBottom="21dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/userAvatar"
+            android:textSize="20dp"
+            android:text="XXX" />
+
+
+    <TextView
+        android:id="@+id/line"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:paddingTop="5dp"
+        android:background="@color/greyColor"
+        android:layout_below="@id/userName"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="3dp" />
+
+
+    <EditText
+        android:layout_below="@id/userName"
+        android:id="@+id/userEmail"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="35dp"
+        android:background="@color/textColor"
+        android:drawableLeft="@drawable/email"
+        android:drawablePadding="4dp"
+        android:hint="Enter your email"
+        android:padding="14dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_weight="0"
+        android:id="@+id/InnerLayout"
+        android:layout_below="@id/userEmail"
+        android:orientation="horizontal"
+        android:layout_marginBottom="2dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancelProfileButton"
+            style="@style/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="7dp"
+            android:layout_below="@id/soText"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/saveProfileButton"
+            android:layout_marginLeft="2dp"
+            android:paddingRight="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/soText"
+            style="@style/buttonStyle"
+            android:layout_weight="1"
+            android:text="Save" />
+    </LinearLayout>
+</LinearLayout>

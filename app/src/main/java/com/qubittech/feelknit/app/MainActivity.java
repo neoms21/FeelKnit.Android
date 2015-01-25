@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.qubittech.feelknit.fragments.AddFeelingFragment;
 import com.qubittech.feelknit.fragments.CommentsFragment;
 import com.qubittech.feelknit.fragments.ForgotFragment;
+import com.qubittech.feelknit.fragments.ProfileFragment;
 import com.qubittech.feelknit.fragments.RelatedFeelingFragment;
 import com.qubittech.feelknit.fragments.UserFeelingsFragment;
 import com.qubittech.feelknit.fragments.commentsFeelingsFragment;
@@ -36,6 +37,8 @@ import java.util.List;
 
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
     private ApplicationHelper applicationHelper;
+    private Bundle intentBundle;
+
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
         NavMenuBuilder navBuilder = new NavMenuBuilder();
@@ -66,6 +69,10 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     protected void onNavItemSelected(int id) {
         switch (id) {
+            case 101:
+//                getSupportFragmentManager().findFragmentByTag("Profile");
+                ShowProfileFragment(applicationHelper.getAvatar());
+                break;
             case 102:
                 StartUserFeelingsFragment();
                 break;
@@ -80,6 +87,15 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                         .addToBackStack("Related Feelings").commit();
                 break;
         }
+    }
+
+    private void ShowProfileFragment(String avatar) {
+        ProfileFragment profileFragment = ProfileFragment.newInstance();
+        Bundle bundle = profileFragment.getArguments();
+        bundle.putString("Avatar", avatar);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, profileFragment, "Profile")
+                .addToBackStack("Profile").commit();
     }
 
     @Override
@@ -112,16 +128,16 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         int switchNum = 0;
         Intent intent = getIntent();
         //boolean isRegister = false;
-        Bundle bundle = intent.getExtras();// ("IsFromRegister", isRegister);
-        if (bundle != null) {
-            switchNum = bundle.getInt("From");
+        intentBundle = intent.getExtras();
+        if (intentBundle != null) {
+            switchNum = intentBundle.getInt("From");
         }
         //  isRegister = bundle == null ? false : bundle.getBoolean("IsFromRegister");
-        Feeling feeling = bundle == null ? null : (Feeling) bundle.get("feeling");
+        Feeling feeling = intentBundle == null ? null : (Feeling) intentBundle.get("feeling");
 
         ImageView userIconImageView = (ImageView) findViewById(R.id.leftDrawerUserIcon);
-        if(applicationHelper.getAvatar()!=null)
-        ImageHelper.setBitMap(userIconImageView, getApplicationContext(), applicationHelper.getAvatar(), 100, 100);
+        if (applicationHelper.getAvatar() != null)
+            ImageHelper.setBitMap(userIconImageView, getApplicationContext(), applicationHelper.getAvatar(), 100, 100);
 
         TextView usrTextView = (TextView) findViewById(com.qubittech.feelknit.app.R.id.usrName);
         usrTextView.setText(applicationHelper.getUserName());
@@ -152,6 +168,10 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 break;
             case 3:
                 ShowCommentsFragment(feeling, null, null);
+                break;
+            case 4:
+                String avatar = intentBundle.getString("Avatar","");
+                ShowProfileFragment(avatar);
                 break;
             default:
                 break;

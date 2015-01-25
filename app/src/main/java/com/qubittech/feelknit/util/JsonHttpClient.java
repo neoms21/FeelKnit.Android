@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -222,6 +223,7 @@ public class JsonHttpClient {
         DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
         String paramString = URLEncodedUtils.format(params, "utf-8");
         url += "?" + paramString;
+        url = url.replace(" ","%20");
         HttpGet httpGet = new HttpGet(url);
         try {
 
@@ -237,7 +239,6 @@ public class JsonHttpClient {
                     inputStream = new GZIPInputStream(inputStream);
                 }
                 return convertStreamToString(inputStream);
-               //
 
             }
 
@@ -247,7 +248,7 @@ public class JsonHttpClient {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return null;

@@ -4,6 +4,7 @@ public class LoginResult {
     private boolean isLoginSuccessful;
     private String avatar;
     private String token;
+    private String userEmail;
 
     public String getAvatar() {
         return avatar;
@@ -27,5 +28,13 @@ public class LoginResult {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

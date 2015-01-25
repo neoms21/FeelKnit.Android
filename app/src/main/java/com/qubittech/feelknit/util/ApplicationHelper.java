@@ -10,6 +10,7 @@ public class ApplicationHelper extends Application {
     private List<String> feelTexts;
     private String avatar;
     private String authorizationToken;
+    private String userEmail;
 
     public String getUserName() {
         return userName;
@@ -41,6 +42,14 @@ public class ApplicationHelper extends Application {
 
     public void setAuthorizationToken(String authorizationToken) {
         this.authorizationToken = authorizationToken;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
 //public static String UserName;

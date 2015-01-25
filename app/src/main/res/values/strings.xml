@@ -15,7 +15,7 @@
     <string name="loading">FeelKnit</string>
 
     <string-array name="navigation_drawer_options">
-        <item>Notifications,notifications</item>
+        <item>Profile,notifications</item>
         <item>My Feelings,userdrawer</item>
         <item>Comments,comments</item>
         <item>Related Feelings,userdrawer</item>

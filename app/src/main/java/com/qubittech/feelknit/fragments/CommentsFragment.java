@@ -44,6 +44,7 @@ public class CommentsFragment extends Fragment {
     private String commentText;
     private EditText commentEdiText;
     private ImageView saveCommentButton;
+    private TextView countLabelView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,8 +70,8 @@ public class CommentsFragment extends Fragment {
         TextView feel = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
         feel.setText(feeling.getFeelingFormattedText(currentUser ? "I" : ""));
 
-        TextView count = (TextView) mainView.findViewById(R.id.countCommentsLabel);
-        count.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
+        countLabelView = (TextView) mainView.findViewById(R.id.countCommentsLabel);
+        countLabelView.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
 
         commentEdiText = (EditText) mainView.findViewById(R.id.newComment);
         saveCommentButton = (ImageView) mainView.findViewById(R.id.newCommentButton);
@@ -139,6 +140,8 @@ public class CommentsFragment extends Fragment {
                     comment.setPostedAt(sdf.format(new Date()));
                     feeling.getComments().add(comment);
                     arrayAdapter.notifyDataSetChanged();
+                    if (countLabelView != null)
+                        countLabelView.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
 
                 }
             });

@@ -20,6 +20,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.view.View.OnClickListener;
@@ -29,19 +30,38 @@ public class SaveAvatarActivity extends Activity {
 
     private String selectedAvatar;
     private ApplicationHelper applicationHelper;
+    private String[] avatars;
+    private boolean fromProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avatar);
         applicationHelper = (ApplicationHelper) getApplicationContext();
-        ArrayAdapter avatarListAdapter = new AvatarListAdapter(this, R.layout.avatar_listview_item, getResources().getStringArray(R.array.avatars));
+        Button skipButton = (Button) findViewById(R.id.skipButton);
+        Button saveButton = (Button) findViewById(R.id.saveAvatarButton);
+
+        avatars = getResources().getStringArray(R.array.avatars);
+        ArrayAdapter avatarListAdapter = new AvatarListAdapter(this, R.layout.avatar_listview_item, avatars);
 
         final ListView listview = (ListView) findViewById(R.id.avatarList);
 
         listview.setAdapter(avatarListAdapter);
         listview.setDivider(new ColorDrawable());
         listview.setDividerHeight(10);
+        fromProfile = getIntent().getBooleanExtra("Profile", false);
+
+        if (fromProfile) {
+            String avatar = applicationHelper.getAvatar();
+            if (avatar != null && avatar != "") {
+                int avatarIndex = Arrays.asList(avatars).indexOf(avatar);
+                listview.setSelection(avatarIndex);
+                listview.setItemChecked(avatarIndex, true);
+                skipButton.setText("Cancel");
+                saveButton.setText("Select");
+            }
+        }
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -50,26 +70,32 @@ public class SaveAvatarActivity extends Activity {
             }
         });
         avatarListAdapter.notifyDataSetChanged();
-
-        Button skipButton = (Button) findViewById(R.id.skipButton);
         skipButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                startMainActivity();
+                if (fromProfile)
+                    finish();
+                else
+                    startMainActivity(1, "");
             }
         });
-
-        Button saveButton = (Button) findViewById(R.id.saveAvatarButton);
         saveButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                new SaveUserAvatarTask().execute();
-                startMainActivity();
+                if (fromProfile) {
+                    startMainActivity(4, selectedAvatar);
+                } else {
+                    new SaveUserAvatarTask().execute();
+                    startMainActivity(1, selectedAvatar);
+                }
             }
         });
     }
 
-    private void startMainActivity() {
+    private void startMainActivity(int value, String selectedAvatar) {
         Intent intent = new Intent(SaveAvatarActivity.this, MainActivity.class);
-        intent.putExtra("From", 1);
+        intent.putExtra("From", value);
+        if (selectedAvatar != "") {
+            intent.putExtra("Avatar", selectedAvatar);
+        }
         startActivity(intent);
     }
 

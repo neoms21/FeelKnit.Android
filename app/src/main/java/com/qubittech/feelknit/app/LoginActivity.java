@@ -30,23 +30,30 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Required;
 import com.qubittech.feelknit.models.LoginResult;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements Validator.ValidationListener {
 
     private String userName;
     private String password;
+    private Validator validator;
 
     ProgressDialog dialog;
     GoogleCloudMessaging gcm;
     String regId;
     String PROJECT_NUMBER = "846765263532";
     boolean regIdReceived = false;
+
+    @Required(order = 1)
     private EditText etUsername;
+    @Required(order = 2)
     private EditText etPassword;
     private ApplicationHelper applicationHelper;
 
@@ -57,6 +64,8 @@ public class LoginActivity extends Activity {
             finish();
             return;
         }
+        validator = new Validator(this);
+        validator.setValidationListener(this);
         applicationHelper = (ApplicationHelper) getApplicationContext();
         setContentView(com.qubittech.feelknit.app.R.layout.login);
         TextView forgotLabel = (TextView) findViewById(com.qubittech.feelknit.app.R.id.forgotLabel);
@@ -64,7 +73,7 @@ public class LoginActivity extends Activity {
         forgotLabel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("From",2);
+                intent.putExtra("From", 2);
                 startActivity(intent);
             }
         });
@@ -85,32 +94,9 @@ public class LoginActivity extends Activity {
         } else {
 
             Button loginButton = (Button) findViewById(com.qubittech.feelknit.app.R.id.btnLogin);
-
-            //TextWatcher
-            TextWatcher textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                    checkFieldsForEmptyValues();
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                }
-            };
-            etUsername.addTextChangedListener(textWatcher);
-            etPassword.addTextChangedListener(textWatcher);
-
             loginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    userName = etUsername.getText().toString();
-                    password = etPassword.getText().toString();
-                    new LoginUserTask().execute(userName, password);
-                    dialog = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait");
+                    validator.validate();
                 }
             });
 
@@ -125,20 +111,21 @@ public class LoginActivity extends Activity {
         }
     }
 
-    private void checkFieldsForEmptyValues() {
-        Button b = (Button) findViewById(com.qubittech.feelknit.app.R.id.btnLogin);
+    @Override
+    public void onValidationSucceeded() {
+        userName = etUsername.getText().toString();
+        password = etPassword.getText().toString();
+        new LoginUserTask().execute(userName, password);
+        dialog = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait");
+    }
 
-        String s1 = etUsername.getText().toString().trim();
-        String s2 = etPassword.getText().toString().trim();
-
-        if (s1.length() == 0 || s2.length() == 0) {
-            b.setClickable(false);
-            b.setBackgroundColor(getResources().getColor(com.qubittech.feelknit.app.R.color.greyColor));
-        } else {
-            b.setClickable(true);
-            b.setBackgroundColor(getResources().getColor(com.qubittech.feelknit.app.R.color.loginLabel));
+    @Override
+    public void onValidationFailed(View failedView, Rule<?> failedRule) {
+        if (failedView instanceof TextView) {
+            TextView view = (TextView) failedView;
+            view.requestFocus();
+            view.setError(failedRule.getFailureMessage());
         }
-
     }
 
     private class LoginUserTask extends AsyncTask<String, Integer, LoginResult> {
@@ -152,10 +139,12 @@ public class LoginActivity extends Activity {
                 editor.putString("Username", userName);
                 editor.putString("Avatar", loginResult.getAvatar());
                 editor.putString("Token", loginResult.getToken());
+                editor.putString("Email", loginResult.getUserEmail());
                 editor.commit();
                 applicationHelper.setUserName(userName);
                 applicationHelper.setAvatar(loginResult.getAvatar());
                 applicationHelper.setAuthorizationToken(loginResult.getToken());
+                applicationHelper.setUserEmail(loginResult.getUserEmail());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
@@ -183,7 +172,7 @@ public class LoginActivity extends Activity {
             String response = jsonHttpClient.PostParams(verifyUrl, args);
 
             Gson gson = new GsonBuilder().create();
-            LoginResult result =gson.fromJson(response, LoginResult.class);
+            LoginResult result = gson.fromJson(response, LoginResult.class);
 
             if (result.isLoginSuccessful()) {
                 while (!regIdReceived) {

@@ -21,12 +21,21 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Checkable;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Regex;
+import com.mobsandgeeks.saripaar.annotation.Required;
+import com.mobsandgeeks.saripaar.annotation.TextRule;
 import com.qubittech.feelknit.models.LoginResult;
 import com.qubittech.feelknit.services.TrackingService;
 
@@ -42,10 +51,26 @@ import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends Activity implements Validator.ValidationListener {
 
     private ApplicationHelper applicationHelper;
-    private EditText userName, password, email, location;
+    private Validator validator;
+
+    @Required(order = 1)
+    @TextRule(order = 1, minLength = 3, message = "Enter at least 3 characters.")
+    @Regex(order = 1,  pattern = "[a-zA-Z0-9 ]*", message = "Should contain only alphabets or numbers")
+    private EditText userName;
+
+    @Required(order = 2)
+    @TextRule(order = 2, minLength = 6, message = "Enter at least 6 characters.")
+    private EditText password;
+
+    @Required(order = 3)
+    private EditText email;
+
+    private EditText location;
+    private Button register;
+
     TrackingService myService;
     boolean isBound = false;
     ProgressDialog dialog;
@@ -67,9 +92,12 @@ public class RegistrationActivity extends Activity {
 
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        validator = new Validator(this);
+        validator.setValidationListener(this);
         applicationHelper = (ApplicationHelper) getApplicationContext();
         setContentView(com.qubittech.feelknit.app.R.layout.registration);
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -80,7 +108,7 @@ public class RegistrationActivity extends Activity {
         email = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtEmailAddress);
         location = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtLocation);
 
-        Button register = (Button) findViewById(com.qubittech.feelknit.app.R.id.btnRegister);
+        register = (Button) findViewById(R.id.btnRegister);
 
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String networkOperator = tm.getNetworkOperatorName();
@@ -93,8 +121,7 @@ public class RegistrationActivity extends Activity {
 
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dialog = ProgressDialog.show(RegistrationActivity.this, "Registering User", "Please wait");
-                new SaveUserTask().execute("try");
+                validator.validate();
             }
         });
     }
@@ -120,6 +147,21 @@ public class RegistrationActivity extends Activity {
             // location.setText(String.format("%s%s", currentLatitude.toString(), currentLongitude.toString()));
         }
     };
+
+    @Override
+    public void onValidationSucceeded() {
+            dialog = ProgressDialog.show(RegistrationActivity.this, "Registering User", "Please wait");
+            new SaveUserTask().execute("try");
+    }
+
+    @Override
+    public void onValidationFailed(View failedView, Rule<?> failedRule) {
+        if (failedView instanceof TextView) {
+            TextView view = (TextView) failedView;
+            view.requestFocus();
+            view.setError(failedRule.getFailureMessage());
+        }
+    }
 
     private class SaveUserTask extends AsyncTask<String, Integer, LoginResult> {
 
@@ -165,7 +207,7 @@ public class RegistrationActivity extends Activity {
             String res = jsonHttpClient.PostParams(UrlHelper.USER, args);
 
             Gson gson = new GsonBuilder().create();
-            LoginResult result =gson.fromJson(res, LoginResult.class);
+            LoginResult result = gson.fromJson(res, LoginResult.class);
 
             while (!regIdReceived) {
                 try {

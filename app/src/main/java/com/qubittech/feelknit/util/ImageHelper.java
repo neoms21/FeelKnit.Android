@@ -12,6 +12,7 @@ public class ImageHelper {
 
     public static void setBitMap(ImageView imageView, Context context, String avatar, int wdth, int hght) {
         Bitmap bmp;
+
         int width = wdth;
         int height = hght;
         if (avatar == null || avatar == "")
