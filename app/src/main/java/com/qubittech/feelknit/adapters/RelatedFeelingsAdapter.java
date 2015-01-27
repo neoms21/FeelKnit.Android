@@ -36,8 +36,8 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     boolean isRunningOnEmulator = false;
     private final ApplicationHelper applicationHelper;
 
-    /*private view holder class*/
-    private class ViewHolder {
+      /*private view holder class*/
+    private static class ViewHolder {
         TextView usernameTextView;
         TextView feelingTextView;
         TextView locationTextView;
@@ -80,20 +80,19 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder.commentButton = (Button) convertView.findViewById(R.id.btnComment);
             holder.commentsCountTextView = (TextView) convertView.findViewById(R.id.commentsCount);
             holder.supportCountTextView = (TextView) convertView.findViewById(R.id.supportCount);
-            setFeelingInListView(convertView, holder, feeling);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
-            setFeelingInListView(convertView, holder, feeling);
         }
 
+        setFeelingInListView(convertView, holder, feeling);
         holder.usernameTextView.setText(feeling.getUserName());
         return convertView;
     }
 
     private void setFeelingInListView(View convertView, ViewHolder holder, Feeling feeling) {
         if (feeling.isReported()) {
-            setReportedFeeling(holder, feeling);
+            setReportedFeeling(convertView,holder, feeling);
         } else {
             setUnreportedFeeling(convertView, holder, feeling);
         }
@@ -132,7 +131,11 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
                 notifyDataSetChanged();
             }
         });
-
+        int color = getContext().getResources().getColor(R.color.lightButtonColor);
+        EnableButton(holder.commentButton, color);//.setBackgroundColor(color);
+        EnableButton(holder.supportButton, color);//.setBackgroundColor(color);
+        EnableButton(holder.reportButton, color);//.setBackgroundColor(color);
+        holder.blockingView.setVisibility(View.INVISIBLE);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,20 +145,26 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         });
     }
 
-    private void setReportedFeeling(ViewHolder holder, Feeling feeling) {
+    private void setReportedFeeling(View convertView, ViewHolder holder, Feeling feeling) {
         holder.blockingView.setVisibility(View.VISIBLE);
-        holder.blockingView.bringToFront();
         holder.usernameTextView.setText(feeling.getUserName());
         holder.feelingTextView.setText("");
         int color = getContext().getResources().getColor(R.color.greyColor);
         DisableButton(holder.commentButton, color);//.setBackgroundColor(color);
         DisableButton(holder.supportButton, color);//.setBackgroundColor(color);
         DisableButton(holder.reportButton, color);//.setBackgroundColor(color);
+        convertView.setClickable(false);
     }
 
     private void DisableButton(Button button, int color) {
         button.setEnabled(false);
         button.setClickable(false);
+        button.setBackgroundColor(color);
+    }
+
+    private void EnableButton(Button button, int color) {
+        button.setEnabled(true);
+        button.setClickable(true);
         button.setBackgroundColor(color);
     }
 

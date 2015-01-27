@@ -63,7 +63,7 @@
             android:id="@+id/countCommentsLabel"
             android:layout_width="wrap_content"
             android:textAlignment="center"
-            android:text="People Feeling Same"
+            android:text="comments on this feeling"
             android:layout_height="wrap_content"></TextView>
 
     </LinearLayout>
@@ -96,6 +96,7 @@
             android:background="@drawable/edittext_design"
             android:hint="Type Message"
             android:textColor="@color/whiteBg"
+            android:imeOptions="actionDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

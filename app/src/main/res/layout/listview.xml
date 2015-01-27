@@ -23,8 +23,8 @@
             <ImageView
                 android:layout_margin="5dp"
                 android:id="@+id/userIconImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/usericon" />
 
             <TextView
@@ -54,7 +54,7 @@
         android:layout_marginTop="4dp"
         android:id="@+id/countAndDate"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/feelingDetails"
         >
         <TextView
@@ -94,6 +94,8 @@
             android:background="@color/greyColor"
             android:layout_below="@id/feelingShared"
             android:layout_marginTop="3dp"
+            android:layout_alignTop="@id/commentsCount"
+            android:padding="3dp"
             android:visibility="invisible"
             android:layout_alignLeft="@id/commentsCount"
             android:layout_width="wrap_content"

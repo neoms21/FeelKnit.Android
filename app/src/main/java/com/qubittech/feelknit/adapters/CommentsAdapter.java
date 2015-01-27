@@ -2,6 +2,7 @@ package com.qubittech.feelknit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,14 @@ import com.qubittech.feelknit.models.Feeling;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.DateFormatter;
 import com.qubittech.feelknit.util.ImageHelper;
+import com.qubittech.feelknit.util.JsonHttpClient;
+import com.qubittech.feelknit.util.UrlHelper;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Manoj on 19/06/2014.
@@ -27,18 +36,21 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     Context context;
     String feelingText;
     private final ApplicationHelper applicationHelper;
+    private final Feeling feeling1;
 
     /*private view holder class*/
     private class ViewHolder {
         TextView commentTextView;
         TextView userTextView;
         TextView postedAtTextView;
+        TextView reportTextView;
         ImageView userImageView;
     }
 
     public CommentsAdapter(Context context, int resource, Feeling feeling) {
 
         super(context, resource, feeling.getComments());
+        feeling1 = feeling;
         applicationHelper = (ApplicationHelper) context.getApplicationContext();
         feelingText = feeling.getFeelingText();
         this.context = context;
@@ -55,6 +67,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             holder = new ViewHolder();
             holder.commentTextView = (TextView) convertView.findViewById(R.id.comment);
             holder.postedAtTextView = (TextView) convertView.findViewById(R.id.postedAt);
+            holder.reportTextView = (TextView) convertView.findViewById(R.id.lblReportComment);
             holder.userTextView = (TextView) convertView.findViewById(R.id.name);
             holder.userImageView = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.userTextView.setClickable(true);
@@ -66,6 +79,12 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
                     );
                 }
             });
+            holder.reportTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
@@ -75,7 +94,13 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         holder.commentTextView.setText(comment.getText());
         holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
         if (comment.getUser() != null || comment.getUser() == "me") {
-            ImageHelper.setBitMap(holder.userImageView, context, comment.getUser() == "me" ? applicationHelper.getAvatar() : comment.getUserAvatar(), 100, 100);
+            ImageHelper.setBitMap(holder.userImageView, context, applicationHelper.getUserName().equals(comment.getUser()) ? applicationHelper.getAvatar() : comment.getUserAvatar(), 100, 100);
+        }
+
+        if (applicationHelper.getUserName().equals(comment.getUser())) {
+            holder.reportTextView.setVisibility(View.INVISIBLE);
+        } else {
+            holder.reportTextView.setVisibility(View.VISIBLE);
         }
 
 //        if (applied) {
@@ -83,5 +108,21 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 //            convertView.setDrawingCacheBackgroundColor(Color.rgb(201, 201, 201));
 //        } else convertView.setBackgroundColor(Color.rgb(213, 199, 242));
         return convertView;
+    }
+
+
+    private class reportCommentTask extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            args.add(new BasicNameValuePair("feelingId", params[0]));
+            args.add(new BasicNameValuePair("commentUser", params[1]));
+            args.add(new BasicNameValuePair("reportedBy", applicationHelper.getUserName()));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            String emailUrl = UrlHelper.EMAILREPORT;
+            jsonHttpClient.PostUrlParams(emailUrl, args);
+            return true;
+        }
     }
 }

@@ -7,13 +7,13 @@
     android:background="@drawable/bg">
 
     <TextView
-        android:text="My Comments"
+        android:text="Feelings with my Comments"
         android:gravity="center"
         android:background="@color/loginLabel"
         android:textAlignment="center"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:textColor="@color/textColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -2,7 +2,9 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="@color/whiteBg">
+    android:layout_height="match_parent"
+    android:background="@color/whiteBg">
+
     <RelativeLayout
         android:id="@+id/feelingDetails"
         android:layout_width="match_parent"
@@ -37,12 +39,23 @@
             android:layout_height="wrap_content"
             android:hint="comment" />
 
-<TextView
+        <TextView
+            android:layout_below="@id/comment"
+            android:id="@+id/lblReportComment"
+            android:layout_marginTop="7dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:layout_marginRight="110dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="report!" />
+
+        <TextView
             android:layout_below="@id/comment"
             android:inputType="datetime"
             android:layout_alignTop="@id/tvFeelingLabel"
             android:id="@+id/postedAt"
-
             android:layout_alignParentRight="true"
             android:layout_marginTop="7dp"
             android:layout_width="wrap_content"

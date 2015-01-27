@@ -2,10 +2,15 @@ package com.qubittech.feelknit.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,10 +33,13 @@ import com.qubittech.feelknit.models.Feeling;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import com.qubittech.feelknit.services.TrackingService;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
@@ -51,6 +59,8 @@ public class AddFeelingFragment extends Fragment {
     private LayoutInflater mInflator;
     private boolean selected;
     private OnCreateFeelingClick mCallback;
+    private Double currentLatitude = 5.4;
+    private Double currentLongitude = 7.8;
 
     // Container Activity must implement this interface
     public interface OnCreateFeelingClick {
@@ -97,8 +107,38 @@ public class AddFeelingFragment extends Fragment {
             }
         });
 
+        TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+        String networkOperator = tm.getNetworkOperatorName();
+        if ("".equals(networkOperator)) {
+            // Emulator
+        } else {
+            getActivity().startService(new Intent(TrackingService.ACTION_START_MONITORING));
+            // Device
+        }
+
         return addFeelingView;
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            currentLatitude = intent.getDoubleExtra("latitude", 0);
+            currentLongitude = intent.getDoubleExtra("longitude", 0);
+
+            Geocoder gcd = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+            List<Address> addresses = null;
+
+            try {
+                addresses = gcd.getFromLocation(currentLatitude, currentLongitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+             //location.setText(String.format("%s%s", currentLatitude.toString(), currentLongitude.toString()));
+        }
+    };
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -224,6 +264,8 @@ public class AddFeelingFragment extends Fragment {
             args.add(new BasicNameValuePair("action", params[2]));
             _feeling.setAction(params[2]);
             args.add(new BasicNameValuePair("username", username));
+            args.add(new BasicNameValuePair("latitude", currentLatitude.toString()));
+            args.add(new BasicNameValuePair("longitude", currentLongitude.toString()));
             _feeling.setUserName(username);
 //            args.add(new BasicNameValuePair("user", parentData.toString()));
             //  args.add(new BasicNameValuePair("content", parentData.toString()));

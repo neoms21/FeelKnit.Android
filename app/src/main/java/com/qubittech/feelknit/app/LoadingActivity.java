@@ -57,7 +57,6 @@ public class LoadingActivity extends Activity {
         setContentView(com.qubittech.feelknit.app.R.layout.loading);
         BugSenseHandler.initAndStartSession(getApplication(), "e9e97454");
         dialog = ProgressDialog.show(LoadingActivity.this, "Loading", "Please wait...", true);
-        dialog.setContentView(com.qubittech.feelknit.app.R.layout.progress);
 
         dialog.setCancelable(true);
         new LoadingTask().execute("");
