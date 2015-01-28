@@ -40,16 +40,31 @@
             android:hint="comment" />
 
         <TextView
-            android:layout_below="@id/comment"
+            android:id="@+id/commentBlockingView"
+            android:background="@color/greyColor"
+            android:layout_below="@id/userIconImage"
+            android:layout_marginTop="3dp"
+            android:layout_alignTop="@id/comment"
+            android:padding="3dp"
+            android:visibility="visible"
+            android:layout_alignLeft="@id/userIconImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This comment has been reported and awaiting admin decision" />
+
+
+        <TextView
+            android:layout_alignTop="@id/userIconImage"
             android:id="@+id/lblReportComment"
             android:layout_marginTop="7dp"
             android:textColor="@android:color/holo_red_dark"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:clickable="true"
-            android:layout_marginRight="110dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="report!" />
+            android:text="Report!" />
 
         <TextView
             android:layout_below="@id/comment"

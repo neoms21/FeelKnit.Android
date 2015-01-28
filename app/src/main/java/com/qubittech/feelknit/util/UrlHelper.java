@@ -23,8 +23,8 @@ public class UrlHelper {
     public static final String INCREASE_SUPPORT = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings/increasesupport";
     public static final String DECREASE_SUPPORT = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings/decreasesupport";
     public static final String COMMENTSFEELING = (onEmulator ? BASE_URL_EMULATOR  : BASE_URL )+ "feelings/comments/%s";
-    public static final String EMAILREPORT = (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "email/report";
-    public static final String REPORTCOMMENT= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "email/report";
+    public static final String REPORTFEELING = (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "feelings/report";
+    public static final String REPORTCOMMENT= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "comments/report";
     public static final String USER_FEELINGS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "feelings/userfeelings";
     public static final String GET_FEELS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "feelings/getfeels";
     public static final String RELATED_FEELINGS= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "feelings/relatedfeelings/%s";

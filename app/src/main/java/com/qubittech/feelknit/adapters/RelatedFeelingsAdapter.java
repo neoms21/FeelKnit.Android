@@ -85,6 +85,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+
         setFeelingInListView(convertView, holder, feeling);
         holder.usernameTextView.setText(feeling.getUserName());
         return convertView;
@@ -239,7 +240,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
-            String emailUrl = UrlHelper.EMAILREPORT;
+            String emailUrl = UrlHelper.REPORTFEELING;
             jsonHttpClient.PostUrlParams(emailUrl, args);
             return true;
         }

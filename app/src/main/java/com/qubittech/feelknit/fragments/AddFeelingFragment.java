@@ -61,6 +61,7 @@ public class AddFeelingFragment extends Fragment {
     private OnCreateFeelingClick mCallback;
     private Double currentLatitude = 5.4;
     private Double currentLongitude = 7.8;
+    private TextView tempLocation;
 
     // Container Activity must implement this interface
     public interface OnCreateFeelingClick {
@@ -78,6 +79,7 @@ public class AddFeelingFragment extends Fragment {
 
         final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
         final TextView so = (TextView) addFeelingView.findViewById(R.id.soText);
+        tempLocation = (TextView) addFeelingView.findViewById(R.id.txtLocation);
 
         spinnerFeelings.setAdapter(typeSpinnerAdapter);
         spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);
@@ -135,7 +137,7 @@ public class AddFeelingFragment extends Fragment {
                 e.printStackTrace();
             }
 
-             //location.setText(String.format("%s%s", currentLatitude.toString(), currentLongitude.toString()));
+            tempLocation.setText(String.format("%s%s - %s", currentLatitude.toString(), currentLongitude.toString(), addresses.get(0).getLocality()));
         }
     };
 

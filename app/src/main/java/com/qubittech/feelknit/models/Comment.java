@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 public class Comment implements Serializable {
 
+    private String id;
     private String text;
     private String user;
     private String postedAt;
     private String userAvatar;
+    private boolean isReported;
 
     public String getText() {
         return text;
@@ -39,5 +41,21 @@ public class Comment implements Serializable {
 
     public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isReported() {
+        return isReported;
+    }
+
+    public void setReported(boolean isReported) {
+        this.isReported = isReported;
     }
 }

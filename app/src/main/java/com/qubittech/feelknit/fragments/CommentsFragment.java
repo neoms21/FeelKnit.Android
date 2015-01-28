@@ -136,6 +136,7 @@ public class CommentsFragment extends Fragment {
                     commentEdiText.setText("");
                     Comment comment = new Comment();
                     comment.setUser("me"); // Because while in comments whenever anyone save it'll be that user
+                    comment.setUserAvatar(applicationHelper.getAvatar());
                     comment.setText(commentText);
                     comment.setPostedAt(sdf.format(new Date()));
                     feeling.getComments().add(comment);

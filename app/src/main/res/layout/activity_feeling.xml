@@ -60,15 +60,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/txtLocation"-->
-        <!--android:text="Share"-->
-        <!--android:textSize="20dp"-->
-        <!--android:width="200dp"-->
-        <!--android:layout_below="@id/soText"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
+    <TextView
+        android:id="@+id/txtLocation"
+        android:text="Share"
+        android:textSize="20dp"
+        android:width="200dp"
+        android:layout_below="@id/soText"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

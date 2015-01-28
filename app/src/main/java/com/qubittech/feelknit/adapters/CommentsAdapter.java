@@ -44,6 +44,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         TextView userTextView;
         TextView postedAtTextView;
         TextView reportTextView;
+        TextView blockingTextView;
         ImageView userImageView;
     }
 
@@ -70,6 +71,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             holder.reportTextView = (TextView) convertView.findViewById(R.id.lblReportComment);
             holder.userTextView = (TextView) convertView.findViewById(R.id.name);
             holder.userImageView = (ImageView) convertView.findViewById(R.id.userIconImage);
+            holder.blockingTextView = (TextView) convertView.findViewById(R.id.commentBlockingView);
             holder.userTextView.setClickable(true);
             holder.userTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,46 +84,58 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             holder.reportTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    comment.setReported(true);
+                    notifyDataSetChanged();
+                    new reportCommentTask().execute(comment);
                 }
             });
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
-
-
         holder.userTextView.setText(applicationHelper.getUserName().equals(comment.getUser()) ? "me" : comment.getUser());
-        holder.commentTextView.setText(comment.getText());
-        holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
-        if (comment.getUser() != null || comment.getUser() == "me") {
-            ImageHelper.setBitMap(holder.userImageView, context, applicationHelper.getUserName().equals(comment.getUser()) ? applicationHelper.getAvatar() : comment.getUserAvatar(), 100, 100);
+
+        if (comment.getUser() != null && comment.getUser() == "me") {
+            ImageHelper.setBitMap(holder.userImageView, context, applicationHelper.getAvatar(), 100, 100);
+        } else {
+            ImageHelper.setBitMap(holder.userImageView, context, comment.getUserAvatar(), 100, 100);
         }
 
-        if (applicationHelper.getUserName().equals(comment.getUser())) {
+        if (applicationHelper.getUserName().equals(comment.getUser()) || comment.getUser() == "me") {
             holder.reportTextView.setVisibility(View.INVISIBLE);
         } else {
             holder.reportTextView.setVisibility(View.VISIBLE);
         }
 
-//        if (applied) {
-//            convertView.setBackgroundColor(Color.rgb(201, 201, 201));
-//            convertView.setDrawingCacheBackgroundColor(Color.rgb(201, 201, 201));
-//        } else convertView.setBackgroundColor(Color.rgb(213, 199, 242));
+        if (comment.isReported()) {
+            holder.userTextView.setClickable(false);
+            holder.reportTextView.setClickable(false);
+            holder.blockingTextView.setVisibility(View.VISIBLE);
+            holder.postedAtTextView.setText("");
+            holder.reportTextView.setVisibility(View.VISIBLE);
+        } else {
+            holder.userTextView.setClickable(true);
+            holder.reportTextView.setClickable(true);
+            holder.blockingTextView.setVisibility(View.INVISIBLE);
+            holder.reportTextView.setVisibility(View.INVISIBLE);
+
+            holder.commentTextView.setText(comment.getText());
+            holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
+        }
+
         return convertView;
     }
 
 
-    private class reportCommentTask extends AsyncTask<String, Integer, Boolean> {
+    private class reportCommentTask extends AsyncTask<Comment, Integer, Boolean> {
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Comment... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            args.add(new BasicNameValuePair("feelingId", params[0]));
-            args.add(new BasicNameValuePair("commentUser", params[1]));
+            args.add(new BasicNameValuePair("feelingId", feeling1.getId()));
+            args.add(new BasicNameValuePair("id", params[0].getId()));
             args.add(new BasicNameValuePair("reportedBy", applicationHelper.getUserName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
-            String emailUrl = UrlHelper.EMAILREPORT;
-            jsonHttpClient.PostUrlParams(emailUrl, args);
+            jsonHttpClient.PostUrlParams(UrlHelper.REPORTCOMMENT, args);
             return true;
         }
     }
