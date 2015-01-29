@@ -27,12 +27,10 @@ import java.util.List;
 
 public class LoadingActivity extends Activity {
     ProgressDialog dialog;
-    private ApplicationHelper applicationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applicationHelper = (ApplicationHelper) getApplicationContext();
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
             return;
@@ -75,11 +73,8 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Type collectionType = new TypeToken<List<String>>() {
-            }.getType();
-            Gson gson = new GsonBuilder().create();
-            List<String> feels = gson.fromJson(s, collectionType);
-            applicationHelper.setFeelTexts(feels);
+
+            ApplicationHelper.setFeelTexts(getApplicationContext(), s);
             startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
             dialog.dismiss();
         }
@@ -88,7 +83,7 @@ public class LoadingActivity extends Activity {
         protected String doInBackground(String... params) {
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             return jsonHttpClient.Get(UrlHelper.GET_FEELS, args);
         }
     }

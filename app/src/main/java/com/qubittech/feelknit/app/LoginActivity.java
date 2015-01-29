@@ -55,7 +55,6 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
     private EditText etUsername;
     @Required(order = 2)
     private EditText etPassword;
-    private ApplicationHelper applicationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +65,6 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
         }
         validator = new Validator(this);
         validator.setValidationListener(this);
-        applicationHelper = (ApplicationHelper) getApplicationContext();
         setContentView(com.qubittech.feelknit.app.R.layout.login);
         TextView forgotLabel = (TextView) findViewById(com.qubittech.feelknit.app.R.id.forgotLabel);
         forgotLabel.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -81,15 +79,15 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
         etUsername = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtUserName);
         etPassword = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtPassword);
 
-        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        String username = settings.getString("Username", null);
-        String avatar = settings.getString("Avatar", null);
-        String token = settings.getString("Token", null);
-        if (username != null) {
-            applicationHelper.setUserName(username);
-            applicationHelper.setAvatar(avatar);
-            applicationHelper.setAuthorizationToken(token);
-            BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
+//        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+//        String username = settings.getString("Username", null);
+//        String avatar = settings.getString("Avatar", null);
+//        String token = settings.getString("Token", null);
+        if (ApplicationHelper.getUserName(getApplicationContext()) != null) {
+//            applicationHelper.setUserName(username);
+//            applicationHelper.setAvatar(avatar);
+//            applicationHelper.setAuthorizationToken(token);
+            BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {
 
@@ -134,17 +132,17 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
             super.onPostExecute(loginResult);
             dialog.dismiss();
             if (loginResult.isLoginSuccessful()) {
-                SharedPreferences settings = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("Username", userName);
-                editor.putString("Avatar", loginResult.getAvatar());
-                editor.putString("Token", loginResult.getToken());
-                editor.putString("Email", loginResult.getUserEmail());
-                editor.commit();
-                applicationHelper.setUserName(userName);
-                applicationHelper.setAvatar(loginResult.getAvatar());
-                applicationHelper.setAuthorizationToken(loginResult.getToken());
-                applicationHelper.setUserEmail(loginResult.getUserEmail());
+//                SharedPreferences settings = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = settings.edit();
+//                editor.putString("Username", userName);
+//                editor.putString("Avatar", loginResult.getAvatar());
+//                editor.putString("Token", loginResult.getToken());
+//                editor.putString("Email", loginResult.getUserEmail());
+//                editor.commit();
+                ApplicationHelper.setUserName(getApplicationContext(), userName);
+                ApplicationHelper.setAvatar(getApplicationContext(), loginResult.getAvatar());
+                ApplicationHelper.setAuthorizationToken(getApplicationContext(), loginResult.getToken());
+                ApplicationHelper.setUserEmail(getApplicationContext(), loginResult.getUserEmail());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
@@ -167,7 +165,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", params[0]));
             args.add(new BasicNameValuePair("password", params[1]));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String verifyUrl = UrlHelper.USER_LOGIN;
             String response = jsonHttpClient.PostParams(verifyUrl, args);
 

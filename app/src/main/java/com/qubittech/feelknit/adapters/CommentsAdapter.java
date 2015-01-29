@@ -2,6 +2,7 @@ package com.qubittech.feelknit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.AsyncPlayer;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     int resource;
     Context context;
     String feelingText;
-    private final ApplicationHelper applicationHelper;
     private final Feeling feeling1;
 
     /*private view holder class*/
@@ -52,7 +52,6 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         super(context, resource, feeling.getComments());
         feeling1 = feeling;
-        applicationHelper = (ApplicationHelper) context.getApplicationContext();
         feelingText = feeling.getFeelingText();
         this.context = context;
     }
@@ -92,15 +91,15 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
-        holder.userTextView.setText(applicationHelper.getUserName().equals(comment.getUser()) ? "me" : comment.getUser());
+        holder.userTextView.setText(ApplicationHelper.getUserName(getContext()).equals(comment.getUser()) ? "me" : comment.getUser());
 
         if (comment.getUser() != null && comment.getUser() == "me") {
-            ImageHelper.setBitMap(holder.userImageView, context, applicationHelper.getAvatar(), 100, 100);
+            ImageHelper.setBitMap(holder.userImageView, context, ApplicationHelper.getAvatar(getContext()), 100, 100);
         } else {
             ImageHelper.setBitMap(holder.userImageView, context, comment.getUserAvatar(), 100, 100);
         }
 
-        if (applicationHelper.getUserName().equals(comment.getUser()) || comment.getUser() == "me") {
+        if (ApplicationHelper.getUserName(getContext()).equals(comment.getUser()) || comment.getUser() == "me") {
             holder.reportTextView.setVisibility(View.INVISIBLE);
         } else {
             holder.reportTextView.setVisibility(View.VISIBLE);
@@ -133,8 +132,8 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feelingId", feeling1.getId()));
             args.add(new BasicNameValuePair("id", params[0].getId()));
-            args.add(new BasicNameValuePair("reportedBy", applicationHelper.getUserName()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            args.add(new BasicNameValuePair("reportedBy", ApplicationHelper.getUserName(getContext())));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());
             jsonHttpClient.PostUrlParams(UrlHelper.REPORTCOMMENT, args);
             return true;
         }

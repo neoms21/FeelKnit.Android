@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
-    private ApplicationHelper applicationHelper;
     private Bundle intentBundle;
 
     @Override
@@ -71,7 +70,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         switch (id) {
             case 101:
 //                getSupportFragmentManager().findFragmentByTag("Profile");
-                ShowProfileFragment(applicationHelper.getAvatar());
+                ShowProfileFragment(ApplicationHelper.getAvatar(getApplicationContext()));
                 break;
             case 102:
                 StartUserFeelingsFragment();
@@ -120,7 +119,6 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applicationHelper = (ApplicationHelper) getApplicationContext();
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
             return;
@@ -136,17 +134,17 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         Feeling feeling = intentBundle == null ? null : (Feeling) intentBundle.get("feeling");
 
         ImageView userIconImageView = (ImageView) findViewById(R.id.leftDrawerUserIcon);
-        if (applicationHelper.getAvatar() != null)
-            ImageHelper.setBitMap(userIconImageView, getApplicationContext(), applicationHelper.getAvatar(), 100, 100);
+        if (ApplicationHelper.getAvatar(getApplicationContext()) != null)
+            ImageHelper.setBitMap(userIconImageView, getApplicationContext(), ApplicationHelper.getAvatar(getApplicationContext()), 100, 100);
 
         TextView usrTextView = (TextView) findViewById(com.qubittech.feelknit.app.R.id.usrName);
-        usrTextView.setText(applicationHelper.getUserName());
+        usrTextView.setText(ApplicationHelper.getUserName(getApplicationContext()));
         Button btnSignout = (Button) findViewById(com.qubittech.feelknit.app.R.id.signout);
 
         btnSignout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String username = applicationHelper.getUserName();
-                applicationHelper.setUserName("");
+                String username = ApplicationHelper.getUserName(getApplicationContext());
+                ApplicationHelper.setUserName(getApplicationContext(), "");
                 SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                 settings.edit().remove("Username").commit();
                 settings.edit().remove("Avatar").commit();
@@ -170,7 +168,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 ShowCommentsFragment(feeling, null, null);
                 break;
             case 4:
-                String avatar = intentBundle.getString("Avatar","");
+                String avatar = intentBundle.getString("Avatar", "");
                 ShowProfileFragment(avatar);
                 break;
             default:
@@ -213,7 +211,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         CommentsFragment commentsFragment = new CommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("feeling", feeling);
-        bundle.putSerializable("user", applicationHelper.getUserName());
+        bundle.putSerializable("user", ApplicationHelper.getUserName(getApplicationContext()));
         commentsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, commentsFragment, "Comments").addToBackStack("Comments").commit();
     }
@@ -225,7 +223,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", params[0]));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String keyUrl = UrlHelper.CLEAR_USER_KEY;
             return jsonHttpClient.PostParams(keyUrl, args);
         }
@@ -243,7 +241,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("feeling", params[0]));
             args.add(new BasicNameValuePair("username", params[1]));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String url = UrlHelper.USER_FEELINGS;
             String response = jsonHttpClient.Get(url, args);
             Gson gson = new Gson();

@@ -1,5 +1,6 @@
 package com.qubittech.feelknit.util;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.GsonBuilder;
@@ -34,10 +35,11 @@ import java.util.zip.GZIPInputStream;
 
 public class JsonHttpClient {
 
-    private final ApplicationHelper _applicationHelper;
 
-    public JsonHttpClient(ApplicationHelper applicationHelper) {
-        _applicationHelper = applicationHelper;
+    private Context context;
+
+    public JsonHttpClient(Context context) {
+        this.context = context;
     }
 
     public <T> T PostObject(final String url, final T object, final Class<T> objectClass) {
@@ -50,7 +52,7 @@ public class JsonHttpClient {
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
             httpPost.setHeader("Accept-Encoding", "gzip");
-            httpPost.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
+            httpPost.setHeader("Authorization", ApplicationHelper.getAuthorizationToken(context));
 
             HttpResponse httpResponse = defaultHttpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
@@ -93,7 +95,7 @@ public class JsonHttpClient {
             entity.setContentType("application/json");
             httpPost.setHeader("Content-Type", "application/json");
             httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
+            httpPost.setHeader("Authorization", ApplicationHelper.getAuthorizationToken(context));
             httpPost.setEntity(entity);
 
             HttpClient client = new DefaultHttpClient();
@@ -130,7 +132,7 @@ public class JsonHttpClient {
 
 // Create the POST object and add the parameters
             HttpPost httpPost = new HttpPost(url);
-            httpPost.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
+            httpPost.setHeader("Authorization", ApplicationHelper.getAuthorizationToken(context));
             httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             HttpClient client = new DefaultHttpClient();
 
@@ -229,7 +231,7 @@ public class JsonHttpClient {
 
             httpGet.setHeader("Accept", "application/json");
             httpGet.setHeader("Accept-Encoding", "gzip");
-            httpGet.setHeader("Authorization", _applicationHelper.getAuthorizationToken());
+            httpGet.setHeader("Authorization", ApplicationHelper.getAuthorizationToken(context));
             HttpResponse httpResponse = defaultHttpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
             if (httpEntity != null) {

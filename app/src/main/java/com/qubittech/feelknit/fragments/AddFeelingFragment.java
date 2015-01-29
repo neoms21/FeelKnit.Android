@@ -53,7 +53,6 @@ public class AddFeelingFragment extends Fragment {
     ProgressDialog dialog;
     private Feeling _feeling = null;
     private List<Feeling> relatedFeelings = null;
-    private ApplicationHelper applicationHelper;
     private String TAG = "SpinnerHint";
 
     private LayoutInflater mInflator;
@@ -70,12 +69,16 @@ public class AddFeelingFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
-        dbDefinedFeelings = ((ApplicationHelper) (getActivity().getApplicationContext())).getFeelTexts();
+
+        Type collectionType = new TypeToken<List<String>>() {
+        }.getType();
+        Gson gson = new GsonBuilder().create();
+        dbDefinedFeelings= gson.fromJson(ApplicationHelper.getFeelTexts(getActivity().getApplicationContext()), collectionType);
+
         View addFeelingView = inflater.inflate(R.layout.activity_feeling, container, false);
         _feeling = new Feeling();
         spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingSpinner);
-        username = applicationHelper.getUserName();
+        username = ApplicationHelper.getUserName(getActivity().getApplicationContext());
 
         final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
         final TextView so = (TextView) addFeelingView.findViewById(R.id.soText);
@@ -271,7 +274,7 @@ public class AddFeelingFragment extends Fragment {
             _feeling.setUserName(username);
 //            args.add(new BasicNameValuePair("user", parentData.toString()));
             //  args.add(new BasicNameValuePair("content", parentData.toString()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             return jsonHttpClient.PostParams(UrlHelper.FEELINGS, args);
         }
     }

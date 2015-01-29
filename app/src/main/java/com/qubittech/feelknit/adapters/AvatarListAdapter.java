@@ -20,7 +20,6 @@ import com.qubittech.feelknit.util.ImageHelper;
 public class AvatarListAdapter extends ArrayAdapter<String> {
 
     Context context;
-    private final ApplicationHelper applicationHelper;
     private String avatarId;
 
     /*private view holder class*/
@@ -31,7 +30,6 @@ public class AvatarListAdapter extends ArrayAdapter<String> {
     public AvatarListAdapter(Context context, int resource, String[] images) {
 
         super(context, resource, images);
-        applicationHelper = (ApplicationHelper) context.getApplicationContext();
         this.context = context;
     }
 

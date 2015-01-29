@@ -29,7 +29,6 @@ import static android.view.View.OnClickListener;
 public class SaveAvatarActivity extends Activity {
 
     private String selectedAvatar;
-    private ApplicationHelper applicationHelper;
     private String[] avatars;
     private boolean fromProfile;
 
@@ -37,7 +36,6 @@ public class SaveAvatarActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avatar);
-        applicationHelper = (ApplicationHelper) getApplicationContext();
         Button skipButton = (Button) findViewById(R.id.skipButton);
         Button saveButton = (Button) findViewById(R.id.saveAvatarButton);
 
@@ -52,7 +50,7 @@ public class SaveAvatarActivity extends Activity {
         fromProfile = getIntent().getBooleanExtra("Profile", false);
 
         if (fromProfile) {
-            String avatar = applicationHelper.getAvatar();
+            String avatar = ApplicationHelper.getAvatar(getApplicationContext());
             if (avatar != null && avatar != "") {
                 int avatarIndex = Arrays.asList(avatars).indexOf(avatar);
                 listview.setSelection(avatarIndex);
@@ -103,11 +101,11 @@ public class SaveAvatarActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            applicationHelper.setAvatar(selectedAvatar);
+            ApplicationHelper.setAvatar(getApplicationContext(),selectedAvatar);
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
+            args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getApplicationContext())));
             args.add(new BasicNameValuePair("avatar", selectedAvatar));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String res = jsonHttpClient.PostParams(UrlHelper.SAVE_AVATAR, args);
             return Boolean.parseBoolean(res);
         }
