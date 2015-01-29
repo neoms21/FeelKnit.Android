@@ -8,8 +8,8 @@
     <ImageView
         android:layout_centerInParent="true"
         android:src="@drawable/agnes"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:id="@+id/avatarImage"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 </RelativeLayout>
