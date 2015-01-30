@@ -36,7 +36,6 @@ import com.qubittech.feelknit.util.UrlHelper;
 
 public class CommentsFragment extends Fragment {
 
-    private ApplicationHelper applicationHelper;
     private ProgressDialog dialog;
     //    private String username;
     private ArrayAdapter arrayAdapter;
@@ -48,7 +47,6 @@ public class CommentsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         View mainView = inflater.inflate(R.layout.comments, container, false);
 
         Bundle args = getArguments();
@@ -63,7 +61,7 @@ public class CommentsFragment extends Fragment {
             ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 100, 100);
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
-        boolean currentUser = applicationHelper.getUserName().equals(feeling.getUserName());
+        boolean currentUser = ApplicationHelper.getUserName(getActivity().getApplicationContext()).equals(feeling.getUserName());
         String feelingUserName = currentUser ? "I" : feeling.getUserName();
         feelingUserNameTextView.setText(feelingUserName);
 
@@ -118,8 +116,8 @@ public class CommentsFragment extends Fragment {
             String feelingId = params[1];
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("Text", params[0]));
-            args.add(new BasicNameValuePair("User", applicationHelper.getUserName()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            args.add(new BasicNameValuePair("User", ApplicationHelper.getUserName(getActivity().getApplicationContext())));
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             return jsonHttpClient.PostParams(UrlHelper.COMMENTS + "/" + feelingId, args);
         }
 
@@ -136,7 +134,7 @@ public class CommentsFragment extends Fragment {
                     commentEdiText.setText("");
                     Comment comment = new Comment();
                     comment.setUser("me"); // Because while in comments whenever anyone save it'll be that user
-                    comment.setUserAvatar(applicationHelper.getAvatar());
+                    comment.setUserAvatar(ApplicationHelper.getAvatar(getActivity().getApplicationContext()));
                     comment.setText(commentText);
                     comment.setPostedAt(sdf.format(new Date()));
                     feeling.getComments().add(comment);

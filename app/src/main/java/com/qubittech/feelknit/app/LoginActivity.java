@@ -83,7 +83,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
 //        String username = settings.getString("Username", null);
 //        String avatar = settings.getString("Avatar", null);
 //        String token = settings.getString("Token", null);
-        if (ApplicationHelper.getUserName(getApplicationContext()) != null) {
+        if (ApplicationHelper.getUserName(getApplicationContext()) != null && ApplicationHelper.getUserName(getApplicationContext()) != "") {
 //            applicationHelper.setUserName(username);
 //            applicationHelper.setAvatar(avatar);
 //            applicationHelper.setAuthorizationToken(token);

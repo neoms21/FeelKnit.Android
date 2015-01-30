@@ -110,13 +110,10 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             holder.reportTextView.setClickable(false);
             holder.blockingTextView.setVisibility(View.VISIBLE);
             holder.postedAtTextView.setText("");
-            holder.reportTextView.setVisibility(View.VISIBLE);
         } else {
             holder.userTextView.setClickable(true);
             holder.reportTextView.setClickable(true);
             holder.blockingTextView.setVisibility(View.INVISIBLE);
-            holder.reportTextView.setVisibility(View.INVISIBLE);
-
             holder.commentTextView.setText(comment.getText());
             holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
         }

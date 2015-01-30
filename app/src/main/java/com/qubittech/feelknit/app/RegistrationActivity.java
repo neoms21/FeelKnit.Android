@@ -13,6 +13,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.AsyncPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -53,7 +54,6 @@ import com.qubittech.feelknit.util.UrlHelper;
 
 public class RegistrationActivity extends Activity implements Validator.ValidationListener {
 
-    private ApplicationHelper applicationHelper;
     private Validator validator;
 
     @Required(order = 1)
@@ -98,7 +98,6 @@ public class RegistrationActivity extends Activity implements Validator.Validati
         super.onCreate(savedInstanceState);
         validator = new Validator(this);
         validator.setValidationListener(this);
-        applicationHelper = (ApplicationHelper) getApplicationContext();
         setContentView(com.qubittech.feelknit.app.R.layout.registration);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("LocationReceived"));
@@ -175,8 +174,8 @@ public class RegistrationActivity extends Activity implements Validator.Validati
                 editor.putString("Username", userName.getText().toString());
                 editor.putString("Token", result.getToken());
                 editor.commit();
-                applicationHelper.setUserName(userName.getText().toString());
-                BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
+                ApplicationHelper.setUserName(getApplicationContext(), userName.getText().toString());
+                BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
                 Intent intent = new Intent(RegistrationActivity.this, SaveAvatarActivity.class);
                 intent.putExtra("From", 1);
                 startActivity(intent);
@@ -203,7 +202,7 @@ public class RegistrationActivity extends Activity implements Validator.Validati
             args.add(new BasicNameValuePair("username", userName.getText().toString()));
             args.add(new BasicNameValuePair("password", password.getText().toString()));
             args.add(new BasicNameValuePair("emailaddress", email.getText().toString()));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String res = jsonHttpClient.PostParams(UrlHelper.USER, args);
 
             Gson gson = new GsonBuilder().create();
@@ -219,7 +218,7 @@ public class RegistrationActivity extends Activity implements Validator.Validati
                     Log.i("GCM", msg);
                     regIdReceived = true;
                     args = new ArrayList<NameValuePair>();
-                    jsonHttpClient = new JsonHttpClient(applicationHelper);
+                    jsonHttpClient = new JsonHttpClient(getApplicationContext());
                     args = new ArrayList<NameValuePair>();
                     args.add(new BasicNameValuePair("username", userName.getText().toString()));
                     args.add(new BasicNameValuePair("key", regId));

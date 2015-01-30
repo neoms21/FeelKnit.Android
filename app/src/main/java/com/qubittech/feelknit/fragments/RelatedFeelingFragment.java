@@ -31,14 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RelatedFeelingFragment extends Fragment {
-    private ApplicationHelper applicationHelper;
     private ProgressDialog dialog;
     private View mainView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.related_feelings, container, false);
-        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         Bundle args = getArguments();
         if (args == null) {
             dialog = ProgressDialog.show(getActivity(), "Getting related feelings", "Please wait...", true);
@@ -56,7 +54,7 @@ public class RelatedFeelingFragment extends Fragment {
 
         TextView userNameTextView = (TextView) mainView.findViewById(R.id.name);
         ImageView userIcon = (ImageView) mainView.findViewById(R.id.userIconImage);
-        ImageHelper.setBitMap(userIcon, getActivity().getApplicationContext(), applicationHelper.getAvatar() , 100, 100);
+        ImageHelper.setBitMap(userIcon, getActivity().getApplicationContext(), ApplicationHelper.getAvatar(getActivity().getApplicationContext()) , 100, 100);
         if(feelings == null)
             return;
         TextView feelTextView = (TextView) mainView.findViewById(R.id.tvFeelingLabel);
@@ -93,8 +91,8 @@ public class RelatedFeelingFragment extends Fragment {
         @Override
         protected List<Feeling> doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
-            String res = jsonHttpClient.Get(String.format(UrlHelper.RELATED_FEELINGS, applicationHelper.getUserName()), args);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
+            String res = jsonHttpClient.Get(String.format(UrlHelper.RELATED_FEELINGS, ApplicationHelper.getUserName(getActivity().getApplicationContext())), args);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();

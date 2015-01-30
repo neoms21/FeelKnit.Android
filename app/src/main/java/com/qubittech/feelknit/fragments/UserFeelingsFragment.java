@@ -34,12 +34,10 @@ public class UserFeelingsFragment extends Fragment {
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
     private ListView listview;
-    private ApplicationHelper applicationHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         setRetainInstance(true);
     }
 
@@ -57,7 +55,7 @@ public class UserFeelingsFragment extends Fragment {
                 activity.AddCreateFeelingFragment();
             }
         });
-        new FetchUserFeelingsTask().execute(applicationHelper.getUserName());
+        new FetchUserFeelingsTask().execute(ApplicationHelper.getUserName(getActivity().getApplicationContext()));
         return mainView;
     }
 
@@ -93,7 +91,7 @@ public class UserFeelingsFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             return jsonHttpClient.Get(UrlHelper.USERNAME + params[0], args);
         }
     }

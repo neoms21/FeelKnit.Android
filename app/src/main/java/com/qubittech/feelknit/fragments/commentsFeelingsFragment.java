@@ -30,7 +30,6 @@ import com.qubittech.feelknit.util.UrlHelper;
 
 public class commentsFeelingsFragment extends Fragment {
 
-    private ApplicationHelper applicationHelper;
     private View mainView;
     ProgressDialog dialog;
     private static List<Feeling> feelings;
@@ -61,7 +60,6 @@ public class commentsFeelingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
     }
 
     @Override
@@ -105,9 +103,9 @@ applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
         @Override
         protected String doInBackground(String... strings) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             String commentsFeelingUrl = UrlHelper.COMMENTSFEELING;
-            commentsFeelingUrl = String.format(commentsFeelingUrl, applicationHelper.getUserName());
+            commentsFeelingUrl = String.format(commentsFeelingUrl, ApplicationHelper.getUserName(getActivity().getApplicationContext()));
             return jsonHttpClient.Get(commentsFeelingUrl, args);
         }
     }

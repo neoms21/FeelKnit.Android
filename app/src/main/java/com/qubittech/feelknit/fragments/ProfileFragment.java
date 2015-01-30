@@ -28,7 +28,6 @@ import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
-    private ApplicationHelper applicationHelper;
     private View mainView;
     private TextView usernameTextView;
     private ImageView avatarImageView;
@@ -52,7 +51,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applicationHelper = (ApplicationHelper) getActivity().getApplicationContext();
     }
 
     @Override
@@ -71,8 +69,8 @@ public class ProfileFragment extends Fragment {
         Button saveButton = (Button) mainView.findViewById(R.id.saveProfileButton);
 
         ImageHelper.setBitMap(avatarImageView, getActivity().getApplicationContext(), avatar, 100, 100);
-        usernameTextView.setText(applicationHelper.getUserName());
-        emailTextView.setText(applicationHelper.getUserEmail());
+        usernameTextView.setText(ApplicationHelper.getUserName(getActivity().getApplicationContext()));
+        emailTextView.setText(ApplicationHelper.getUserEmail(getActivity().getApplicationContext()));
         avatarImageView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SaveAvatarActivity.class);
@@ -114,12 +112,12 @@ public class ProfileFragment extends Fragment {
         @Override
         protected Boolean doInBackground(String... params) {
             List<NameValuePair> args = new ArrayList<NameValuePair>();
-            applicationHelper.setAvatar(params[0]);
-            applicationHelper.setUserEmail(params[1]);
-            args.add(new BasicNameValuePair("username", applicationHelper.getUserName()));
+            ApplicationHelper.setAvatar(getActivity().getApplicationContext(),params[0]);
+            ApplicationHelper.setUserEmail(getActivity().getApplicationContext(),params[1]);
+            args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getActivity().getApplicationContext())));
             args.add(new BasicNameValuePair("avatar", params[0]));
             args.add(new BasicNameValuePair("emailaddress", params[1]));
-            JsonHttpClient jsonHttpClient = new JsonHttpClient(applicationHelper);
+            JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             String response = jsonHttpClient.PostParams(UrlHelper.SAVE_USER, args);
 
             return response == null || response.toLowerCase().contains("error") ? false : true;

@@ -27,7 +27,6 @@ public class GcmMessageHandler extends IntentService {
 
     String mes;
     private Handler handler;
-    private ApplicationHelper applicationHelper;// = (ApplicationHelper) getApplicationContext();
 
     public GcmMessageHandler() {
         super("GcmMessageHandler");
@@ -37,7 +36,6 @@ public class GcmMessageHandler extends IntentService {
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
-        applicationHelper = (ApplicationHelper) getApplicationContext();
         handler = new Handler();
     }
 
@@ -64,10 +62,10 @@ public class GcmMessageHandler extends IntentService {
                 .setAutoCancel(true); // clear notification after click
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        if (settings.getString("Username", null) != null && applicationHelper.getUserName()== null) {
+        if (settings.getString("Username", null) != null && ApplicationHelper.getUserName(getApplicationContext())== null) {
           BugSenseHandler.initAndStartSession(getApplicationContext(), "e9e97454");
-            applicationHelper.setUserName(settings.getString("Username", null));
-            BugSenseHandler.setUserIdentifier(applicationHelper.getUserName());
+            ApplicationHelper.setUserName(getApplicationContext(), settings.getString("Username", null));
+            BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
         }
 
         Intent intnt = new Intent(this, MainActivity.class);
