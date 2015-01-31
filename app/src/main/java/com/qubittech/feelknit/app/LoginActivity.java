@@ -78,15 +78,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
 
         etUsername = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtUserName);
         etPassword = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtPassword);
-
-//        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-//        String username = settings.getString("Username", null);
-//        String avatar = settings.getString("Avatar", null);
-//        String token = settings.getString("Token", null);
         if (ApplicationHelper.getUserName(getApplicationContext()) != null && ApplicationHelper.getUserName(getApplicationContext()) != "") {
-//            applicationHelper.setUserName(username);
-//            applicationHelper.setAvatar(avatar);
-//            applicationHelper.setAuthorizationToken(token);
             BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {

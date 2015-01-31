@@ -54,15 +54,14 @@ public class LoadingActivity extends Activity {
 
         setContentView(com.qubittech.feelknit.app.R.layout.loading);
         BugSenseHandler.initAndStartSession(getApplication(), "e9e97454");
-        dialog = ProgressDialog.show(LoadingActivity.this, "Loading", "Please wait...", true);
+        dialog = ProgressDialog.show(LoadingActivity.this, "Loading", "Please wait...", true, true);
 
         dialog.setCancelable(true);
         new LoadingTask().execute("");
     }
 
     private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

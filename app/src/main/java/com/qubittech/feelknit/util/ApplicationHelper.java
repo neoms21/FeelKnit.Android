@@ -9,13 +9,6 @@ public class ApplicationHelper {
 
     private static String USER_INFO = "UserInfo";
 
-    // private String userName;
-    private String feelTexts;
-    //private String avatar;
-    //private String authorizationToken;
-    //private String userEmail;
-
-
     public static String getUserName(Context context) {
         return getFromPreferences(context, "Username");
     }

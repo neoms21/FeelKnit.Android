@@ -58,7 +58,7 @@ public class RegistrationActivity extends Activity implements Validator.Validati
 
     @Required(order = 1)
     @TextRule(order = 1, minLength = 3, message = "Enter at least 3 characters.")
-    @Regex(order = 1,  pattern = "[a-zA-Z0-9 ]*", message = "Should contain only alphabets or numbers")
+    @Regex(order = 1, pattern = "[a-zA-Z0-9 ]*", message = "Should contain only alphabets or numbers")
     private EditText userName;
 
     @Required(order = 2)
@@ -149,8 +149,8 @@ public class RegistrationActivity extends Activity implements Validator.Validati
 
     @Override
     public void onValidationSucceeded() {
-            dialog = ProgressDialog.show(RegistrationActivity.this, "Registering User", "Please wait");
-            new SaveUserTask().execute("try");
+        dialog = ProgressDialog.show(RegistrationActivity.this, "Registering User", "Please wait");
+        new SaveUserTask().execute("try");
     }
 
     @Override
@@ -169,19 +169,16 @@ public class RegistrationActivity extends Activity implements Validator.Validati
             dialog.dismiss();
 
             if (result.isLoginSuccessful()) {
-                SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("Username", userName.getText().toString());
-                editor.putString("Token", result.getToken());
-                editor.commit();
                 ApplicationHelper.setUserName(getApplicationContext(), userName.getText().toString());
+
+                ApplicationHelper.setUserEmail(getApplicationContext(), email.getText().toString());
                 BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
                 Intent intent = new Intent(RegistrationActivity.this, SaveAvatarActivity.class);
                 intent.putExtra("From", 1);
                 startActivity(intent);
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(RegistrationActivity.this);
-                builder1.setMessage("Username already exists!");
+                builder1.setMessage(result.getError());
                 builder1.setCancelable(true);
                 builder1.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
@@ -207,6 +204,11 @@ public class RegistrationActivity extends Activity implements Validator.Validati
 
             Gson gson = new GsonBuilder().create();
             LoginResult result = gson.fromJson(res, LoginResult.class);
+
+            if (result.isLoginSuccessful()) {
+                ApplicationHelper.setAuthorizationToken(getApplicationContext(), result.getToken());
+            } else
+                return result;
 
             while (!regIdReceived) {
                 try {

@@ -107,7 +107,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         if (comment.isReported()) {
             holder.userTextView.setClickable(false);
-            holder.reportTextView.setClickable(false);
+            holder.reportTextView.setVisibility(View.INVISIBLE);
             holder.blockingTextView.setVisibility(View.VISIBLE);
             holder.postedAtTextView.setText("");
         } else {

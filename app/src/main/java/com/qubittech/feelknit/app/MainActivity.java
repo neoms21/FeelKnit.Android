@@ -145,9 +145,9 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
             public void onClick(View v) {
                 String username = ApplicationHelper.getUserName(getApplicationContext());
                 ApplicationHelper.setUserName(getApplicationContext(), "");
-                SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-                settings.edit().remove("Username").commit();
-                settings.edit().remove("Avatar").commit();
+                ApplicationHelper.setAvatar(getApplicationContext(), "");
+                ApplicationHelper.setAuthorizationToken(getApplicationContext(), "");
+                ApplicationHelper.setUserEmail(getApplicationContext(), "");
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 new ClearUserGcmKeyTask().execute(username);
             }
