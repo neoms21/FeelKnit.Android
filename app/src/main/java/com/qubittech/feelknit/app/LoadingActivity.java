@@ -15,6 +15,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
@@ -27,6 +28,18 @@ import java.util.List;
 
 public class LoadingActivity extends Activity {
     ProgressDialog dialog;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        App.loadingActivity =this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.loadingActivity = null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

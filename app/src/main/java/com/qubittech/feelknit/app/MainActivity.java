@@ -23,6 +23,7 @@ import com.qubittech.feelknit.navigation.NavDrawerActivityConfiguration;
 import com.qubittech.feelknit.navigation.NavDrawerAdapter;
 import com.qubittech.feelknit.navigation.NavDrawerItem;
 import com.qubittech.feelknit.navigation.NavMenuBuilder;
+import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.ImageHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
@@ -37,6 +38,18 @@ import java.util.List;
 
 public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
     private Bundle intentBundle;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        App.mainActivity =this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.mainActivity = null;
+    }
 
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
@@ -148,6 +161,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 ApplicationHelper.setAvatar(getApplicationContext(), "");
                 ApplicationHelper.setAuthorizationToken(getApplicationContext(), "");
                 ApplicationHelper.setUserEmail(getApplicationContext(), "");
+                App.close();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 new ClearUserGcmKeyTask().execute(username);
             }

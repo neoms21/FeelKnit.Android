@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
@@ -92,6 +93,17 @@ public class RegistrationActivity extends Activity implements Validator.Validati
 
     };
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        App.registrationActivity =this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.registrationActivity = null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,7 +1,9 @@
 package com.qubittech.feelknit.app;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +37,7 @@ import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import com.qubittech.feelknit.models.LoginResult;
+import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
@@ -57,6 +61,18 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
     private EditText etPassword;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        App.loginActivity =this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.loginActivity = null;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getIntent().getBooleanExtra("EXIT", false)) {
@@ -66,15 +82,6 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
         validator = new Validator(this);
         validator.setValidationListener(this);
         setContentView(com.qubittech.feelknit.app.R.layout.login);
-        TextView forgotLabel = (TextView) findViewById(com.qubittech.feelknit.app.R.id.forgotLabel);
-        forgotLabel.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        forgotLabel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("From", 2);
-                startActivity(intent);
-            }
-        });
 
         etUsername = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtUserName);
         etPassword = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtPassword);
@@ -102,6 +109,12 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        App.close();
+    }
+
+    @Override
     public void onValidationSucceeded() {
         userName = etUsername.getText().toString();
         password = etPassword.getText().toString();
@@ -124,13 +137,8 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
             super.onPostExecute(loginResult);
             dialog.dismiss();
             if (loginResult.isLoginSuccessful()) {
-//                SharedPreferences settings = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = settings.edit();
-//                editor.putString("Username", userName);
-//                editor.putString("Avatar", loginResult.getAvatar());
-//                editor.putString("Token", loginResult.getToken());
-//                editor.putString("Email", loginResult.getUserEmail());
-//                editor.commit();
+                etUsername.setText("");
+                etPassword.setText("");
                 ApplicationHelper.setUserName(getApplicationContext(), userName);
                 ApplicationHelper.setAvatar(getApplicationContext(), loginResult.getAvatar());
                 ApplicationHelper.setAuthorizationToken(getApplicationContext(), loginResult.getToken());

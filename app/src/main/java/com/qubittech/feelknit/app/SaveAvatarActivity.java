@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.qubittech.feelknit.adapters.AvatarListAdapter;
+import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
@@ -31,6 +32,18 @@ public class SaveAvatarActivity extends Activity {
     private String selectedAvatar;
     private String[] avatars;
     private boolean fromProfile;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        App.saveAvatarActivity =this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.saveAvatarActivity= null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
