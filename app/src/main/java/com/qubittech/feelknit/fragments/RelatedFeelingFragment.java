@@ -96,8 +96,8 @@ public class RelatedFeelingFragment extends Fragment {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();
-            return gson.fromJson(res, collectionType);
-        }
 
+            return res == "" ? new ArrayList<Feeling>(): (List<Feeling>) gson.fromJson(res, collectionType);
+        }
     }
 }

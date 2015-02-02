@@ -64,13 +64,15 @@ public class UserFeelingsFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-//            System.out.println("User Feelings:" + s);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();
-            _feelings = gson.fromJson(s, collectionType);
-            if(_feelings == null)
-            {
+            try {
+                _feelings = gson.fromJson(s, collectionType);
+            } catch (Exception ex) {
+                _feelings = null;
+            }
+            if (_feelings == null) {
                 dialog.dismiss();
                 return;
             }
