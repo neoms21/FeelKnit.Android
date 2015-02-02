@@ -18,6 +18,8 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
@@ -28,10 +30,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+
+import javax.net.ssl.SSLContext;
 
 public class JsonHttpClient {
 
@@ -221,8 +230,32 @@ public class JsonHttpClient {
         return null;
     }
 
-    public String Get(String url, List<NameValuePair> params) {
+    public String Get(String url, List<NameValuePair> params)    {
+
+
+//        SSLSocketFactory sf=null ;
+//        SSLContext sslContext = null;
+//        StringWriter writer;
+//        try {
+//            sslContext = SSLContext.getInstance("TLS")  ;
+//            sslContext.init(null,null,null);
+//        } catch (NoSuchAlgorithmException e) {
+//            //<YourErrorHandling>
+//        }  catch (KeyManagementException e){
+//            //<YourErrorHandling>
+//        }
+//
+//        try{
+//            sf = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER.toString());
+//
+//        } catch(Exception e) {
+//            //<YourErrorHandling>
+//
+//        }
+//        Scheme sch = new Scheme("https", sf, 443);
+
         DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+        //defaultHttpClient.getConnectionManager().getSchemeRegistry().register(sch);
         String paramString = URLEncodedUtils.format(params, "utf-8");
         url += "?" + paramString;
         url = url.replace(" ","%20");
