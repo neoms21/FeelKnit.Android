@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,9 +25,13 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.mobsandgeeks.saripaar.Validator;
 import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Feeling;
 
@@ -40,16 +45,41 @@ import java.util.List;
 import java.util.Locale;
 
 import com.qubittech.feelknit.services.TrackingService;
+import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
-public class AddFeelingFragment extends Fragment {
+public class AddFeelingFragment extends Fragment implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static String username = "";
     private static List<String> dbDefinedFeelings;
     private Spinner spinnerFeelings;
     private String selectedFeeling = "";
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
     ProgressDialog dialog;
     private Feeling _feeling = null;
     private List<Feeling> relatedFeelings = null;
@@ -58,9 +88,11 @@ public class AddFeelingFragment extends Fragment {
     private LayoutInflater mInflator;
     private boolean selected;
     private OnCreateFeelingClick mCallback;
-    private Double currentLatitude = 5.4;
-    private Double currentLongitude = 7.8;
+    private Double currentLatitude = 0.0;
+    private Double currentLongitude = 0.0;
     private TextView tempLocation;
+    protected GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
     // Container Activity must implement this interface
     public interface OnCreateFeelingClick {
@@ -73,8 +105,8 @@ public class AddFeelingFragment extends Fragment {
         Type collectionType = new TypeToken<List<String>>() {
         }.getType();
         Gson gson = new GsonBuilder().create();
-        dbDefinedFeelings= gson.fromJson(ApplicationHelper.getFeelTexts(getActivity().getApplicationContext()), collectionType);
-
+        dbDefinedFeelings = gson.fromJson(ApplicationHelper.getFeelTexts(getActivity().getApplicationContext()), collectionType);
+        buildGoogleApiClient();
         View addFeelingView = inflater.inflate(R.layout.activity_feeling, container, false);
         _feeling = new Feeling();
         spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingSpinner);
@@ -122,6 +154,17 @@ public class AddFeelingFragment extends Fragment {
         }
 
         return addFeelingView;
+    }
+
+    /**
+     * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
+     */
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -230,6 +273,38 @@ public class AddFeelingFragment extends Fragment {
 
         }
     };
+
+    /**
+     * Runs when a GoogleApiClient object successfully connects.
+     */
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        // Provides a simple way of getting a device's location and is well suited for
+        // applications that do not require a fine-grained location and that do not need location
+        // updates. Gets the best and most recent location currently available, which may be null
+        // in rare cases when a location is not available.
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            currentLatitude = mLastLocation.getLatitude();
+            currentLongitude = mLastLocation.getLongitude();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
+        // onConnectionFailed.
+        Log.i("Feelknit", "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        // The connection to Google Play services was lost for some reason. We call connect() to
+        // attempt to re-establish the connection.
+        Log.i("Feelknit", "Connection suspended");
+        mGoogleApiClient.connect();
+    }
 
     private View.OnTouchListener typeSpinnerTouchListener = new View.OnTouchListener() {
 

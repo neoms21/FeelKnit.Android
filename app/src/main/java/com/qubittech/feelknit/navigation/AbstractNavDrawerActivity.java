@@ -16,9 +16,6 @@ import android.widget.ListView;
 
 import com.qubittech.feelknit.app.R;
 
-/**
- * Created by Manoj on 08/06/2014.
- */
 public abstract class AbstractNavDrawerActivity extends FragmentActivity {
 
     private DrawerLayout mDrawerLayout;
@@ -71,8 +68,11 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
         ActionBar mActionBar = getActionBar();
         View v = getLayoutInflater().inflate(R.layout.header, null);
+        if(mActionBar == null)
+            return;
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
@@ -84,6 +84,7 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
     }
 
     protected void initDrawerShadow() {
+
         mDrawerLayout.setDrawerShadow(navConf.getDrawerShadow(), GravityCompat.START);
     }
 
