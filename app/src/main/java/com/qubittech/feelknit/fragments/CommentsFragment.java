@@ -57,8 +57,8 @@ public class CommentsFragment extends Fragment {
 //        username = ApplicationHelper.UserName;
 
         ImageView userImageView = (ImageView) mainView.findViewById(R.id.userIconImage);
-        if (feeling.getUser() != null && feeling.getUser().getAvatar() != null)
-            ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUser().getAvatar(), 100, 100);
+        if (feeling.getUserAvatar() != null)
+            ImageHelper.setBitMap(userImageView, getActivity().getApplicationContext(), feeling.getUserAvatar(), 100, 100);
 
         TextView feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
         boolean currentUser = ApplicationHelper.getUserName(getActivity().getApplicationContext()).equals(feeling.getUserName());

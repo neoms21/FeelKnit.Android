@@ -24,8 +24,7 @@ public class Feeling implements Serializable {
     private int supportCount;
     private List<Comment> comments;
     private List<String> supportUsers;
-
-    private User user;
+    private String userAvatar;
 
     public String getFeelingText() {
         return this.feelingText;
@@ -152,11 +151,11 @@ public class Feeling implements Serializable {
         this.isReported = isReported;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserAvatar() {
+        return userAvatar;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 }

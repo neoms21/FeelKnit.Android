@@ -35,7 +35,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     Context context;
     boolean isRunningOnEmulator = false;
 
-      /*private view holder class*/
+    /*private view holder class*/
     private static class ViewHolder {
         TextView usernameTextView;
         TextView feelingTextView;
@@ -85,13 +85,13 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
 
         setFeelingInListView(convertView, holder, feeling);
-        holder.usernameTextView.setText(feeling.getUserName());
+        holder.usernameTextView.setText(feeling.getUserName().equals(ApplicationHelper.getUserName(getContext())) ? "I" : feeling.getUserName());
         return convertView;
     }
 
     private void setFeelingInListView(View convertView, ViewHolder holder, Feeling feeling) {
         if (feeling.isReported()) {
-            setReportedFeeling(convertView,holder, feeling);
+            setReportedFeeling(convertView, holder, feeling);
         } else {
             setUnreportedFeeling(convertView, holder, feeling);
         }
@@ -99,11 +99,11 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     private void setUnreportedFeeling(View convertView, final ViewHolder holder, final Feeling feeling) {
         holder.feelingDateTextView.setText(DateFormatter.Format(feeling.getFeelingDate()));
-        holder.feelingTextView.setText(feeling.getFeelingFormattedText(""));
+        holder.feelingTextView.setText(feeling.getFeelingFormattedText(feeling.getUserName().equals(ApplicationHelper.getUserName(getContext())) ? "I" : ""));
         holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
         holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
-        if (feeling.getUser() != null && feeling.getUser().getAvatar() != null)
-            ImageHelper.setBitMap(holder.userIcon, context, feeling.getUser().getAvatar(), 100, 100);
+        if (feeling.getUserAvatar() != null)
+            ImageHelper.setBitMap(holder.userIcon, context, feeling.getUserAvatar(), 100, 100);
 
         if (feeling.getSupportUsers().contains(ApplicationHelper.getUserName(getContext()))) {
             holder.supportButton.setText("Un-Support");
@@ -145,9 +145,12 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     }
 
     private void setReportedFeeling(View convertView, ViewHolder holder, Feeling feeling) {
+        if (feeling.getUserAvatar() != null)
+            ImageHelper.setBitMap(holder.userIcon, context, feeling.getUserAvatar(), 100, 100);
+
         holder.blockingView.setVisibility(View.VISIBLE);
         holder.usernameTextView.setText(feeling.getUserName());
-        holder.feelingTextView.setText("");
+        holder.feelingTextView.setText(feeling.getFeelingFormattedText(feeling.getUserName().equals(ApplicationHelper.getUserName(getContext())) ? "I" : ""));
         int color = getContext().getResources().getColor(R.color.greyColor);
         DisableButton(holder.commentButton, color);//.setBackgroundColor(color);
         DisableButton(holder.supportButton, color);//.setBackgroundColor(color);
