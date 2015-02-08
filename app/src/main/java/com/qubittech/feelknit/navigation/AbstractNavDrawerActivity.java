@@ -126,14 +126,14 @@ public abstract class AbstractNavDrawerActivity extends FragmentActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
-                this.mDrawerLayout.closeDrawer(this.mDrawerList);
-            } else {
-                this.mDrawerLayout.openDrawer(this.mDrawerList);
-            }
-            return true;
-        }
+//        if (keyCode == KeyEvent.KEYCODE_MENU) {
+//            if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
+//                this.mDrawerLayout.closeDrawer(this.mDrawerList);
+//            } else {
+//                this.mDrawerLayout.openDrawer(this.mDrawerList);
+//            }
+//            return true;
+//        }
         return super.onKeyDown(keyCode, event);
     }
 

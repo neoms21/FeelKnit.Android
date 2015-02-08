@@ -7,7 +7,7 @@
 
     <ImageView
         android:layout_centerInParent="true"
-        android:src="@drawable/agnes"
+        android:src="@drawable/carla"
         android:layout_gravity="center"
         android:id="@+id/avatarImage"
         android:layout_width="50dp"

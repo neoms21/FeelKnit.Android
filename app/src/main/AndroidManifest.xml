@@ -67,14 +67,14 @@
         <service android:name="com.qubittech.feelknit.services.GcmMessageHandler" />
 
         <activity
-            android:name=".SaveAvatarActivity"
-            android:label="@string/title_activity_save_avatar"
-            android:parentActivityName=".RegistrationActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.qubittech.feelknit.app.RegistrationActivity" />
-        </activity>
-    </application>
+    android:name=".SaveAvatarActivity"
+    android:label="@string/title_activity_save_avatar"
+    android:parentActivityName=".RegistrationActivity" >
+    <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.qubittech.feelknit.app.RegistrationActivity" />
+</activity>
+</application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

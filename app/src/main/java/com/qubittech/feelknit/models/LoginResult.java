@@ -6,6 +6,7 @@ public class LoginResult {
     private String token;
     private String userEmail;
     private String error;
+    private String userName;
 
     public String getAvatar() {
         return avatar;
@@ -45,5 +46,13 @@ public class LoginResult {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -13,7 +13,7 @@
     <string name="addFeeling">Add New Feeling</string>
     <string name="register">Register</string>
     <string name="loading">FeelKnit</string>
-
+    <integer name="dropdown_amination_time">200</integer>
     <string-array name="navigation_drawer_options">
         <item>Profile,notifications</item>
         <item>My Feelings,userdrawer</item>
@@ -23,16 +23,29 @@
     </string-array>
 
     <string-array name="avatars">
-        <item>ironman</item>
-        <item>agnes</item>
-        <item>chef</item>
-        <item>blackwidow</item>
-        <item>girl1</item>
-        <item>girl3</item>
-        <item>evilminion</item>
-        <item>kungfuminion</item>
-        <item>hulk</item>
-        <item>thor</item>
+        <item>ade</item>
+        <item>ben</item>
+        <item>billy</item>
+        <item>billy_boy</item>
+        <item>carla</item>
+        <item>coco_moustasche</item>
+        <item>cora</item>
+        <item>costa</item>
+        <item>frank</item>
+        <item>fred</item>
+        <item>gav</item>
+        <item>gus</item>
+        <item>hena</item>
+        <item>iri</item>
+        <item>jayman</item>
+        <item>john</item>
+        <item>laly</item>
+        <item>michela</item>
+        <item>profile</item>
+        <item>seby</item>
+        <item>smith</item>
+        <item>stella</item>
+        <item>Thumbs</item>
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>

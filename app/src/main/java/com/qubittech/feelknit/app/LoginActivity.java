@@ -1,36 +1,19 @@
 package com.qubittech.feelknit.app;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mobsandgeeks.saripaar.Rule;
@@ -41,6 +24,14 @@ import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
+import com.splunk.mint.Mint;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LoginActivity extends Activity implements Validator.ValidationListener {
@@ -63,7 +54,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
     @Override
     protected void onStart() {
         super.onStart();
-        App.loginActivity =this;
+        App.loginActivity = this;
     }
 
     @Override
@@ -86,7 +77,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
         etUsername = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtUserName);
         etPassword = (EditText) findViewById(com.qubittech.feelknit.app.R.id.txtPassword);
         if (ApplicationHelper.getUserName(getApplicationContext()) != null && ApplicationHelper.getUserName(getApplicationContext()) != "") {
-            BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
+            Mint.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         } else {
 
@@ -139,7 +130,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
             if (loginResult.isLoginSuccessful()) {
                 etUsername.setText("");
                 etPassword.setText("");
-                ApplicationHelper.setUserName(getApplicationContext(), userName);
+                ApplicationHelper.setUserName(getApplicationContext(), loginResult.getUserName());
                 ApplicationHelper.setAvatar(getApplicationContext(), loginResult.getAvatar());
                 ApplicationHelper.setAuthorizationToken(getApplicationContext(), loginResult.getToken());
                 ApplicationHelper.setUserEmail(getApplicationContext(), loginResult.getUserEmail());

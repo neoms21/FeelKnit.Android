@@ -8,7 +8,8 @@
     <color name="whiteBg">#FFFFFF</color>
     <color name="mainBg">#A4C3DC</color>
     <color name="greyColor">#6F7376</color>
-
+    <color name="light_gray">#CFCFCF</color>
+    <color name="white">#FFFFFF</color>
 
 
 </resources>

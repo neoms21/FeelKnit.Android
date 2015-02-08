@@ -18,7 +18,6 @@ public class ApplicationHelper {
         saveInPreferences(context, "Username", userName);
     }
 
-
     public static String getFeelTexts(Context context) {
         return getFromPreferences(context, "Feelings");
     }

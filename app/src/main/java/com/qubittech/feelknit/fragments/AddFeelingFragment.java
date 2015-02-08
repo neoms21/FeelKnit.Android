@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,10 +18,17 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -32,6 +40,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mobsandgeeks.saripaar.Validator;
+import com.qubittech.feelknit.adapters.FeelingsListAdapter;
+import com.qubittech.feelknit.adapters.RelatedFeelingsAdapter;
 import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Feeling;
 
@@ -54,20 +64,29 @@ public class AddFeelingFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static String username = "";
-    private static List<String> dbDefinedFeelings;
-    private Spinner spinnerFeelings;
+    private static List<String> dbDefinedFeelings = new ArrayList<String>();
     private String selectedFeeling = "";
+    private ListView feelTextsListView;
+    private TextView dropdownTextView;
 
     @Override
-    public void onStart() {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        buildGoogleApiClient();
+        Type collectionType = new TypeToken<List<String>>() {
+        }.getType();
+        Gson gson = new GsonBuilder().create();
+        dbDefinedFeelings = gson.fromJson(ApplicationHelper.getFeelTexts(getActivity().getApplicationContext()), collectionType);
         super.onStart();
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -75,7 +94,7 @@ public class AddFeelingFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
-        if (mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -93,6 +112,7 @@ public class AddFeelingFragment extends Fragment implements
     private TextView tempLocation;
     protected GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private LinearLayout dropdownLinearLayout;
 
     // Container Activity must implement this interface
     public interface OnCreateFeelingClick {
@@ -102,36 +122,45 @@ public class AddFeelingFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Type collectionType = new TypeToken<List<String>>() {
-        }.getType();
-        Gson gson = new GsonBuilder().create();
-        dbDefinedFeelings = gson.fromJson(ApplicationHelper.getFeelTexts(getActivity().getApplicationContext()), collectionType);
-        buildGoogleApiClient();
         View addFeelingView = inflater.inflate(R.layout.activity_feeling, container, false);
         _feeling = new Feeling();
-        spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingSpinner);
+        // spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingSpinner);
         username = ApplicationHelper.getUserName(getActivity().getApplicationContext());
 
         final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
         final TextView so = (TextView) addFeelingView.findViewById(R.id.soText);
-        tempLocation = (TextView) addFeelingView.findViewById(R.id.txtLocation);
-
-        spinnerFeelings.setAdapter(typeSpinnerAdapter);
-        spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);
-        spinnerFeelings.setOnTouchListener(typeSpinnerTouchListener);
+        dropdownTextView = (TextView) addFeelingView.findViewById(R.id.feeling_dropdown_textview);
+        feelTextsListView = (ListView) addFeelingView.findViewById(R.id.feelingTextsListView);
+        dropdownLinearLayout = (LinearLayout) addFeelingView.findViewById(R.id.dropdown_foldout_menu);
+        final ArrayAdapter feelTextAdapter = new FeelingsListAdapter(getActivity(), R.layout.listview, dbDefinedFeelings, selectedFeeling);
+        feelTextsListView.setAdapter(feelTextAdapter);
+        feelTextAdapter.notifyDataSetChanged();
+        dropdownTextView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dropdownLinearLayout.getVisibility() == View.GONE) {
+                            openDropdown();
+                        } else {
+                            closeDropdown();
+                        }
+                    }
+                });
+//        spinnerFeelings.setAdapter(typeSpinnerAdapter);
+//        spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);
+//        spinnerFeelings.setOnTouchListener(typeSpinnerTouchListener);
         mInflator = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        spinnerFeelings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position,
-                                       long id) {
-                spinnerFeelings.setSelection(position);
-                selectedFeeling = (String) spinnerFeelings.getSelectedItem();
-            }
 
+        feelTextsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                selectedFeeling = dbDefinedFeelings.get(i);
+                dropdownTextView.setText(selectedFeeling);
+                closeDropdown();
+                FeelingsListAdapter.selectedFeeling = selectedFeeling;
+                feelTextAdapter.notifyDataSetChanged();
             }
         });
 
@@ -154,6 +183,43 @@ public class AddFeelingFragment extends Fragment implements
         }
 
         return addFeelingView;
+    }
+
+    /**
+     * Animates in the dropdown list
+     */
+    private void openDropdown() {
+        if (dropdownLinearLayout.getVisibility() != View.VISIBLE) {
+            ScaleAnimation anim = new ScaleAnimation(1, 1, 0, 1);
+            anim.setDuration(getResources().getInteger(R.integer.dropdown_amination_time));
+            dropdownLinearLayout.startAnimation(anim);
+            dropdownTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icn_dropdown_close, 0);
+//            feelTextsListView
+            dropdownLinearLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void closeDropdown() {
+        if (feelTextsListView.getVisibility() == View.VISIBLE) {
+            ScaleAnimation anim = new ScaleAnimation(1, 1, 1, 0);
+            anim.setDuration(getResources().getInteger(R.integer.dropdown_amination_time));
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    dropdownLinearLayout.setVisibility(View.GONE);
+                }
+            });
+            dropdownTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icn_dropdown_open, 0);
+            dropdownLinearLayout.startAnimation(anim);
+        }
     }
 
     /**
@@ -212,67 +278,67 @@ public class AddFeelingFragment extends Fragment implements
 //        return name;
 //    }
 
-    private SpinnerAdapter typeSpinnerAdapter = new BaseAdapter() {
-
-        private TextView text;
-        //  private int count = 3;
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = mInflator.inflate(R.layout.row_spinner, null);
-            }
-            text = (TextView) convertView.findViewById(R.id.spinnerTarget);
-            if (!selected) {
-                text.setText("Please select a value");
-            } else {
-                text.setText(dbDefinedFeelings.get(position));
-            }
-            return convertView;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return dbDefinedFeelings.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return dbDefinedFeelings.size();
-        }
-
-        public View getDropDownView(int position, View convertView,
-                                    ViewGroup parent) {
-            if (convertView == null) {
-                convertView = mInflator.inflate(R.layout.customspinner, null);
-            }
-            text = (TextView) convertView.findViewById(R.id.text);
-            text.setText(dbDefinedFeelings.get(position));
-            return convertView;
-        }
-
-    };
-
-    private AdapterView.OnItemSelectedListener typeSelectedListener = new AdapterView.OnItemSelectedListener() {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int position, long id) {
-            Log.d(TAG, "user selected : "
-                    + spinnerFeelings.getSelectedItem().toString());
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };
+//    private SpinnerAdapter typeSpinnerAdapter = new BaseAdapter() {
+//
+//        private TextView text;
+//        //  private int count = 3;
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            if (convertView == null) {
+//                convertView = mInflator.inflate(R.layout.row_spinner, null);
+//            }
+//            text = (TextView) convertView.findViewById(R.id.spinnerTarget);
+//            if (!selected) {
+//                text.setText("Select a feeling");
+//            } else {
+//                text.setText(dbDefinedFeelings.get(position));
+//            }
+//            return convertView;
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//            return dbDefinedFeelings.get(position);
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return dbDefinedFeelings.size();
+//        }
+//
+//        public View getDropDownView(int position, View convertView,
+//                                    ViewGroup parent) {
+//            if (convertView == null) {
+//                convertView = mInflator.inflate(R.layout.customspinner, null);
+//            }
+//            text = (TextView) convertView.findViewById(R.id.text);
+//            text.setText(dbDefinedFeelings.get(position));
+//            return convertView;
+//        }
+//
+//    };
+//
+//    private AdapterView.OnItemSelectedListener typeSelectedListener = new AdapterView.OnItemSelectedListener() {
+//
+//        @Override
+//        public void onItemSelected(AdapterView<?> parent, View view,
+//                                   int position, long id) {
+//            Log.d(TAG, "user selected : "
+//                    + spinnerFeelings.getSelectedItem().toString());
+//
+//        }
+//
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//
+//        }
+//    };
 
     /**
      * Runs when a GoogleApiClient object successfully connects.
@@ -306,15 +372,15 @@ public class AddFeelingFragment extends Fragment implements
         mGoogleApiClient.connect();
     }
 
-    private View.OnTouchListener typeSpinnerTouchListener = new View.OnTouchListener() {
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            selected = true;
-            ((BaseAdapter) typeSpinnerAdapter).notifyDataSetChanged();
-            return false;
-        }
-    };
+//    private View.OnTouchListener typeSpinnerTouchListener = new View.OnTouchListener() {
+//
+//        @Override
+//        public boolean onTouch(View v, MotionEvent event) {
+//            selected = true;
+//            ((BaseAdapter) typeSpinnerAdapter).notifyDataSetChanged();
+//            return false;
+//        }
+//    };
 
     private class SaveFeelingTask extends AsyncTask<String, Integer, String> {
 
@@ -323,8 +389,9 @@ public class AddFeelingFragment extends Fragment implements
             super.onPostExecute(s);
 
             if (!s.equals("Failure")) {
+                getActivity().getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 dialog.dismiss();
-                System.out.println("OUTPUT:" + s);
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
                 Type collectionType = new TypeToken<List<Feeling>>() {
                 }.getType();

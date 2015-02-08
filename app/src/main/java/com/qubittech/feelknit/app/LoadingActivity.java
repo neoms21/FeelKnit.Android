@@ -11,18 +11,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.bugsense.trace.BugSenseHandler;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
+import com.splunk.mint.Mint;
 
 import org.apache.http.NameValuePair;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +62,7 @@ public class LoadingActivity extends Activity {
         }
 
         setContentView(com.qubittech.feelknit.app.R.layout.loading);
-        BugSenseHandler.initAndStartSession(getApplication(), "e9e97454");
+        Mint.initAndStartSession(getApplication(), "e9e97454");
         dialog = ProgressDialog.show(LoadingActivity.this, "Loading", "Please wait...", true, true);
 
         dialog.setCancelable(true);

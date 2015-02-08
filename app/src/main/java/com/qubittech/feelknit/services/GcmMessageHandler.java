@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,6 +21,7 @@ import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Feeling;
 import com.qubittech.feelknit.receivers.GcmBroadcastReceiver;
 import com.qubittech.feelknit.util.ApplicationHelper;
+import com.splunk.mint.Mint;
 
 public class GcmMessageHandler extends IntentService {
 
@@ -63,9 +63,9 @@ public class GcmMessageHandler extends IntentService {
 
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         if (settings.getString("Username", null) != null && ApplicationHelper.getUserName(getApplicationContext())== null) {
-          BugSenseHandler.initAndStartSession(getApplicationContext(), "e9e97454");
+          Mint.initAndStartSession(getApplicationContext(), "e9e97454");
             ApplicationHelper.setUserName(getApplicationContext(), settings.getString("Username", null));
-            BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
+            Mint.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
         }
 
         Intent intnt = new Intent(this, MainActivity.class);

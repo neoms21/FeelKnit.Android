@@ -76,8 +76,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
                 @Override
                 public void onClick(View view) {
                     MainActivity mainActivity = (MainActivity) context;
-                    mainActivity.ShowCommentsFragment(null, feelingText, comment.getUser()
-                    );
+                    mainActivity.ShowCommentsFragment(null, feelingText, comment.getUser());
                 }
             });
             holder.reportTextView.setOnClickListener(new View.OnClickListener() {

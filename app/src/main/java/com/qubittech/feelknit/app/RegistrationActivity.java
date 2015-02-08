@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -35,6 +34,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.Regex;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
@@ -44,6 +44,7 @@ import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
+import com.splunk.mint.Mint;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -68,6 +69,7 @@ public class RegistrationActivity extends Activity implements Validator.Validati
     private EditText password;
 
     @Required(order = 3)
+    @Email(order = 3)
     private EditText email;
 
     private EditText location;
@@ -261,10 +263,9 @@ public class RegistrationActivity extends Activity implements Validator.Validati
             dialog.dismiss();
 
             if (result.isLoginSuccessful()) {
-                ApplicationHelper.setUserName(getApplicationContext(), userName.getText().toString());
-
+                ApplicationHelper.setUserName(getApplicationContext(), result.getUserName());
                 ApplicationHelper.setUserEmail(getApplicationContext(), email.getText().toString());
-                BugSenseHandler.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
+                Mint.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
                 Intent intent = new Intent(RegistrationActivity.this, SaveAvatarActivity.class);
                 intent.putExtra("From", 1);
                 startActivity(intent);

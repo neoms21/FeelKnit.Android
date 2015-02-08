@@ -1,9 +1,39 @@
 <LinearLayout
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
-    android:background="@color/mainBg"
+    android:background="@color/whiteBg"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lblYourAvatar"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:layout_marginRight="30dp"
+            android:textSize="15dp"
+            android:textColor="@color/lightButtonColor"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:text="Your Avatar :" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_centerInParent="true"
+            android:src="@drawable/carla"
+            android:layout_gravity="center"
+            android:id="@+id/selectedAvatarImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/lblChoose"
         android:layout_width="wrap_content"
@@ -11,24 +41,37 @@
         android:textSize="18dp"
         android:textColor="@color/lightButtonColor"
         android:textStyle="bold"
-        android:layout_height="wrap_content" android:text="Choose an Avatar :"
-        />
+        android:layout_height="wrap_content"
+        android:text="Choose new Avatar :" />
 
 
-    <ListView
-        android:choiceMode="singleChoice"
-        android:listSelector="@color/lightButtonColor"
-        android:id="@+id/avatarList"
+    <GridView
+        android:numColumns="auto_fit"
+        android:gravity="center"
         android:layout_weight="1"
+        android:columnWidth="65dp"
+        android:stretchMode="columnWidth"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:listSelector="@color/buttonColor"
+        android:layout_height="wrap_content"
+        android:id="@+id/avatarGrid"
+        android:verticalSpacing="10dp" />
+
+    <!--<ListView-->
+    <!--android:choiceMode="singleChoice"-->
+    <!--android:listSelector="@color/lightButtonColor"-->
+    <!--android:id="@+id/avatarList"-->
+    <!--android:layout_weight="1"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"/>-->
 
     <LinearLayout
         android:layout_weight="0"
-        android:layout_below="@id/avatarList"
+        android:layout_below="@id/avatarGrid"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/skipButton"
             android:layout_weight="1"
@@ -37,6 +80,7 @@
             android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/saveAvatarButton"
             android:layout_weight="1"
@@ -45,5 +89,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        </LinearLayout>
     </LinearLayout>
+</LinearLayout>

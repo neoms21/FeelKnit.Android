@@ -42,7 +42,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     @Override
     protected void onStart() {
         super.onStart();
-        App.mainActivity =this;
+        App.mainActivity = this;
     }
 
     @Override
@@ -243,7 +243,6 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         }
     }
 
-
     private class getUserFeelingTask extends AsyncTask<String, Integer, Feeling> {
         @Override
         protected void onPostExecute(Feeling feeling) {
@@ -264,6 +263,4 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
             return feeling;
         }
     }
-
-
 }

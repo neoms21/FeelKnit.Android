@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.qubittech.feelknit.adapters.AvatarListAdapter;
 import com.qubittech.feelknit.util.App;
 import com.qubittech.feelknit.util.ApplicationHelper;
+import com.qubittech.feelknit.util.ImageHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
 
@@ -33,16 +36,18 @@ public class SaveAvatarActivity extends Activity {
     private String[] avatars;
     private boolean fromProfile;
 
+    private ImageView selectedAvatarImageView;
+
     @Override
     protected void onStart() {
         super.onStart();
-        App.saveAvatarActivity =this;
+        App.saveAvatarActivity = this;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        App.saveAvatarActivity= null;
+        App.saveAvatarActivity = null;
     }
 
     @Override
@@ -53,31 +58,36 @@ public class SaveAvatarActivity extends Activity {
         Button saveButton = (Button) findViewById(R.id.saveAvatarButton);
 
         avatars = getResources().getStringArray(R.array.avatars);
-        ArrayAdapter avatarListAdapter = new AvatarListAdapter(this, R.layout.avatar_listview_item, avatars);
+        AvatarListAdapter avatarListAdapter = new AvatarListAdapter(this, R.layout.avatar_listview_item, avatars);
 
-        final ListView listview = (ListView) findViewById(R.id.avatarList);
+        final GridView gridView = (GridView) findViewById(R.id.avatarGrid);
+        selectedAvatarImageView = (ImageView) findViewById(R.id.selectedAvatarImage);
 
-        listview.setAdapter(avatarListAdapter);
-        listview.setDivider(new ColorDrawable());
-        listview.setDividerHeight(10);
+        gridView.setAdapter(avatarListAdapter);
+
         fromProfile = getIntent().getBooleanExtra("Profile", false);
 
         if (fromProfile) {
             String avatar = ApplicationHelper.getAvatar(getApplicationContext());
             if (avatar != null && avatar != "") {
                 int avatarIndex = Arrays.asList(avatars).indexOf(avatar);
-                listview.setSelection(avatarIndex);
-                listview.setItemChecked(avatarIndex, true);
+                selectedAvatar = gridView.getItemAtPosition(avatarIndex).toString();
+                ImageHelper.setBitMap(selectedAvatarImageView, getApplicationContext(), selectedAvatar, 100, 100);
+//                gridView.setSelection(avatarIndex);
+//                gridView.requestFocusFromTouch();
+//                gridView.setSelection(avatarIndex);
+//                gridView.setItemChecked(avatarIndex, true);
                 skipButton.setText("Cancel");
                 saveButton.setText("Select");
             }
         }
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                selectedAvatar = listview.getItemAtPosition(position).toString();
+                selectedAvatar = gridView.getItemAtPosition(position).toString();
+                ImageHelper.setBitMap(selectedAvatarImageView, getApplicationContext(), selectedAvatar, 100, 100);
             }
         });
         avatarListAdapter.notifyDataSetChanged();
@@ -114,7 +124,7 @@ public class SaveAvatarActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            ApplicationHelper.setAvatar(getApplicationContext(),selectedAvatar);
+            ApplicationHelper.setAvatar(getApplicationContext(), selectedAvatar);
             List<NameValuePair> args = new ArrayList<NameValuePair>();
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getApplicationContext())));
             args.add(new BasicNameValuePair("avatar", selectedAvatar));
@@ -122,7 +132,6 @@ public class SaveAvatarActivity extends Activity {
             String res = jsonHttpClient.PostParams(UrlHelper.SAVE_AVATAR, args);
             return Boolean.parseBoolean(res);
         }
-
     }
 }
 
