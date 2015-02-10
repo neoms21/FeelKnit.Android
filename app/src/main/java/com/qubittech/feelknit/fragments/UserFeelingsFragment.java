@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +28,21 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserFeelingsFragment extends Fragment {
+public class UserFeelingsFragment extends BackHandledFragment {
 
     private List<Feeling> _feelings = null;
     ProgressDialog dialog;
     private ListView listview;
+
+    @Override
+    public String getTagText() {
+        return this.getTag();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +101,7 @@ public class UserFeelingsFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             return jsonHttpClient.Get(UrlHelper.USERNAME + params[0], args);
         }

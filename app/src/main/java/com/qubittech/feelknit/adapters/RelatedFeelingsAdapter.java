@@ -39,7 +39,6 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     private static class ViewHolder {
         TextView usernameTextView;
         TextView feelingTextView;
-        TextView locationTextView;
         TextView commentsCountTextView;
         TextView supportCountTextView;
         TextView feelingDateTextView;
@@ -71,7 +70,6 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder.blockingView = (TextView) convertView.findViewById(R.id.blockingView);
             holder.feelingTextView = (TextView) convertView.findViewById(R.id.feelingText);
             holder.feelingDateTextView = (TextView) convertView.findViewById(R.id.feelingShared);
-//            holder.locationTextView = (TextView) convertView.findViewById(R.id.location);
             holder.userIcon = (ImageView) convertView.findViewById(R.id.userIconImage);
             holder.supportButton = (Button) convertView.findViewById(R.id.btnSupport);
             holder.reportButton = (Button) convertView.findViewById(R.id.btnReport);
@@ -191,25 +189,14 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     private void NavigateToCommentsView(Feeling feeling) {
         MainActivity mainActivity = (MainActivity) context;
-        mainActivity.ShowCommentsFragment(feeling, null, null);
+        mainActivity.ShowCommentsFragment(feeling, null, null, null);
     }
 
-    private String getLocation(Feeling feeling) {
-        Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = gcd.getFromLocation(feeling.getLatitude(), feeling.getLongitude(), 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return addresses.size() > 0 ? addresses.get(0).getLocality() : "";
-    }
-
-    private class IncreaseSupportCountTask extends AsyncTask<String, Integer, Boolean> {
+       private class IncreaseSupportCountTask extends AsyncTask<String, Integer, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getContext())));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());
@@ -223,7 +210,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getContext())));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());
@@ -237,7 +224,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("feelingId", params[0]));
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getContext())));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());

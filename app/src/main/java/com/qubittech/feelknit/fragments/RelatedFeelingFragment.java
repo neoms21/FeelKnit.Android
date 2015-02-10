@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelatedFeelingFragment extends Fragment {
+public class RelatedFeelingFragment extends BackHandledFragment {
     private ProgressDialog dialog;
     private View mainView;
 
@@ -75,6 +74,16 @@ public class RelatedFeelingFragment extends Fragment {
         arrayAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public String getTagText() {
+        return this.getTag();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
+
     private class fetchRelatedFeelingsTask extends AsyncTask<String, Integer, List<Feeling>> {
 
         @Override
@@ -90,14 +99,14 @@ public class RelatedFeelingFragment extends Fragment {
 
         @Override
         protected List<Feeling> doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             String res = jsonHttpClient.Get(String.format(UrlHelper.RELATED_FEELINGS, ApplicationHelper.getUserName(getActivity().getApplicationContext())), args);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
             Type collectionType = new TypeToken<List<Feeling>>() {
             }.getType();
 
-            return res == "" ? new ArrayList<Feeling>(): (List<Feeling>) gson.fromJson(res, collectionType);
+            return !res.equals("") ? (List<Feeling>) gson.fromJson(res, collectionType) : new ArrayList<Feeling>();
         }
     }
 }

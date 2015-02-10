@@ -3,12 +3,10 @@ package com.qubittech.feelknit.app;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,7 +14,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-//import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +50,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+//import android.support.v4.content.LocalBroadcastManager;
 
 public class RegistrationActivity extends Activity implements Validator.ValidationListener,
         ConnectionCallbacks, OnConnectionFailedListener {
@@ -146,6 +145,8 @@ public class RegistrationActivity extends Activity implements Validator.Validati
 
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         phoneNumber = tm.getLine1Number();
+        if (phoneNumber == null || phoneNumber.equals(""))
+            phoneNumber = String.format("%s,%s,%s", tm.getSimSerialNumber(), tm.getNetworkOperatorName(), tm.getNetworkCountryIso());
         String networkOperator = tm.getNetworkOperatorName();
 //        if ("".equals(networkOperator)) {
 //            // Emulator
@@ -233,10 +234,8 @@ public class RegistrationActivity extends Activity implements Validator.Validati
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (addresses.size() > 0)
+            if (addresses != null && addresses.size() > 0)
                 location.setText(addresses.get(0).getLocality());
-        } else {
-            //Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -288,7 +287,7 @@ public class RegistrationActivity extends Activity implements Validator.Validati
         @Override
         protected LoginResult doInBackground(String... params) {
 
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("username", userName.getText().toString()));
             args.add(new BasicNameValuePair("password", password.getText().toString()));
             args.add(new BasicNameValuePair("emailaddress", email.getText().toString()));
@@ -315,9 +314,8 @@ public class RegistrationActivity extends Activity implements Validator.Validati
                     String msg = "Device registered, registration ID=" + regId;
                     Log.i("GCM", msg);
                     regIdReceived = true;
-                    args = new ArrayList<NameValuePair>();
                     jsonHttpClient = new JsonHttpClient(getApplicationContext());
-                    args = new ArrayList<NameValuePair>();
+                    args = new ArrayList<>();
                     args.add(new BasicNameValuePair("username", userName.getText().toString()));
                     args.add(new BasicNameValuePair("key", regId));
 

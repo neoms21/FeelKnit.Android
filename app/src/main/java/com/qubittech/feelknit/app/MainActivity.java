@@ -1,7 +1,6 @@
 package com.qubittech.feelknit.app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.qubittech.feelknit.fragments.AddFeelingFragment;
+import com.qubittech.feelknit.fragments.BackHandledFragment;
 import com.qubittech.feelknit.fragments.CommentsFragment;
 import com.qubittech.feelknit.fragments.ForgotFragment;
 import com.qubittech.feelknit.fragments.ProfileFragment;
@@ -36,7 +36,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick {
+public class MainActivity extends AbstractNavDrawerActivity implements AddFeelingFragment.OnCreateFeelingClick, BackHandledFragment.BackHandlerInterface {
     private Bundle intentBundle;
 
     @Override
@@ -89,9 +89,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 StartUserFeelingsFragment();
                 break;
             case 103:
-                commentsFeelingsFragment fragment = new commentsFeelingsFragment();
-                getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, fragment, "Comments Feelings").addToBackStack("Comments" +
-                        "Feelings").commit();
+                showCommentsFeelingsFragment();
                 break;
             case 104:
                 RelatedFeelingFragment relatedFeelingFragment = new RelatedFeelingFragment();
@@ -99,6 +97,11 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                         .addToBackStack("Related Feelings").commit();
                 break;
         }
+    }
+
+    private void showCommentsFeelingsFragment() {
+        commentsFeelingsFragment fragment = new commentsFeelingsFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, "CommentsFeelings").addToBackStack("CommentsFeelings").commit();
     }
 
     private void ShowProfileFragment(String avatar) {
@@ -112,7 +115,21 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
     @Override
     public void onBackPressed() {
-        UserFeelingsFragment myFragment = (UserFeelingsFragment) getSupportFragmentManager().findFragmentByTag("User Feelings");
+
+        BackHandledFragment fragment = getActiveFragment();
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        System.out.println("current Count --" + count);
+        if (count == 2 && fragment.getTag().equals("CommentsFeelings")) {
+            StartUserFeelingsFragment();
+            return;
+        }
+        if (fragment != null && fragment.getTagText().equals("Comments") && count == 1) {
+            showCommentsFeelingsFragment();
+            return;
+        }
+
+        UserFeelingsFragment myFragment = (UserFeelingsFragment) getSupportFragmentManager().findFragmentByTag("UserFeelings");
         if (myFragment != null && myFragment.isVisible()) {
             startActivity(GetIntent(MainActivity.class));
             startActivity(GetIntent(LoginActivity.class));
@@ -140,11 +157,15 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         Intent intent = getIntent();
         //boolean isRegister = false;
         intentBundle = intent.getExtras();
+        Feeling feeling = null;
+        String feelingId = null;
         if (intentBundle != null) {
             switchNum = intentBundle.getInt("From");
+            feeling = (Feeling) intentBundle.get("feeling");
+            feelingId = (String) intentBundle.get("feelingId");
         }
         //  isRegister = bundle == null ? false : bundle.getBoolean("IsFromRegister");
-        Feeling feeling = intentBundle == null ? null : (Feeling) intentBundle.get("feeling");
+
 
         ImageView userIconImageView = (ImageView) findViewById(R.id.leftDrawerUserIcon);
         if (ApplicationHelper.getAvatar(getApplicationContext()) != null)
@@ -179,7 +200,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, new ForgotFragment(), "Forgot Password").commit();
                 break;
             case 3:
-                ShowCommentsFragment(feeling, null, null);
+                ShowCommentsFragment(feeling, feelingId, null, null);
                 break;
             case 4:
                 String avatar = intentBundle.getString("Avatar", "");
@@ -195,7 +216,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         Bundle bundle = new Bundle();
         bundle.putString("name", "From Activity");
         userFeelingsFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, userFeelingsFragment, "User Feelings").addToBackStack("UserFeelings").commit();
+        getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, userFeelingsFragment, "UserFeelings").addToBackStack("UserFeelings").commit();
     }
 
     @Override
@@ -211,13 +232,13 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     }
 
     public void AddCreateFeelingFragment() {
-        getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, new AddFeelingFragment(), "Share Feeling").addToBackStack("AddFeeling").commit();
+        getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, new AddFeelingFragment(), "AddFeeling").addToBackStack("AddFeeling").commit();
     }
 
-    public void ShowCommentsFragment(Feeling feeling, String feelingText,
+    public void ShowCommentsFragment(Feeling feeling, String feelingId, String feelingText,
                                      String username) {
 
-        if (feeling == null) {
+        if (feeling == null && feelingId == null) {
             new getUserFeelingTask().execute(feelingText, username);
             return;
         }
@@ -225,9 +246,24 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         CommentsFragment commentsFragment = new CommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("feeling", feeling);
+        bundle.putSerializable("feelingId", feelingId);
         bundle.putSerializable("user", ApplicationHelper.getUserName(getApplicationContext()));
         commentsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, commentsFragment, "Comments").addToBackStack("Comments").commit();
+    }
+
+    @Override
+    public void setSelectedFragment(BackHandledFragment backHandledFragment) {
+
+    }
+
+
+    public BackHandledFragment getActiveFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        return (BackHandledFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     private class ClearUserGcmKeyTask extends AsyncTask<String, Integer, String> {
@@ -235,7 +271,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         @Override
         protected String doInBackground(String... params) {
 
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("username", params[0]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String keyUrl = UrlHelper.CLEAR_USER_KEY;
@@ -246,21 +282,19 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     private class getUserFeelingTask extends AsyncTask<String, Integer, Feeling> {
         @Override
         protected void onPostExecute(Feeling feeling) {
-            ShowCommentsFragment(feeling, null, null);
+            ShowCommentsFragment(feeling, null, null, null);
         }
 
         @Override
         protected Feeling doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("feeling", params[0]));
             args.add(new BasicNameValuePair("username", params[1]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String url = UrlHelper.USER_FEELINGS;
             String response = jsonHttpClient.Get(url, args);
             Gson gson = new Gson();
-            Feeling feeling;
-            feeling = gson.fromJson(response, Feeling.class);
-            return feeling;
+            return gson.fromJson(response, Feeling.class);
         }
     }
 }

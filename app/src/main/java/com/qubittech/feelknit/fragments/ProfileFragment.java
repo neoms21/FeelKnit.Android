@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends BackHandledFragment {
 
     private View mainView;
     private TextView usernameTextView;
@@ -46,6 +46,16 @@ public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public String getTagText() {
+        return this.getTag();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     @Override
@@ -111,7 +121,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             ApplicationHelper.setAvatar(getActivity().getApplicationContext(),params[0]);
             ApplicationHelper.setUserEmail(getActivity().getApplicationContext(),params[1]);
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getActivity().getApplicationContext())));
@@ -120,7 +130,7 @@ public class ProfileFragment extends Fragment {
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             String response = jsonHttpClient.PostParams(UrlHelper.SAVE_USER, args);
 
-            return response == null || response.toLowerCase().contains("error") ? false : true;
+            return !(response == null || response.toLowerCase().contains("error"));
         }
     }
 

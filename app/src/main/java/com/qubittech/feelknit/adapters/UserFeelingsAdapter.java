@@ -16,9 +16,6 @@ import java.util.List;
 
 import com.qubittech.feelknit.util.DateFormatter;
 
-/**
- * Created by Manoj on 14/06/2014.
- */
 public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     Context context;
@@ -51,7 +48,7 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) context;
-                mainActivity.ShowCommentsFragment(feeling, null, null);
+                mainActivity.ShowCommentsFragment(feeling, null, null, null);
             }
         });
 

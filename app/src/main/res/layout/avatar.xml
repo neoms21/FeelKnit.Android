@@ -26,7 +26,7 @@
         <ImageView
             android:layout_weight="1"
             android:layout_centerInParent="true"
-            android:src="@drawable/carla"
+            android:src="@drawable/usericon"
             android:layout_gravity="center"
             android:id="@+id/selectedAvatarImage"
             android:layout_width="50dp"

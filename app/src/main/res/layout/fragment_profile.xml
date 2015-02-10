@@ -15,7 +15,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/userAvatar"
-            android:src="@drawable/carla" />
+            android:src="@drawable/usericon" />
 
         <TextView
             android:id="@+id/userName"

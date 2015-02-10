@@ -2,7 +2,6 @@ package com.qubittech.feelknit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.media.AsyncPlayer;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.qubittech.feelknit.app.MainActivity;
 import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Comment;
-
 import com.qubittech.feelknit.models.Feeling;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.DateFormatter;
@@ -28,12 +26,8 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Manoj on 19/06/2014.
- */
 public class CommentsAdapter extends ArrayAdapter<Comment> {
 
-    int resource;
     Context context;
     String feelingText;
     private final Feeling feeling1;
@@ -76,7 +70,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
                 @Override
                 public void onClick(View view) {
                     MainActivity mainActivity = (MainActivity) context;
-                    mainActivity.ShowCommentsFragment(null, feelingText, comment.getUser());
+                    mainActivity.ShowCommentsFragment(null,null, feelingText, comment.getUser());
                 }
             });
             holder.reportTextView.setOnClickListener(new View.OnClickListener() {
@@ -92,13 +86,13 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             holder = (ViewHolder) convertView.getTag();
         holder.userTextView.setText(ApplicationHelper.getUserName(getContext()).equals(comment.getUser()) ? "me" : comment.getUser());
 
-        if (comment.getUser() != null && comment.getUser() == "me") {
+        if (comment.getUser() != null && comment.getUser().equals("me")) {
             ImageHelper.setBitMap(holder.userImageView, context, ApplicationHelper.getAvatar(getContext()), 100, 100);
         } else {
             ImageHelper.setBitMap(holder.userImageView, context, comment.getUserAvatar(), 100, 100);
         }
 
-        if (ApplicationHelper.getUserName(getContext()).equals(comment.getUser()) || comment.getUser() == "me") {
+        if (ApplicationHelper.getUserName(getContext()).equals(comment.getUser()) || comment.getUser().equals("me")) {
             holder.reportTextView.setVisibility(View.INVISIBLE);
         } else {
             holder.reportTextView.setVisibility(View.VISIBLE);
@@ -125,7 +119,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         @Override
         protected Boolean doInBackground(Comment... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("feelingId", feeling1.getId()));
             args.add(new BasicNameValuePair("id", params[0].getId()));
             args.add(new BasicNameValuePair("reportedBy", ApplicationHelper.getUserName(getContext())));

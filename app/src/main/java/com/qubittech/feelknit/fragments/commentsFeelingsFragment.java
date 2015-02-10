@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,9 @@ import com.google.gson.reflect.TypeToken;
 import com.qubittech.feelknit.adapters.RelatedFeelingsAdapter;
 import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Feeling;
+import com.qubittech.feelknit.util.ApplicationHelper;
+import com.qubittech.feelknit.util.JsonHttpClient;
+import com.qubittech.feelknit.util.UrlHelper;
 
 import org.apache.http.NameValuePair;
 
@@ -24,37 +26,24 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qubittech.feelknit.util.ApplicationHelper;
-import com.qubittech.feelknit.util.JsonHttpClient;
-import com.qubittech.feelknit.util.UrlHelper;
-
-public class commentsFeelingsFragment extends Fragment {
+public class commentsFeelingsFragment extends BackHandledFragment {
 
     private View mainView;
     ProgressDialog dialog;
     private static List<Feeling> feelings;
     private ListView listview;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment commentsFeelingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static commentsFeelingsFragment newInstance(String param1, String param2) {
-        return null;
-//        commentsFeelingsFragment fragment = new commentsFeelingsFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
+    public commentsFeelingsFragment() {
     }
 
-    public commentsFeelingsFragment() {
+    @Override
+    public String getTagText() {
+        return this.getTag();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     @Override
@@ -102,7 +91,7 @@ public class commentsFeelingsFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getActivity().getApplicationContext());
             String commentsFeelingUrl = UrlHelper.COMMENTSFEELING;
             commentsFeelingUrl = String.format(commentsFeelingUrl, ApplicationHelper.getUserName(getActivity().getApplicationContext()));

@@ -8,14 +8,11 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -24,13 +21,10 @@ import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,11 +33,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.mobsandgeeks.saripaar.Validator;
 import com.qubittech.feelknit.adapters.FeelingsListAdapter;
-import com.qubittech.feelknit.adapters.RelatedFeelingsAdapter;
 import com.qubittech.feelknit.app.R;
 import com.qubittech.feelknit.models.Feeling;
+import com.qubittech.feelknit.services.TrackingService;
+import com.qubittech.feelknit.util.ApplicationHelper;
+import com.qubittech.feelknit.util.JsonHttpClient;
+import com.qubittech.feelknit.util.UrlHelper;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -54,20 +50,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.qubittech.feelknit.services.TrackingService;
-import com.qubittech.feelknit.util.App;
-import com.qubittech.feelknit.util.ApplicationHelper;
-import com.qubittech.feelknit.util.JsonHttpClient;
-import com.qubittech.feelknit.util.UrlHelper;
-
-public class AddFeelingFragment extends Fragment implements
+public class AddFeelingFragment extends BackHandledFragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static String username = "";
-    private static List<String> dbDefinedFeelings = new ArrayList<String>();
+    private static List<String> dbDefinedFeelings = new ArrayList<>();
     private String selectedFeeling = "";
     private ListView feelTextsListView;
     private TextView dropdownTextView;
+    private EditText because;
+
+    @Override
+    public String getTagText() {
+        return this.getTag();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,14 +103,10 @@ public class AddFeelingFragment extends Fragment implements
     ProgressDialog dialog;
     private Feeling _feeling = null;
     private List<Feeling> relatedFeelings = null;
-    private String TAG = "SpinnerHint";
 
-    private LayoutInflater mInflator;
-    private boolean selected;
     private OnCreateFeelingClick mCallback;
     private Double currentLatitude = 0.0;
     private Double currentLongitude = 0.0;
-    private TextView tempLocation;
     protected GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LinearLayout dropdownLinearLayout;
@@ -127,7 +124,7 @@ public class AddFeelingFragment extends Fragment implements
         // spinnerFeelings = (Spinner) addFeelingView.findViewById(R.id.feelingSpinner);
         username = ApplicationHelper.getUserName(getActivity().getApplicationContext());
 
-        final EditText because = (EditText) addFeelingView.findViewById(R.id.becauseText);
+        because = (EditText) addFeelingView.findViewById(R.id.becauseText);
         final TextView so = (TextView) addFeelingView.findViewById(R.id.soText);
         dropdownTextView = (TextView) addFeelingView.findViewById(R.id.feeling_dropdown_textview);
         feelTextsListView = (ListView) addFeelingView.findViewById(R.id.feelingTextsListView);
@@ -146,11 +143,6 @@ public class AddFeelingFragment extends Fragment implements
                         }
                     }
                 });
-//        spinnerFeelings.setAdapter(typeSpinnerAdapter);
-//        spinnerFeelings.setOnItemSelectedListener(typeSelectedListener);
-//        spinnerFeelings.setOnTouchListener(typeSpinnerTouchListener);
-        mInflator = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 
         feelTextsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -236,7 +228,6 @@ public class AddFeelingFragment extends Fragment implements
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
             currentLatitude = intent.getDoubleExtra("latitude", 0);
             currentLongitude = intent.getDoubleExtra("longitude", 0);
 
@@ -249,7 +240,7 @@ public class AddFeelingFragment extends Fragment implements
                 e.printStackTrace();
             }
 
-            tempLocation.setText(String.format("%s%s - %s", currentLatitude.toString(), currentLongitude.toString(), addresses.get(0).getLocality()));
+          //  tempLocation.setText(String.format("%s%s - %s", currentLatitude.toString(), currentLongitude.toString(), addresses.get(0).getLocality()));
         }
     };
 
@@ -268,81 +259,6 @@ public class AddFeelingFragment extends Fragment implements
         }
     }
 
-//    private String getUserName() {
-//        String name = "";
-//        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", 0);
-//        if (settings != null) {
-//
-//            name = settings.getString("Username", "").toString();
-//        }
-//        return name;
-//    }
-
-//    private SpinnerAdapter typeSpinnerAdapter = new BaseAdapter() {
-//
-//        private TextView text;
-//        //  private int count = 3;
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            if (convertView == null) {
-//                convertView = mInflator.inflate(R.layout.row_spinner, null);
-//            }
-//            text = (TextView) convertView.findViewById(R.id.spinnerTarget);
-//            if (!selected) {
-//                text.setText("Select a feeling");
-//            } else {
-//                text.setText(dbDefinedFeelings.get(position));
-//            }
-//            return convertView;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return position;
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return dbDefinedFeelings.get(position);
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return dbDefinedFeelings.size();
-//        }
-//
-//        public View getDropDownView(int position, View convertView,
-//                                    ViewGroup parent) {
-//            if (convertView == null) {
-//                convertView = mInflator.inflate(R.layout.customspinner, null);
-//            }
-//            text = (TextView) convertView.findViewById(R.id.text);
-//            text.setText(dbDefinedFeelings.get(position));
-//            return convertView;
-//        }
-//
-//    };
-//
-//    private AdapterView.OnItemSelectedListener typeSelectedListener = new AdapterView.OnItemSelectedListener() {
-//
-//        @Override
-//        public void onItemSelected(AdapterView<?> parent, View view,
-//                                   int position, long id) {
-//            Log.d(TAG, "user selected : "
-//                    + spinnerFeelings.getSelectedItem().toString());
-//
-//        }
-//
-//        @Override
-//        public void onNothingSelected(AdapterView<?> parent) {
-//
-//        }
-//    };
-
-    /**
-     * Runs when a GoogleApiClient object successfully connects.
-     */
     @Override
     public void onConnected(Bundle connectionHint) {
         // Provides a simple way of getting a device's location and is well suited for
@@ -387,7 +303,10 @@ public class AddFeelingFragment extends Fragment implements
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            if (because != null) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(because.getWindowToken(), 0);
+            }
             if (!s.equals("Failure")) {
                 getActivity().getWindow().setSoftInputMode(
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -403,7 +322,7 @@ public class AddFeelingFragment extends Fragment implements
         @Override
         protected String doInBackground(String... params) {
 
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("feelingText", params[0]));
             _feeling.setFeelingText(params[0]);
             args.add(new BasicNameValuePair("reason", params[1]));
