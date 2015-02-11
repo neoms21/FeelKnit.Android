@@ -1,8 +1,14 @@
 <resources>
 
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/whiteBg</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item><!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <!-- Customize your theme here. -->
     </style>
 
     <!-- ActionBar styles -->
@@ -34,6 +40,7 @@
         <item name="android:textSize">18dp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="relatedFeelingsLabels">
         <item name="android:textColor">#000</item>
         <item name="android:textSize">15dp</item>

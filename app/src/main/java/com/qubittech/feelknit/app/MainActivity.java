@@ -1,6 +1,8 @@
 package com.qubittech.feelknit.app;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -96,6 +98,23 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, relatedFeelingFragment, "Related Feelings")
                         .addToBackStack("Related Feelings").commit();
                 break;
+            case 105:
+                final Dialog d = new Dialog(this,R.style.CustomDialogTheme);
+                d.setContentView(R.layout.custom_dialog);
+                d.show();
+
+                TextView version = (TextView) d.findViewById(R.id.versionTextView);
+                try {
+                    version.setText(getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).versionName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                TextView close_btn = (TextView) d.findViewById(R.id.okButton);
+                close_btn.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        d.dismiss();
+                    }
+                });
         }
     }
 

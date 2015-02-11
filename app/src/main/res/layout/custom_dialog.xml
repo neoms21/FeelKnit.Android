@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/appLabel"
+        android:text="Feelknit"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/line"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:paddingTop="5dp"
+        android:textColor="@android:color/black"
+        android:background="@color/greyColor"
+        android:layout_below="@id/appLabel"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_height="2dp" />
+
+    <TextView
+        android:id="@+id/versionLabel"
+        android:paddingTop="5dp"
+        android:textColor="@android:color/black"
+        android:text="Version"
+        android:textSize="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/line"
+        android:gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/versionTextView"
+        android:paddingTop="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="15dp"
+        android:layout_toRightOf="@id/versionLabel"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/okButton"
+        android:layout_marginTop="65dp"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp"
+        android:background="@color/greyColor"
+        android:text="Close"
+        android:textSize="15dp"
+        android:layout_below="@id/versionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

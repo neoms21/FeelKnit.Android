@@ -21,7 +21,7 @@
         <item>My Feelings,userdrawer</item>
         <item>Comments,comments</item>
         <item>Related Feelings,userdrawer</item>
-        <item>Settings,settings</item>
+        <item>About,settings</item>
     </string-array>
     <string-array name="avatars">
         <item>ade</item>

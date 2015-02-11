@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qubittech.feelknit.util.App;
@@ -39,8 +40,8 @@ public class UpdateActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        Button skipButton = (Button) findViewById(R.id.skipButton);
-        Button updateButton = (Button) findViewById(R.id.updateButton);
+        TextView skipButton = (TextView) findViewById(R.id.skipButton);
+        TextView updateButton = (TextView) findViewById(R.id.updateButton);
 
         skipButton.setOnClickListener(new View.OnClickListener() {
                                           @Override
@@ -53,7 +54,7 @@ public class UpdateActivity extends ActionBarActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                Uri uri = Uri.parse("market://search?q=pub:google");
+                                                Uri uri = Uri.parse("market://search?q=google");
                                                 Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
 
                                                 try {

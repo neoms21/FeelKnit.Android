@@ -6,40 +6,54 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@color/light_gray"
+    android:background="@color/mainBg"
     tools:context="com.qubittech.feelknit.app.UpdateActivity">
 
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/iconsmall"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="5dp" />
+
     <TextView
+        android:layout_below="@id/logoImage"
         android:id="@+id/lblAlert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:textSize="15dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="A new version is available to download." />
 
     <LinearLayout
+        android:layout_marginTop="5dp"
         android:layout_below="@id/lblAlert"
         android:layout_width="fill_parent"
         android:gravity="center"
         android:layout_height="wrap_content">
 
-        <Button
+        <TextView
             android:id="@+id/skipButton"
             android:layout_width="wrap_content"
-            android:backgroundTint="@color/mainBg"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@color/light_gray"
+            android:padding="5dp"
             android:text="Skip" />
 
-        <Button
+        <TextView
             android:id="@+id/updateButton"
             android:layout_alignTop="@id/skipButton"
             android:layout_toRightOf="@id/skipButton"
-            android:backgroundTint="@color/mainBg"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:background="@color/light_gray"
+            android:padding="5dp"
             android:layout_centerInParent="true"
             android:text="Update" />
 
