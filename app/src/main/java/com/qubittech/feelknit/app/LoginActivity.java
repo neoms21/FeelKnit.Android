@@ -100,7 +100,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
     }
 
     @Override
-    public void onBackPressed() {
+      public void onBackPressed() {
         super.onBackPressed();
         App.close();
     }

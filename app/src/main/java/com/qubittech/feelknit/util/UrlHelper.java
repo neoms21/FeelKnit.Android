@@ -29,6 +29,7 @@ public class UrlHelper {
     public static final String GET_FEELS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "feelings/getfeels";
     public static final String RELATED_FEELINGS= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "feelings/relatedfeelings/%s";
     public static final String SAVE_USER= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "Users/saveuser";
+    public static final String INFO= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "info";
 
 
     public static boolean isRunningOnEmulator() {

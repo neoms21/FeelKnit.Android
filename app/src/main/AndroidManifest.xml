@@ -6,13 +6,21 @@
 
     <uses-sdk android:minSdkVersion="14" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
@@ -67,21 +75,17 @@
         <service android:name="com.qubittech.feelknit.services.GcmMessageHandler" />
 
         <activity
-    android:name=".SaveAvatarActivity"
-    android:label="@string/title_activity_save_avatar"
-    android:parentActivityName=".RegistrationActivity" >
-    <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.qubittech.feelknit.app.RegistrationActivity" />
-</activity>
-</application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+            android:name=".SaveAvatarActivity"
+            android:label="@string/title_activity_save_avatar"
+            android:parentActivityName=".RegistrationActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.qubittech.feelknit.app.RegistrationActivity" />
+        </activity>
+        <activity
+            android:name=".UpdateActivity"
+            android:label="@string/title_activity_update" >
+        </activity>
+    </application>
 
 </manifest>

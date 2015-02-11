@@ -36,12 +36,6 @@
         </ListView>
     </LinearLayout>
 
-    <!--<Spinner-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:visibility="invisible"-->
-    <!--android:id="@+id/feelingSpinner"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content" />-->
 
     <EditText
         android:text=""
@@ -64,7 +58,7 @@
     <TextView
         android:id="@+id/soText"
         android:textColor="@color/loginLabel"
-        android:text="What do I do ?"
+        android:hint="What do I do ?"
         android:padding="5dp"
         android:textColorHint="@color/loginLabel"
         android:maxLength="140"

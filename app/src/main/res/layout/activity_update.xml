@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/light_gray"
+    tools:context="com.qubittech.feelknit.app.UpdateActivity">
+
+    <TextView
+        android:id="@+id/lblAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="A new version is available to download." />
+
+    <LinearLayout
+        android:layout_below="@id/lblAlert"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/skipButton"
+            android:layout_width="wrap_content"
+            android:backgroundTint="@color/mainBg"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Skip" />
+
+        <Button
+            android:id="@+id/updateButton"
+            android:layout_alignTop="@id/skipButton"
+            android:layout_toRightOf="@id/skipButton"
+            android:backgroundTint="@color/mainBg"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Update" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -112,11 +112,11 @@ public class Feeling implements Serializable {
         if (Utilities.isNullOrBlank(reason) && Utilities.isNullOrBlank(action))
             return String.format("%s feeling %s", isFirstFeeling ? p : "was", feelingText);
         if (Utilities.isNullOrBlank(reason) && !Utilities.isNullOrBlank(action))
-            return String.format("%s feeling %s so %s", isFirstFeeling ? p : "was", feelingText, action);
+            return String.format("%s feeling %s", isFirstFeeling ? p : "was", feelingText);
         if (!Utilities.isNullOrBlank(reason) && Utilities.isNullOrBlank(action))
-            return String.format("%s feeling %s because %s", isFirstFeeling ? p : "was", feelingText, reason);
+            return String.format("%s feeling %s", isFirstFeeling ? p : "was", feelingText, reason);
 
-        return String.format("%s feeling %s because %s so %s", isFirstFeeling ? p : "was", feelingText, reason, action);
+        return String.format("%s feeling %s because %s", isFirstFeeling ? p : "was", feelingText, reason);
     }
 
     public String getId() {

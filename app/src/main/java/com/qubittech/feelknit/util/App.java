@@ -5,6 +5,7 @@ import com.qubittech.feelknit.app.LoginActivity;
 import com.qubittech.feelknit.app.MainActivity;
 import com.qubittech.feelknit.app.RegistrationActivity;
 import com.qubittech.feelknit.app.SaveAvatarActivity;
+import com.qubittech.feelknit.app.UpdateActivity;
 
 /**
  * Created by Manoj on 31/01/2015.
@@ -16,8 +17,11 @@ public class App {
     public static LoadingActivity loadingActivity;
     public static SaveAvatarActivity saveAvatarActivity;
     public static RegistrationActivity registrationActivity;
+    public static UpdateActivity updateActivity;
 
     public static void close() {
+        if (App.updateActivity != null)
+            updateActivity.finish();
         if (App.mainActivity != null)
             mainActivity.finish();
         if (App.loginActivity != null)
