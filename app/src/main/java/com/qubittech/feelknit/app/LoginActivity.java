@@ -100,7 +100,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
     }
 
     @Override
-      public void onBackPressed() {
+    public void onBackPressed() {
         super.onBackPressed();
         App.close();
     }
@@ -132,28 +132,17 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
                 etPassword.setText("");
                 ApplicationHelper.setUserName(getApplicationContext(), loginResult.getUserName());
                 ApplicationHelper.setAvatar(getApplicationContext(), loginResult.getAvatar());
-                ApplicationHelper.setAuthorizationToken(getApplicationContext(), loginResult.getToken());
+
                 ApplicationHelper.setUserEmail(getApplicationContext(), loginResult.getUserEmail());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
-                builder1.setMessage("Wrong username/password");
-                builder1.setCancelable(true);
-                builder1.setPositiveButton("Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        }
-                );
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
+                ShowAlert("Wrong username/password");
             }
         }
 
         @Override
         protected LoginResult doInBackground(String... params) {
-            List<NameValuePair> args = new ArrayList<NameValuePair>();
+            List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("username", params[0]));
             args.add(new BasicNameValuePair("password", params[1]));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
@@ -162,7 +151,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
 
             Gson gson = new GsonBuilder().create();
             LoginResult result = gson.fromJson(response, LoginResult.class);
-
+            ApplicationHelper.setAuthorizationToken(getApplicationContext(), result.getToken());
             if (result.isLoginSuccessful()) {
                 while (!regIdReceived) {
                     try {
@@ -170,10 +159,9 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
                             gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                         }
                         regId = gcm.register(PROJECT_NUMBER);
-                        String msg = "Device registered, registration ID=" + regId;
                         regIdReceived = true;
 
-                        args = new ArrayList<NameValuePair>();
+                        args = new ArrayList<>();
                         args.add(new BasicNameValuePair("username", params[0]));
                         args.add(new BasicNameValuePair("key", regId));
 
@@ -188,5 +176,20 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
 
             return result;
         }
+    }
+
+    private void ShowAlert(String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }
+        );
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

@@ -199,7 +199,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 String username = ApplicationHelper.getUserName(getApplicationContext());
                 ApplicationHelper.setUserName(getApplicationContext(), "");
                 ApplicationHelper.setAvatar(getApplicationContext(), "");
-                ApplicationHelper.setAuthorizationToken(getApplicationContext(), "");
+
                 ApplicationHelper.setUserEmail(getApplicationContext(), "");
                 App.close();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -286,6 +286,12 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     }
 
     private class ClearUserGcmKeyTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            ApplicationHelper.setAuthorizationToken(getApplicationContext(), "");
+        }
 
         @Override
         protected String doInBackground(String... params) {

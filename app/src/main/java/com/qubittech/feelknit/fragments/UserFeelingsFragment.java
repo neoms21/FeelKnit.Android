@@ -21,6 +21,7 @@ import com.qubittech.feelknit.models.Feeling;
 import com.qubittech.feelknit.util.ApplicationHelper;
 import com.qubittech.feelknit.util.JsonHttpClient;
 import com.qubittech.feelknit.util.UrlHelper;
+import com.splunk.mint.Mint;
 
 import org.apache.http.NameValuePair;
 
@@ -79,6 +80,8 @@ public class UserFeelingsFragment extends BackHandledFragment {
             try {
                 _feelings = gson.fromJson(s, collectionType);
             } catch (Exception ex) {
+
+                Mint.logException(ex);
                 _feelings = null;
             }
             if (_feelings == null) {

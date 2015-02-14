@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.GsonBuilder;
+import com.splunk.mint.Mint;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -18,8 +19,6 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
@@ -30,17 +29,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.SSLContext;
 
 public class JsonHttpClient {
 
@@ -123,11 +114,11 @@ public class JsonHttpClient {
                     throw new IOException(statusLine.getReasonPhrase());
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                Mint.logException(e);
             }
         } catch (Exception ex) {
 
-            ex.printStackTrace();
+            Mint.logException(ex);
         }
         return returnString;
     }
@@ -159,10 +150,10 @@ public class JsonHttpClient {
                     throw new IOException(statusLine.getReasonPhrase());
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                Mint.logException(e);
             }
         } catch (Exception ex) {
-
+            Mint.logException(ex);
             ex.printStackTrace();
         }
         return returnString;
@@ -180,7 +171,7 @@ public class JsonHttpClient {
         String line;
         try {
             while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line + "\n");
+                stringBuilder.append(line).append("\n");
             }
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -230,35 +221,13 @@ public class JsonHttpClient {
         return null;
     }
 
-    public String Get(String url, List<NameValuePair> params)    {
-
-
-//        SSLSocketFactory sf=null ;
-//        SSLContext sslContext = null;
-//        StringWriter writer;
-//        try {
-//            sslContext = SSLContext.getInstance("TLS")  ;
-//            sslContext.init(null,null,null);
-//        } catch (NoSuchAlgorithmException e) {
-//            //<YourErrorHandling>
-//        }  catch (KeyManagementException e){
-//            //<YourErrorHandling>
-//        }
-//
-//        try{
-//            sf = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER.toString());
-//
-//        } catch(Exception e) {
-//            //<YourErrorHandling>
-//
-//        }
-//        Scheme sch = new Scheme("https", sf, 443);
+    public String Get(String url, List<NameValuePair> params) {
 
         DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
         //defaultHttpClient.getConnectionManager().getSchemeRegistry().register(sch);
         String paramString = URLEncodedUtils.format(params, "utf-8");
         url += "?" + paramString;
-        url = url.replace(" ","%20");
+        url = url.replace(" ", "%20");
         HttpGet httpGet = new HttpGet(url);
         try {
 

@@ -11,7 +11,7 @@ public class UrlHelper {
     }
 
     private static final String BASE_URL_EMULATOR = "http://10.0.3.2/FeelKnitService/";
-    private static final String BASE_URL = "https://feelknitservice.apphb.com/";
+    private static final String BASE_URL = "http://feelknitapi.com/";
     public static final String COMMENTS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Comments";
     public static final String FEELINGS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings";
     public static final String USER_LOGIN = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/login";
