@@ -201,7 +201,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getContext())));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());
             String supportUrl = UrlHelper.INCREASE_SUPPORT;
-            jsonHttpClient.PostUrlParams(supportUrl, args);
+            jsonHttpClient.PostParams(supportUrl, args);
             return true;
         }
     }
@@ -215,7 +215,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getContext())));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());
             String supportUrl = UrlHelper.DECREASE_SUPPORT;
-            jsonHttpClient.PostUrlParams(supportUrl, args);
+            jsonHttpClient.PostParams(supportUrl, args);
             return true;
         }
     }
@@ -229,7 +229,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
             args.add(new BasicNameValuePair("username", ApplicationHelper.getUserName(getContext())));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());
             String emailUrl = UrlHelper.REPORTFEELING;
-            jsonHttpClient.PostUrlParams(emailUrl, args);
+            jsonHttpClient.PostParams(emailUrl, args);
             return true;
         }
     }

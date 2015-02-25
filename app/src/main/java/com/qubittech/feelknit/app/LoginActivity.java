@@ -145,12 +145,19 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
             List<NameValuePair> args = new ArrayList<>();
             args.add(new BasicNameValuePair("username", params[0]));
             args.add(new BasicNameValuePair("password", params[1]));
+            args.add(new BasicNameValuePair("deviceName", ApplicationHelper.getDeviceName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String verifyUrl = UrlHelper.USER_LOGIN;
             String response = jsonHttpClient.PostParams(verifyUrl, args);
 
             Gson gson = new GsonBuilder().create();
-            LoginResult result = gson.fromJson(response, LoginResult.class);
+            LoginResult result = new LoginResult();
+            try {
+                result = gson.fromJson(response, LoginResult.class);
+            } catch (Exception ex) {
+                Mint.logException(ex);
+            }
+
             ApplicationHelper.setAuthorizationToken(getApplicationContext(), result.getToken());
             if (result.isLoginSuccessful()) {
                 while (!regIdReceived) {

@@ -26,12 +26,11 @@
             android:layout_marginTop="13dp"
             android:layout_alignTop="@id/userIconImage"
             android:text="neo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             android:layout_below="@id/name"
-            android:layout_alignTop="@id/tvFeelingLabel"
             android:layout_alignLeft="@id/userIconImage"
             android:id="@+id/comment"
             android:layout_marginTop="20dp"
@@ -42,15 +41,14 @@
         <TextView
             android:id="@+id/commentBlockingView"
             android:background="@color/greyColor"
-            android:layout_below="@id/userIconImage"
-            android:layout_marginTop="3dp"
-            android:layout_alignTop="@id/comment"
+            android:layout_below="@id/comment"
+            android:layout_alignLeft="@id/comment"
             android:padding="3dp"
+            android:layout_marginTop="3dp"
             android:visibility="visible"
-            android:layout_alignLeft="@id/userIconImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This comment has been reported and awaiting admin decision" />
+            android:text="Comment Reported. Awaiting admin review!!" />
 
 
         <TextView
@@ -76,7 +74,7 @@
             android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="23rd may 2014" />
+            android:hint="" />
 
 
     </RelativeLayout>

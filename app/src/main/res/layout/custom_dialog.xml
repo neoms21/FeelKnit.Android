@@ -50,6 +50,63 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/libLabel"
+        android:layout_below="@id/versionTextView"
+        android:text="Libraries Used"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/line2"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:paddingTop="5dp"
+        android:textColor="@android:color/black"
+        android:background="@color/greyColor"
+        android:layout_below="@id/libLabel"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_height="2dp" />
+
+    <TextView
+        android:id="@+id/saripaar"
+        android:layout_below="@id/line2"
+        android:text="saripaar"
+        android:clickable="true"
+        android:textColor="@color/blue"
+        android:layout_margin="15dp"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/licenseLink"
+        android:layout_below="@id/line2"
+        android:text="(license)"
+        android:layout_toRightOf="@id/saripaar"
+        android:clickable="true"
+        android:textColor="@color/blue"
+        android:textSize="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/license"
+        android:text=""
+        android:layout_below="@id/saripaar"
+        android:visibility="gone"
+        android:clickable="true"
+        android:textColor="@android:color/black"
+        android:textSize="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
         android:textColor="@color/white"
         android:id="@+id/okButton"
         android:layout_marginTop="65dp"
@@ -58,7 +115,8 @@
         android:background="@color/greyColor"
         android:text="Close"
         android:textSize="15dp"
-        android:layout_below="@id/versionLabel"
+        android:clickable="true"
+        android:layout_below="@id/license"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

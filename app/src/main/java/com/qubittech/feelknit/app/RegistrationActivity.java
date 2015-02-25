@@ -83,13 +83,14 @@ public class RegistrationActivity extends Activity implements Validator.Validati
     boolean regIdReceived = false;
 
     protected GoogleApiClient mGoogleApiClient;
-    private Double latitude = 3.4;
-    private Double longitude = 5.6;
+    private Double latitude = 0.0;
+    private Double longitude = 0.0;
     private String phoneNumber;
 
     private ServiceConnection myConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
+
             TrackingService.LocalBinder binder = (TrackingService.LocalBinder) service;
             myService = binder.getService();
             isBound = true;
@@ -291,9 +292,10 @@ public class RegistrationActivity extends Activity implements Validator.Validati
             args.add(new BasicNameValuePair("username", userName.getText().toString()));
             args.add(new BasicNameValuePair("password", password.getText().toString()));
             args.add(new BasicNameValuePair("emailaddress", email.getText().toString()));
-            args.add(new BasicNameValuePair("latitude", latitude.toString()));
-            args.add(new BasicNameValuePair("longitude", longitude.toString()));
+            args.add(new BasicNameValuePair("latitude", latitude != null ? latitude.toString() : "0"));
+            args.add(new BasicNameValuePair("longitude", longitude != null ? longitude.toString() : "0"));
             args.add(new BasicNameValuePair("phoneNumber", String.valueOf(phoneNumber)));
+            args.add(new BasicNameValuePair("deviceName", ApplicationHelper.getDeviceName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String res = jsonHttpClient.PostParams(UrlHelper.USER, args);
 

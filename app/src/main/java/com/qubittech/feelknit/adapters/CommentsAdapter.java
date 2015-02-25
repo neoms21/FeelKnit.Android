@@ -103,12 +103,13 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             holder.reportTextView.setVisibility(View.INVISIBLE);
             holder.blockingTextView.setVisibility(View.VISIBLE);
             holder.postedAtTextView.setText("");
+            holder.commentTextView.setText(comment.getText());
         } else {
             holder.userTextView.setClickable(true);
             holder.reportTextView.setClickable(true);
             holder.blockingTextView.setVisibility(View.INVISIBLE);
-            holder.commentTextView.setText(comment.getText());
             holder.postedAtTextView.setText(DateFormatter.Format(comment.getPostedAt().toString()));
+            holder.commentTextView.setText(comment.getText());
         }
 
         return convertView;
@@ -124,7 +125,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             args.add(new BasicNameValuePair("id", params[0].getId()));
             args.add(new BasicNameValuePair("reportedBy", ApplicationHelper.getUserName(getContext())));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getContext());
-            jsonHttpClient.PostUrlParams(UrlHelper.REPORTCOMMENT, args);
+            jsonHttpClient.PostParams(UrlHelper.REPORTCOMMENT, args);
             return true;
         }
     }

@@ -30,6 +30,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="100 comments"/>
+
+    <TextView
+        android:layout_below="@id/userFeelingText"
+        android:layout_alignParentLeft="true"
+        android:paddingRight="10dp"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/userFeelingReportedMessage"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Feeling Reported. Awaiting admin review!!"/>
     <TextView
         android:layout_below="@id/userFeelingText"
         android:paddingRight="10dp"

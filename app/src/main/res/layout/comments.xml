@@ -89,6 +89,7 @@
             android:layout_weight="0.8"
             android:id="@+id/newComment"
             android:text=""
+            android:maxLength="140"
             android:textCursorDrawable="@null"
             android:textColorHint="@color/whiteBg"
             android:inputType="textMultiLine"

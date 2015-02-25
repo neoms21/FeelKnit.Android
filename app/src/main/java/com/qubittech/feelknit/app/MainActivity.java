@@ -3,8 +3,10 @@ package com.qubittech.feelknit.app;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -99,11 +101,44 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                         .addToBackStack("Related Feelings").commit();
                 break;
             case 105:
-                final Dialog d = new Dialog(this,R.style.CustomDialogTheme);
+                final Dialog d = new Dialog(this, R.style.CustomDialogTheme);
                 d.setContentView(R.layout.custom_dialog);
                 d.show();
 
                 TextView version = (TextView) d.findViewById(R.id.versionTextView);
+                TextView saripaar = (TextView) d.findViewById(R.id.saripaar);
+                TextView licenseLink = (TextView) d.findViewById(R.id.licenseLink);
+                final TextView license = (TextView) d.findViewById(R.id.license);
+                saripaar.setText(Html.fromHtml("<u>android-saripaar</u>"));
+                licenseLink.setText(Html.fromHtml("(<u>license</u>)"));
+
+                saripaar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uriUrl = Uri.parse("https://github.com/ragunathjawahar/android-saripaar");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                        startActivity(launchBrowser);
+                    }
+                });
+
+                license.setText("Copyright 2012 - 2015 Mobs and Geeks\n\n" +
+                        "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                        "you may not use this file except in compliance with the License.\n" +
+                        "You may obtain a copy of the License at\n" +
+                        "\n" +
+                        "    http://www.apache.org/licenses/LICENSE-2.0\n" +
+                        "\n" +
+                        "Unless required by applicable law or agreed to in writing, software\n" +
+                        "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                        "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                        "See the License for the specific language governing permissions and\n" +
+                        "limitations under the License.");
+                licenseLink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        license.setVisibility(license.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                    }
+                });
                 try {
                     version.setText(getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).versionName);
                 } catch (PackageManager.NameNotFoundException e) {
@@ -138,8 +173,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         BackHandledFragment fragment = getActiveFragment();
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        System.out.println("current Count --" + count);
-        if (count == 2 && fragment.getTag().equals("CommentsFeelings")) {
+        if (count == 2 && fragment != null && fragment.getTag().equals("CommentsFeelings")) {
             StartUserFeelingsFragment();
             return;
         }

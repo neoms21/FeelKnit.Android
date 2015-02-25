@@ -80,7 +80,6 @@ public class UserFeelingsFragment extends BackHandledFragment {
             try {
                 _feelings = gson.fromJson(s, collectionType);
             } catch (Exception ex) {
-
                 Mint.logException(ex);
                 _feelings = null;
             }

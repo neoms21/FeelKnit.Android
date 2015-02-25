@@ -38,24 +38,38 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
             holder.feelingTimeTextView = (TextView) convertView.findViewById(R.id.feelingTime);
             holder.countTextView = (TextView) convertView.findViewById(R.id.userFeelingCommentsCount);
             holder.supportCountTextView = (TextView) convertView.findViewById(R.id.userFeelingSupportCount);
+            holder.reportTextView = (TextView) convertView.findViewById(R.id.userFeelingReportedMessage);
 
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        if(feeling.isReported())
+        {
+            convertView.setClickable(false);
+            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.greyColor));
+            holder.reportTextView.setVisibility(View.VISIBLE);
+            holder.countTextView.setText("");
+            holder.supportCountTextView.setText("");
+            holder.feelingTimeTextView.setText("");
+        }else {
+            convertView.setClickable(false);
+            holder.reportTextView.setVisibility(View.GONE);
+            holder.countTextView.setText(feeling.getComments().size() + "  comments");
+            holder.supportCountTextView.setText(feeling.getSupportCount() + "  supported");
+            holder.feelingTimeTextView.setText(DateFormatter.Format(feeling.getFeelingDate().toString()));
+            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+            convertView.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) context;
-                mainActivity.ShowCommentsFragment(feeling, null, null, null);
-            }
-        });
-
+                @Override
+                public void onClick(View v) {
+                    MainActivity mainActivity = (MainActivity) context;
+                    mainActivity.ShowCommentsFragment(feeling, null, null, null);
+                }
+            });
+        }
         holder.feelingTextView.setText("I " + feeling.getFeelingFormattedText("I"));
-        holder.feelingTimeTextView.setText(DateFormatter.Format(feeling.getFeelingDate().toString()));
-        holder.countTextView.setText(feeling.getComments().size() + "  comments");
-        holder.supportCountTextView.setText(feeling.getSupportCount() + "  supported");
+
 
         return convertView;
     }
@@ -66,6 +80,7 @@ public class UserFeelingsAdapter extends ArrayAdapter<Feeling> {
         TextView feelingTimeTextView;
         TextView countTextView;
         TextView supportCountTextView;
+        TextView reportTextView;
     }
 
 
