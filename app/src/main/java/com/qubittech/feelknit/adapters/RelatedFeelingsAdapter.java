@@ -2,8 +2,6 @@ package com.qubittech.feelknit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +23,8 @@ import com.qubittech.feelknit.util.UrlHelper;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
 
@@ -102,6 +98,8 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
         if (feeling.getUserAvatar() != null)
             ImageHelper.setBitMap(holder.userIcon, context, feeling.getUserAvatar(), 100, 100);
+        else
+            ImageHelper.setBitMap(holder.userIcon, context, "usericon", 100, 100);
 
         if (feeling.getSupportUsers().contains(ApplicationHelper.getUserName(getContext()))) {
             holder.supportButton.setText("Un-Support");
@@ -119,19 +117,28 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
                 NavigateToCommentsView(feeling);
             }
         });
-        holder.reportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                new reportFeelingTask().execute(feeling.getId());
-                feeling.setReported(true);
-                notifyDataSetChanged();
-            }
-        });
         int color = getContext().getResources().getColor(R.color.lightButtonColor);
+        if (feeling.getUserName().equals(ApplicationHelper.getUserName(getContext()))) {
+            holder.reportButton.setClickable(false);
+            holder.reportButton.setBackgroundColor(getContext().getResources().getColor(R.color.greyColor));
+            holder.reportButton.setOnClickListener(null);
+        } else {
+            holder.reportButton.setClickable(true);
+            holder.reportButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    new reportFeelingTask().execute(feeling.getId());
+                    feeling.setReported(true);
+                    notifyDataSetChanged();
+                }
+            });
+            EnableButton(holder.reportButton, color);//.setBackgroundColor(color);
+        }
+
         EnableButton(holder.commentButton, color);//.setBackgroundColor(color);
         EnableButton(holder.supportButton, color);//.setBackgroundColor(color);
-        EnableButton(holder.reportButton, color);//.setBackgroundColor(color);
+
         holder.blockingView.setVisibility(View.INVISIBLE);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +199,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
         mainActivity.ShowCommentsFragment(feeling, null, null, null);
     }
 
-       private class IncreaseSupportCountTask extends AsyncTask<String, Integer, Boolean> {
+    private class IncreaseSupportCountTask extends AsyncTask<String, Integer, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... params) {
