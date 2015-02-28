@@ -140,12 +140,12 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:paddingRight="7dp"
+            android:paddingRight="0dp"
             android:layout_below="@id/soText"
             android:layout_alignTop="@id/btnSupport"
             style="@style/buttonStyle"
             android:layout_marginLeft="2dp"
-            android:text="Report" />
+            android:text="Report Abuse" />
     </LinearLayout>
 
 </LinearLayout>
