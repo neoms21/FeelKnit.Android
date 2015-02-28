@@ -2,7 +2,7 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:left="18dp" android:right="-20dp">
+    <item android:left="10dp" android:right="-20dp">
         <inset
             android:insetTop="6dp"
             android:insetBottom="6dp"

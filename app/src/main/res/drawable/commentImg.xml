@@ -5,7 +5,7 @@
         <!--android:drawable="@drawable/comment">-->
 
     <!--</item>-->
-    <item android:left="18dp" android:right="-20dp">
+    <item android:left="10dp" android:right="-20dp">
         <inset
 android:insetTop="6dp"
 android:insetBottom="6dp"

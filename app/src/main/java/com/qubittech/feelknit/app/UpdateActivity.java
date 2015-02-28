@@ -3,14 +3,12 @@ package com.qubittech.feelknit.app;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qubittech.feelknit.util.App;
 
@@ -54,7 +52,7 @@ public class UpdateActivity extends ActionBarActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                Uri uri = Uri.parse("market://search?q=google");
+                                                Uri uri = Uri.parse("market://details?id=com.qubittech.feelknit.app");
                                                 Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
 
                                                 try {
