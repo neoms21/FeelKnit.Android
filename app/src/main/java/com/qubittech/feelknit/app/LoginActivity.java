@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -148,7 +147,8 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
             args.add(new BasicNameValuePair("deviceName", ApplicationHelper.getDeviceName()));
             JsonHttpClient jsonHttpClient = new JsonHttpClient(getApplicationContext());
             String verifyUrl = UrlHelper.USER_LOGIN;
-            String response = jsonHttpClient.PostParams(verifyUrl, args);
+            String response = jsonHttpClient.PostParams(verifyUrl, args
+            );
 
             Gson gson = new GsonBuilder().create();
             LoginResult result = new LoginResult();
@@ -176,7 +176,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
                         jsonHttpClient.PostParams(keyUrl, args);
 
                     } catch (IOException ex) {
-                        Log.i("Error:", ex.getMessage());
+                        Mint.logException(ex);
                     }
                 }
             }

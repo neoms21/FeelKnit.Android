@@ -46,25 +46,28 @@ public class GcmMessageHandler extends IntentService {
         String feelingJson = extras.getString("feeling");
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         String feelingId = gson.fromJson(feelingJson, String.class);
-        mes = String.format("%s %s", extras.getString("message"), user);
+        mes = user != null ? String.format("%s %s", extras.getString("message"), user) : extras.getString("message");
+        //NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 //        Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.icon) // notification icon
+                .setSmallIcon(R.drawable.iconsmall) // notification icon
                 .setContentTitle("FeelKnit!") // title for notification
-                .setLights(Color.WHITE,1000, 3000)
+                .setLights(Color.WHITE, 1000, 3000)
                 .setContentText(mes) // message for notification
                 .setAutoCancel(true); // clear notification after click
 
+       // mBuilder.setStyle(inboxStyle);
+
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        if (settings.getString("Username", null) != null && ApplicationHelper.getUserName(getApplicationContext())== null) {
-          Mint.initAndStartSession(getApplicationContext(), "e9e97454");
+        if (settings.getString("Username", null) != null && ApplicationHelper.getUserName(getApplicationContext()) == null) {
+            Mint.initAndStartSession(getApplicationContext(), "e9e97454");
             ApplicationHelper.setUserName(getApplicationContext(), settings.getString("Username", null));
             Mint.setUserIdentifier(ApplicationHelper.getUserName(getApplicationContext()));
         }
 
         Intent intnt = new Intent(this, MainActivity.class);
-        intnt.putExtra("From",3);
-        intnt.putExtra("feelingId",feelingId);
+        intnt.putExtra("From", feelingId == null ? 5 : 3);
+        intnt.putExtra("feelingId", feelingId);
 
         PendingIntent pi = PendingIntent.getActivity(this, 0, intnt, PendingIntent.FLAG_ONE_SHOT);
         mBuilder.setContentIntent(pi);

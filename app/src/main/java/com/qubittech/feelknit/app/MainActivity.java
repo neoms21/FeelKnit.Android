@@ -96,9 +96,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 showCommentsFeelingsFragment();
                 break;
             case 104:
-                RelatedFeelingFragment relatedFeelingFragment = new RelatedFeelingFragment();
-                getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame, relatedFeelingFragment, "Related Feelings")
-                        .addToBackStack("Related Feelings").commit();
+                ShowRelatedFeelingFragment();
                 break;
             case 105:
                 final Dialog d = new Dialog(this, R.style.CustomDialogTheme);
@@ -153,6 +151,12 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         }
     }
 
+    private void ShowRelatedFeelingFragment() {
+        RelatedFeelingFragment relatedFeelingFragment = new RelatedFeelingFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, relatedFeelingFragment, "RelatedFeelings")
+                .addToBackStack("RelatedFeelings").commit();
+    }
+
     private void showCommentsFeelingsFragment() {
         commentsFeelingsFragment fragment = new commentsFeelingsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, "CommentsFeelings").addToBackStack("CommentsFeelings").commit();
@@ -173,7 +177,8 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         BackHandledFragment fragment = getActiveFragment();
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        if (count == 2 && fragment != null && fragment.getTag().equals("CommentsFeelings")) {
+        if ((count == 2 && fragment != null && (fragment.getTag().equals("CommentsFeelings")) )
+                || (count == 1 && fragment != null && (fragment.getTag().equals("RelatedFeelings")))) {
             StartUserFeelingsFragment();
             return;
         }
@@ -259,6 +264,9 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
                 String avatar = intentBundle.getString("Avatar", "");
                 ShowProfileFragment(avatar);
                 break;
+            case 5:
+                ShowRelatedFeelingFragment();
+                break;
             default:
                 break;
         }
@@ -281,7 +289,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         relatedFeelingsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(com.qubittech.feelknit.app.R.id.content_frame,
-                relatedFeelingsFragment, "Related Feelings").addToBackStack("RelatedFeelings").commit();
+                relatedFeelingsFragment, "RelatedFeelings").addToBackStack("RelatedFeelings").commit();
     }
 
     public void AddCreateFeelingFragment() {

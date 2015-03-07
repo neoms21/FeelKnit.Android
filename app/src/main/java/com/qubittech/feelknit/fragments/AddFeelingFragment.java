@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -160,6 +161,11 @@ public class AddFeelingFragment extends BackHandledFragment implements
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(selectedFeeling.equals(""))
+                {
+                    Toast.makeText(getActivity().getApplicationContext(),"Please select a feeling", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 dialog = ProgressDialog.show(getActivity(), "Loading", "Please wait...", true);
                 new SaveFeelingTask().execute(selectedFeeling, because.getText().toString(), so.getText().toString());
             }
