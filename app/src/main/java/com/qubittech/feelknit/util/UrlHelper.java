@@ -10,7 +10,7 @@ public class UrlHelper {
         onEmulator = isRunningOnEmulator();
     }
 
-    private static final String BASE_URL_EMULATOR = "http://10.0.3.2/FeelKnitService/";
+    private static final String BASE_URL_EMULATOR = "http://vps148394.ovh.net/feelknit/";
     private static final String BASE_URL = "http://vps148394.ovh.net/feelknit/";
     public static final String COMMENTS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Comments";
     public static final String FEELINGS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings";

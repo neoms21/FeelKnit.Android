@@ -4,11 +4,26 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-import java.util.List;
-
 public class ApplicationHelper {
 
     private static String USER_INFO = "UserInfo";
+
+    public static int getRecentFeelingsIndex(Context context) {
+
+        int recentFeelingsIndex = getSharedPreferences(context).getInt("RecentFeelingsIndex", 0);
+        return recentFeelingsIndex;
+    }
+
+
+    public static void setRecentFeelingsIndex(Context context, int index) {
+//        int recentFeelingsIndex = getSharedPreferences(context).getInt("RecentFeelingsIndex", 0);
+//        if(recentFeelingsIndex == -9999)
+//            index = 0;
+
+        SharedPreferences.Editor editor = getEditor(context);
+        editor.putInt("RecentFeelingsIndex", index);
+        editor.commit();
+    }
 
     public static String getUserName(Context context) {
         return getFromPreferences(context, "Username");

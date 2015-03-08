@@ -155,6 +155,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     }
 
     private void ShowCurrentFeelingsFragment() {
+        CurrentFeelingsFragment.fromMainActivity = true;
         CurrentFeelingsFragment fragment = new CurrentFeelingsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, "CurrentFeelings").addToBackStack("CurrentFeelings").commit();
     }
@@ -185,7 +186,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         BackHandledFragment fragment = getActiveFragment();
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        if ((count == 2 && fragment != null && (fragment.getTag().equals("CommentsFeelings")) )
+        if ((count == 2 && fragment != null && (fragment.getTag().equals("CommentsFeelings")))
                 || (count == 1 && fragment != null && (fragment.getTag().equals("RelatedFeelings")))) {
             ShowCurrentFeelingsFragment();
             return;

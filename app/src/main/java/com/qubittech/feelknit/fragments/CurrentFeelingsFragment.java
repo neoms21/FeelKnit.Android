@@ -45,6 +45,7 @@ public class CurrentFeelingsFragment extends BackHandledFragment {
     private ListView listview;
 
     private OnFragmentInteractionListener mListener;
+    public static boolean fromMainActivity;
 
     public static CurrentFeelingsFragment newInstance(String param2) {
         CurrentFeelingsFragment fragment = new CurrentFeelingsFragment();
@@ -67,6 +68,13 @@ public class CurrentFeelingsFragment extends BackHandledFragment {
 
         new FetchCurrentFeelingsTask().execute(ApplicationHelper.getUserName(getActivity().getApplicationContext()));
         return mainView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        int index = listview.getFirstVisiblePosition();
+        ApplicationHelper.setRecentFeelingsIndex(getActivity().getApplicationContext(), fromMainActivity ? 0 : index);
     }
 
     @Override
@@ -141,13 +149,22 @@ public class CurrentFeelingsFragment extends BackHandledFragment {
                 dialog.dismiss();
                 return;
             }
-
+            fromMainActivity = false;
             ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, _feelings);
 
             listview.setAdapter(arrayAdapter);
             listview.setDivider(new ColorDrawable());
             listview.setDividerHeight(15);
             arrayAdapter.notifyDataSetChanged();
+
+            int savedIndex = ApplicationHelper.getRecentFeelingsIndex(getActivity().getApplicationContext());
+            if (listview != null) {
+                if (listview.getCount() > savedIndex)
+                    listview.setSelectionFromTop(savedIndex, 0);
+                else
+                    listview.setSelectionFromTop(0, 0);
+            }
+            fromMainActivity = false;
             dialog.dismiss();
         }
 
