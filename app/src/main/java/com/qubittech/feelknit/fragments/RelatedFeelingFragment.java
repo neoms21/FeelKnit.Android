@@ -109,4 +109,5 @@ public class RelatedFeelingFragment extends BackHandledFragment {
             return !res.equals("") ? (List<Feeling>) gson.fromJson(res, collectionType) : new ArrayList<Feeling>();
         }
     }
+
 }

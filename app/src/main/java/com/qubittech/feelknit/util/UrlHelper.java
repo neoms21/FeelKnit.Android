@@ -11,7 +11,7 @@ public class UrlHelper {
     }
 
     private static final String BASE_URL_EMULATOR = "http://10.0.3.2/FeelKnitService/";
-    private static final String BASE_URL = "https://feelknitapi.com/";
+    private static final String BASE_URL = "http://vps148394.ovh.net/feelknit/";
     public static final String COMMENTS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Comments";
     public static final String FEELINGS = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings";
     public static final String USER_LOGIN = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "Users/login";
@@ -30,7 +30,7 @@ public class UrlHelper {
     public static final String RELATED_FEELINGS= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "feelings/relatedfeelings/%s";
     public static final String SAVE_USER= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "Users/saveuser";
     public static final String INFO= (onEmulator ? BASE_URL_EMULATOR : BASE_URL)  + "info";
-
+    public static final String CURRENT = (onEmulator ? BASE_URL_EMULATOR : BASE_URL )+ "feelings/current";
 
     public static boolean isRunningOnEmulator() {
 

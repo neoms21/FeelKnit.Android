@@ -61,7 +61,7 @@ public class CommentsFragment extends BackHandledFragment {
 
         finalFeeling = (Feeling) args.getSerializable("feeling");
         String feelingId = args.getString("feelingId");
-
+        feelingId = feelingId == null ? finalFeeling.getId() : feelingId;
 
         userImageView = (ImageView) mainView.findViewById(R.id.userIconImage);
         feelingUserNameTextView = (TextView) mainView.findViewById(R.id.name);
@@ -92,7 +92,7 @@ public class CommentsFragment extends BackHandledFragment {
         listview = (ListView) mainView.findViewById(R.id.commentsList);
 
 
-        if (finalFeeling == null && feelingId != null) {
+        if ((finalFeeling == null && feelingId != null) || finalFeeling.getComments() == null) {
             dialog = ProgressDialog.show(getActivity(), "Getting feeling", "Please wait...", true);
             new GetFeelingTask().execute(feelingId);
         } else {
@@ -150,7 +150,7 @@ public class CommentsFragment extends BackHandledFragment {
         feelingUserNameTextView.setText(feelingUserName);
 
         feel.setText(feeling.getFeelingFormattedText(currentUser ? "I" : ""));
-        countLabelView.setText(String.format("%d comments on this feeling", feeling.getComments().size()));
+        countLabelView.setText(String.format("%d comments on this feeling", feeling.getComments() == null ? feeling.getCommentsCount() : feeling.getComments().size()));
 
         saveCommentButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

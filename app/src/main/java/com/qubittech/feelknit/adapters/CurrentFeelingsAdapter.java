@@ -26,7 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
+public class CurrentFeelingsAdapter extends ArrayAdapter<Feeling> {
 
     Context context;
     boolean isRunningOnEmulator = false;
@@ -46,7 +46,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     }
 
 
-    public RelatedFeelingsAdapter(Context context, int resource, List<Feeling> feelings) {
+    public CurrentFeelingsAdapter(Context context, int resource, List<Feeling> feelings) {
 
         super(context, resource, feelings);
         isRunningOnEmulator = UrlHelper.isRunningOnEmulator();
@@ -94,8 +94,7 @@ public class RelatedFeelingsAdapter extends ArrayAdapter<Feeling> {
     private void setUnreportedFeeling(View convertView, final ViewHolder holder, final Feeling feeling) {
         holder.feelingDateTextView.setText(DateFormatter.Format(feeling.getFeelingDate()));
         holder.feelingTextView.setText(feeling.getFeelingFormattedText(feeling.getUserName().equals(ApplicationHelper.getUserName(getContext())) ? "I" : ""));
-        holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments() == null ? feeling.getCommentsCount():
-                feeling.getComments().size()));
+        holder.commentsCountTextView.setText(String.format("Comments (%d)", feeling.getComments().size()));
         holder.supportCountTextView.setText(String.format("Support (%d)", feeling.getSupportCount()));
         if (feeling.getUserAvatar() != null)
             ImageHelper.setBitMap(holder.userIcon, context, feeling.getUserAvatar(), 100, 100);

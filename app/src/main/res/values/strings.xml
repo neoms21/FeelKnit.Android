@@ -18,6 +18,7 @@
 
     <string-array name="navigation_drawer_options">
         <item>Profile,notifications</item>
+        <item>Current Feelings,userdrawer</item>
         <item>My Feelings,userdrawer</item>
         <item>Comments,comments</item>
         <item>Related Feelings,userdrawer</item>

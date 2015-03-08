@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.qubittech.feelknit.fragments.AddFeelingFragment;
 import com.qubittech.feelknit.fragments.BackHandledFragment;
 import com.qubittech.feelknit.fragments.CommentsFragment;
+import com.qubittech.feelknit.fragments.CurrentFeelingsFragment;
 import com.qubittech.feelknit.fragments.ForgotFragment;
 import com.qubittech.feelknit.fragments.ProfileFragment;
 import com.qubittech.feelknit.fragments.RelatedFeelingFragment;
@@ -86,19 +87,21 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
     protected void onNavItemSelected(int id) {
         switch (id) {
             case 101:
-//                getSupportFragmentManager().findFragmentByTag("Profile");
                 ShowProfileFragment(ApplicationHelper.getAvatar(getApplicationContext()));
                 break;
             case 102:
-                StartUserFeelingsFragment();
+                ShowCurrentFeelingsFragment();
                 break;
             case 103:
-                showCommentsFeelingsFragment();
+                StartUserFeelingsFragment();
                 break;
             case 104:
-                ShowRelatedFeelingFragment();
+                showCommentsFeelingsFragment();
                 break;
             case 105:
+                ShowRelatedFeelingFragment();
+                break;
+            case 106:
                 final Dialog d = new Dialog(this, R.style.CustomDialogTheme);
                 d.setContentView(R.layout.custom_dialog);
                 d.show();
@@ -151,6 +154,11 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         }
     }
 
+    private void ShowCurrentFeelingsFragment() {
+        CurrentFeelingsFragment fragment = new CurrentFeelingsFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, "CurrentFeelings").addToBackStack("CurrentFeelings").commit();
+    }
+
     private void ShowRelatedFeelingFragment() {
         RelatedFeelingFragment relatedFeelingFragment = new RelatedFeelingFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, relatedFeelingFragment, "RelatedFeelings")
@@ -179,7 +187,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if ((count == 2 && fragment != null && (fragment.getTag().equals("CommentsFeelings")) )
                 || (count == 1 && fragment != null && (fragment.getTag().equals("RelatedFeelings")))) {
-            StartUserFeelingsFragment();
+            ShowCurrentFeelingsFragment();
             return;
         }
         if (fragment != null && fragment.getTagText().equals("Comments") && count == 1) {
@@ -248,7 +256,7 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
 
         switch (switchNum) {
             case 0:
-                StartUserFeelingsFragment();
+                ShowCurrentFeelingsFragment();
                 break;
             //Registration
             case 1:
