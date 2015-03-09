@@ -149,7 +149,6 @@ public class CurrentFeelingsFragment extends BackHandledFragment {
                 dialog.dismiss();
                 return;
             }
-            fromMainActivity = false;
             ArrayAdapter arrayAdapter = new RelatedFeelingsAdapter(getActivity(), R.layout.listview, _feelings);
 
             listview.setAdapter(arrayAdapter);
@@ -159,7 +158,7 @@ public class CurrentFeelingsFragment extends BackHandledFragment {
 
             int savedIndex = ApplicationHelper.getRecentFeelingsIndex(getActivity().getApplicationContext());
             if (listview != null) {
-                if (listview.getCount() > savedIndex)
+                if (listview.getCount() > savedIndex && !fromMainActivity)
                     listview.setSelectionFromTop(savedIndex, 0);
                 else
                     listview.setSelectionFromTop(0, 0);

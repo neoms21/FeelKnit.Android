@@ -196,11 +196,9 @@ public class MainActivity extends AbstractNavDrawerActivity implements AddFeelin
             return;
         }
 
-        UserFeelingsFragment myFragment = (UserFeelingsFragment) getSupportFragmentManager().findFragmentByTag("UserFeelings");
+        CurrentFeelingsFragment myFragment = (CurrentFeelingsFragment) getSupportFragmentManager().findFragmentByTag("CurrentFeelings");
         if (myFragment != null && myFragment.isVisible()) {
-            startActivity(GetIntent(MainActivity.class));
-            startActivity(GetIntent(LoginActivity.class));
-            startActivity(GetIntent(LoadingActivity.class));
+            App.close();
             return;
         }
         super.onBackPressed();
